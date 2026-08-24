@@ -4,7 +4,7 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { routes } from './app.routes';
 import { SesionStore } from './application/stores/sesion.store';
@@ -26,7 +26,7 @@ import { FirestoreUsuariosRepo } from './infrastructure/firebase/firestore-usuar
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
 
     // Puertos del dominio → adaptadores de infraestructura (hexagonal)
     { provide: SesionPort, useExisting: AuthAdapter },

@@ -1,0 +1,170 @@
+.hero {
+  background: var(--guindo-700);
+  border-radius: 0 0 var(--radio-l) var(--radio-l);
+  padding: 40px 20px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h1 {
+    color: #fff;
+    font-size: 26px;
+    margin: 0;
+  }
+
+  p {
+    color: var(--guindo-100);
+    margin: 4px 0 0;
+    font-size: 14px;
+  }
+}
+
+.boton-dorado {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--dorado-500);
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: var(--radio-pill);
+  box-shadow: var(--sombra-2);
+
+  .icono {
+    font-size: 20px;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.cuerpo {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  h2 {
+    font-size: 17px;
+    margin: 4px 0 0;
+  }
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--plomo-100);
+  border-radius: var(--radio-pill);
+  padding: 13px 18px;
+  text-decoration: none;
+
+  .icono {
+    color: var(--plomo-500);
+    font-size: 20px;
+  }
+
+  .placeholder {
+    color: var(--plomo-500);
+    font-size: 14px;
+  }
+}
+
+.card-hoy {
+  background: #fff;
+  border-radius: var(--radio-l);
+  box-shadow: var(--sombra-1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.card-hoy-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .etiqueta {
+    background: var(--guindo-700);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 3px 10px;
+    border-radius: var(--radio-pill);
+  }
+
+  .fecha {
+    color: var(--plomo-500);
+    font-size: 13px;
+    text-transform: capitalize;
+  }
+}
+
+/* Patrón Airbnb: ícono centrado ARRIBA del texto */
+.franjas {
+  display: flex;
+  justify-content: space-around;
+}
+
+.franja {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  max-width: 96px;
+
+  .icono {
+    color: var(--guindo-700);
+    font-size: 26px;
+  }
+
+  .nombre-franja {
+    font-weight: 600;
+    color: var(--plomo-900);
+    font-size: 12px;
+  }
+
+  .nombre-receta {
+    color: var(--plomo-500);
+    font-size: 11px;
+    text-align: center;
+  }
+}
+
+.vacio {
+  color: var(--plomo-500);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.boton-armar {
+  align-self: center;
+  background: var(--guindo-100);
+  color: var(--guindo-700);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 20px;
+  border-radius: var(--radio-pill);
+}
+
+.otros-dias {
+  background: var(--plomo-100);
+  border-radius: var(--radio-m);
+  padding: 18px;
+
+  .proximamente {
+    color: var(--plomo-400);
+    font-size: 12px;
+    text-align: center;
+    margin: 0;
+  }
+}

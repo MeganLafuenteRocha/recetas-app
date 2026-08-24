@@ -1,0 +1,45 @@
+<header class="hero">
+  <div class="hero-texto">
+    <h1>Hola, {{ primerNombre() }}</h1>
+    <p>¿Qué cocinamos hoy?</p>
+  </div>
+  <a class="boton-dorado" routerLink="/dia">
+    <span class="icono">grocery</span>
+    Elegir mis ingredientes
+  </a>
+</header>
+
+<section class="cuerpo">
+  <a class="buscador" routerLink="/buscar">
+    <span class="icono">search</span>
+    <span class="placeholder">Busca recetas o ingredientes</span>
+  </a>
+
+  <h2>Tu semana</h2>
+
+  <div class="card-hoy">
+    <div class="card-hoy-encabezado">
+      <span class="etiqueta">HOY</span>
+      <span class="fecha">{{ fechaDeHoy() }}</span>
+    </div>
+
+    @if (hoyArmado().length > 0) {
+      <div class="franjas">
+        @for (item of hoyArmado(); track item.franja) {
+          <div class="franja">
+            <span class="icono">{{ item.icono }}</span>
+            <small class="nombre-franja">{{ item.franja }}</small>
+            <small class="nombre-receta">{{ item.receta }}</small>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="vacio">Aún no armaste tu día.</p>
+      <a class="boton-armar" routerLink="/dia">Armar mi día</a>
+    }
+  </div>
+
+  <div class="otros-dias">
+    <p class="proximamente">Los demás días de tu semana aparecerán aquí.</p>
+  </div>
+</section>
