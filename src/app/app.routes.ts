@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import {
   soloActivosGuard,
+  soloAdminGuard,
   soloAnonimosGuard,
   soloPendientesGuard,
 } from './presentation/guards/sesion.guards';
@@ -40,8 +41,7 @@ export const routes: Routes = [
       {
         path: 'mi-dia',
         loadComponent: () =>
-          import('./presentation/ui/en-construccion.page').then((m) => m.EnConstruccionPage),
-        data: { titulo: 'Mi día' },
+          import('./presentation/features/mi-dia/mi-dia.page').then((m) => m.MiDiaPage),
       },
       {
         path: 'recetas',
@@ -58,8 +58,23 @@ export const routes: Routes = [
       {
         path: 'dia',
         loadComponent: () =>
-          import('./presentation/ui/en-construccion.page').then((m) => m.EnConstruccionPage),
-        data: { titulo: '¿Qué tienes hoy?' },
+          import('./presentation/features/dia/seleccionar.page').then((m) => m.SeleccionarDiaPage),
+      },
+      {
+        path: 'dia/opciones',
+        loadComponent: () =>
+          import('./presentation/features/dia/opciones.page').then((m) => m.OpcionesDiaPage),
+      },
+      {
+        path: 'dia/resumen',
+        loadComponent: () =>
+          import('./presentation/features/dia/resumen.page').then((m) => m.ResumenDiaPage),
+      },
+      {
+        path: 'admin/cuentas',
+        canActivate: [soloAdminGuard],
+        loadComponent: () =>
+          import('./presentation/features/admin/cuentas.page').then((m) => m.CuentasPage),
       },
       {
         path: 'buscar',

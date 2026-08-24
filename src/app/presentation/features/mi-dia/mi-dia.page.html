@@ -1,0 +1,68 @@
+<header class="encabezado">
+  <button type="button" class="avatar" (click)="ui.abrirMenuLateral()">{{ inicial() }}</button>
+  <h1>Mi día</h1>
+  <div class="toggles">
+    <button
+      type="button"
+      class="toggle"
+      [class.activo]="vistaCompleta()"
+      (click)="vistaCompleta.set(!vistaCompleta())"
+      title="Vista compacta o completa"
+    >
+      <span class="icono">{{ vistaCompleta() ? 'view_agenda' : 'view_headline' }}</span>
+    </button>
+    <button
+      type="button"
+      class="toggle"
+      [class.activo]="periodoSemanal()"
+      (click)="periodoSemanal.set(!periodoSemanal())"
+      title="Diario o semanal"
+    >
+      <span class="icono">calendar_view_week</span>
+    </button>
+  </div>
+</header>
+
+<p class="fecha">{{ fechaDeHoy() }}</p>
+
+@if (periodoSemanal()) {
+  <p class="pronto-semanal">La vista semanal llega pronto. Por ahora, tu día:</p>
+}
+
+<section class="lista" [class.completa]="vistaCompleta()">
+  @for (item of items(); track item.franja) {
+    @if (vistaCompleta()) {
+      <article class="card">
+        <div class="foto"><span class="icono">restaurant</span></div>
+        <div class="cuerpo">
+          <small class="franja"><span class="icono">{{ item.icono }}</span> {{ item.franja }}</small>
+          <strong>{{ item.receta?.nombre ?? '—' }}</strong>
+          @if (item.receta; as receta) {
+            <p class="descripcion">{{ receta.descripcion }}</p>
+            <div class="metas">
+              <small><span class="icono">schedule</span> {{ receta.tiempo.totalMin }} min</small>
+              <small><span class="icono">group</span> {{ receta.porciones }} porciones</small>
+            </div>
+          }
+        </div>
+      </article>
+    } @else {
+      <div class="fila">
+        <span class="icono">{{ item.icono }}</span>
+        <span class="datos">
+          <small>{{ item.franja }}</small>
+          <strong>{{ item.receta?.nombre ?? '—' }}</strong>
+        </span>
+        @if (item.receta; as receta) {
+          <small class="minutos">{{ receta.tiempo.totalMin }} min</small>
+        }
+      </div>
+    }
+  } @empty {
+    <div class="vacio">
+      <span class="icono">calendar_add_on</span>
+      <p>Aún no armaste tu día.</p>
+      <a class="boton-armar" routerLink="/dia">Armar mi día</a>
+    </div>
+  }
+</section>

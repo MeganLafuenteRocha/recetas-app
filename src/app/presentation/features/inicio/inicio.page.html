@@ -1,7 +1,12 @@
 <header class="hero">
-  <div class="hero-texto">
-    <h1>Hola, {{ primerNombre() }}</h1>
-    <p>¿Qué cocinamos hoy?</p>
+  <div class="hero-fila">
+    <div class="hero-texto">
+      <h1>Hola, {{ primerNombre() }}</h1>
+      <p>¿Qué cocinamos hoy?</p>
+    </div>
+    <button type="button" class="avatar" (click)="ui.abrirMenuLateral()">
+      {{ primerNombre().charAt(0) }}
+    </button>
   </div>
   <a class="boton-dorado" routerLink="/dia">
     <span class="icono">grocery</span>

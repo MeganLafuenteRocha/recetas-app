@@ -4,6 +4,7 @@ import { CatalogoStore } from '../../../application/stores/catalogo.store';
 import { PlanStore } from '../../../application/stores/plan.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
+import { UiStore } from '../../../application/stores/ui.store';
 
 const ICONO_FRANJA: Record<string, string> = {
   desayuno: 'coffee',
@@ -22,6 +23,7 @@ const ICONO_FRANJA: Record<string, string> = {
 })
 export class InicioPage {
   protected readonly sesion = inject(SesionStore);
+  protected readonly ui = inject(UiStore);
   protected readonly plan = inject(PlanStore);
   protected readonly recetas = inject(RecetasStore);
   protected readonly catalogos = inject(CatalogoStore);

@@ -19,6 +19,26 @@
   }
 }
 
+.hero-fila {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--guindo-100);
+  background: var(--guindo-500);
+  color: #fff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .boton-dorado {
   align-self: flex-start;
   display: flex;
