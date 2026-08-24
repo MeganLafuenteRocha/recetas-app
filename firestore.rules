@@ -1,0 +1,62 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function conSesion() {
+      return request.auth != null;
+    }
+
+    function datosMios() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+
+    function esActivo() {
+      return conSesion()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && datosMios().estado == 'activo';
+    }
+
+    function esAdmin() {
+      return esActivo() && datosMios().rol == 'admin';
+    }
+
+    // Cuentas: cada quien crea SOLO su propio doc, siempre pendiente y sin rol admin.
+    match /usuarios/{uid} {
+      allow get: if conSesion() && (request.auth.uid == uid || esAdmin());
+      allow list: if esAdmin();
+      allow create: if conSesion()
+        && request.auth.uid == uid
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.rol == 'usuario';
+      allow update: if esAdmin();
+      allow delete: if false;
+    }
+
+    // Datos de la app: exigen cuenta activada por la administradora.
+    match /catalogos/{doc} {
+      allow read: if esActivo();
+      allow write: if esAdmin();
+    }
+    match /ingredientes/{doc} {
+      allow read, write: if esActivo();
+    }
+    match /recetas/{doc} {
+      allow read, write: if esActivo();
+    }
+    match /planes/{doc} {
+      allow read, write: if esActivo();
+    }
+    match /listas/{doc} {
+      allow read, write: if esActivo();
+    }
+    match /grupos/{doc} {
+      allow read: if esActivo();
+      allow write: if esAdmin();
+    }
+    match /config/{doc} {
+      allow read: if esActivo();
+      allow write: if esActivo();
+    }
+  }
+}
