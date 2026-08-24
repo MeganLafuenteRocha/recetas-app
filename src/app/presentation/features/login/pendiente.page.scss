@@ -1,0 +1,72 @@
+.pantalla {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  background: var(--plomo-100);
+  padding: 24px;
+}
+
+.tarjeta {
+  background: #fff;
+  border-radius: var(--radio-l);
+  box-shadow: var(--sombra-2);
+  padding: 32px 24px;
+  max-width: 340px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--plomo-500);
+  }
+}
+
+.reloj {
+  font-size: 44px;
+  color: var(--dorado-500);
+  background: var(--dorado-100);
+  border-radius: 50%;
+  padding: 14px;
+}
+
+.boton-principal {
+  margin-top: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: var(--radio-pill);
+  background: var(--guindo-700);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.aviso {
+  color: var(--alerta);
+  font-size: 12px;
+}
+
+.boton-texto {
+  border: none;
+  background: none;
+  color: var(--guindo-700);
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}

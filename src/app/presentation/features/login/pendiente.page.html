@@ -1,0 +1,20 @@
+<main class="pantalla">
+  <div class="tarjeta">
+    <span class="icono reloj">hourglass_top</span>
+    <h2>Tu cuenta está en espera</h2>
+    <p>
+      Hola, <strong>{{ sesion.usuario()?.nombre }}</strong>.
+      La administradora debe activar tu cuenta antes de que puedas entrar.
+    </p>
+
+    <button type="button" class="boton-principal" (click)="verificar()" [disabled]="verificando()">
+      @if (verificando()) { Verificando… } @else { Volver a verificar }
+    </button>
+
+    @if (sinCambios()) {
+      <p class="aviso">Aún sigue pendiente. Intenta más tarde.</p>
+    }
+
+    <button type="button" class="boton-texto" (click)="salir()">Cerrar sesión</button>
+  </div>
+</main>
