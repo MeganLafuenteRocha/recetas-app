@@ -1,0 +1,38 @@
+/* Tokens de diseño — paleta de designMockups/guiaStyle.pen (Material 3) */
+:root {
+  /* Guindo (primario) */
+  --guindo-900: #5c1620;
+  --guindo-700: #7a1f2b; /* principal */
+  --guindo-500: #9c3d49;
+  --guindo-100: #f6e9eb; /* superficie tenue / píldora activa */
+
+  /* Plomos (neutros) */
+  --plomo-900: #1f1f23; /* texto fuerte */
+  --plomo-700: #3f3f46; /* texto normal */
+  --plomo-500: #71717a; /* texto secundario */
+  --plomo-400: #a1a1aa;
+  --plomo-300: #d4d4d8; /* bordes */
+  --plomo-100: #f4f4f5; /* fondos de sección */
+  --plomo-50: #fafafa;  /* fondo de app */
+
+  /* Dorado (secundario, solo detalles) */
+  --dorado-700: #8a6a2b;
+  --dorado-500: #b08a3c; /* principal */
+  --dorado-300: #d4b36a;
+  --dorado-100: #f7efdc;
+
+  /* Semánticos */
+  --ok: #2e7d5b;
+  --alerta: #b7791f;
+  --error: #b3261e;
+
+  /* Formas (M3) */
+  --radio-s: 8px;
+  --radio-m: 12px;
+  --radio-l: 16px;
+  --radio-pill: 999px;
+
+  /* Sombras suaves */
+  --sombra-1: 0 1px 3px rgba(31, 31, 35, 0.08);
+  --sombra-2: 0 4px 12px rgba(31, 31, 35, 0.1);
+}
