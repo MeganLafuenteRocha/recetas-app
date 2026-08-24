@@ -1,0 +1,104 @@
+.pagina {
+  min-height: calc(100dvh - 72px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+}
+
+.festejo {
+  font-size: 44px;
+  color: var(--dorado-500);
+  background: var(--dorado-100);
+  border-radius: 50%;
+  padding: 14px;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 8px 0 0;
+}
+
+.sub {
+  color: var(--plomo-500);
+  font-size: 13px;
+  margin: 0;
+}
+
+.lista {
+  width: 100%;
+  max-width: 340px;
+  margin-top: 12px;
+  background: #fff;
+  border-radius: var(--radio-l);
+  box-shadow: var(--sombra-1);
+  padding: 6px 16px;
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--plomo-100);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  > .icono {
+    color: var(--guindo-700);
+    font-size: 24px;
+  }
+
+  .datos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    small {
+      color: var(--plomo-500);
+      font-size: 11px;
+    }
+
+    strong {
+      font-size: 14px;
+      color: var(--plomo-900);
+    }
+  }
+
+  .minutos {
+    color: var(--plomo-400);
+    font-size: 11px;
+  }
+}
+
+.vacio {
+  color: var(--plomo-500);
+  font-size: 13px;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.boton-principal {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  text-decoration: none;
+  padding: 13px 24px;
+  border-radius: var(--radio-pill);
+  background: var(--guindo-700);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.boton-texto {
+  color: var(--plomo-500);
+  text-decoration: none;
+  font-size: 13px;
+}

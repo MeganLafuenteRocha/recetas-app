@@ -1,0 +1,25 @@
+<main class="pagina">
+  <span class="icono festejo">celebration</span>
+  <h1>Tu menú de hoy</h1>
+  <p class="sub">Quedó guardado en Mi día.</p>
+
+  <div class="lista">
+    @for (item of elecciones(); track item.franja) {
+      <div class="fila">
+        <span class="icono">{{ item.icono }}</span>
+        <span class="datos">
+          <small>{{ item.franja }}</small>
+          <strong>{{ item.nombre }}</strong>
+        </span>
+        @if (item.minutos !== null) {
+          <small class="minutos">{{ item.minutos }} min</small>
+        }
+      </div>
+    } @empty {
+      <p class="vacio">No hay nada guardado para hoy todavía.</p>
+    }
+  </div>
+
+  <a class="boton-principal" routerLink="/mi-dia">Ver en Mi día</a>
+  <a class="boton-texto" routerLink="/inicio">Volver al inicio</a>
+</main>

@@ -1,0 +1,63 @@
+<header class="encabezado">
+  <a class="volver" routerLink="/dia"><span class="icono">arrow_back</span></a>
+  <div>
+    <h1>Opciones para tu día</h1>
+    <p>Con tus {{ seleccion.totalSeleccionados() }} ingredientes. Elige una por franja.</p>
+  </div>
+</header>
+
+<section class="franjas">
+  @for (franja of franjas(); track franja.codigo) {
+    <div class="franja">
+      <h2><span class="icono">{{ franja.icono }}</span> {{ franja.nombre }}</h2>
+
+      @for (opcion of franja.opciones; track opcion.receta.id) {
+        <button
+          type="button"
+          class="card"
+          [class.elegida]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
+          (click)="seleccion.elegir(franja.codigo, opcion.receta.id)"
+        >
+          <span class="foto"><span class="icono">restaurant</span></span>
+          <span class="datos">
+            <span class="nombre">{{ opcion.receta.nombre }}</span>
+            <span class="detalles">
+              <span class="chip-afinidad" [class.completa]="opcion.puntaje === 100">
+                {{ opcion.puntaje }}%
+              </span>
+              <small>{{ opcion.receta.tiempo.totalMin }} min</small>
+              @if (opcion.kcal !== null) {
+                <small>{{ opcion.kcal }} kcal</small>
+              }
+            </span>
+            @if (opcion.faltantes) {
+              <small class="faltantes">{{ opcion.faltantes }}</small>
+            }
+          </span>
+          <span class="icono check">
+            {{ seleccion.eleccionDe(franja.codigo) === opcion.receta.id ? 'check_circle' : 'radio_button_unchecked' }}
+          </span>
+        </button>
+      }
+    </div>
+  } @empty {
+    <p class="vacio">Marca algún ingrediente primero para ver sugerencias.</p>
+  }
+</section>
+
+<footer class="barra-armar">
+  <div class="resumen">
+    <strong>{{ seleccion.totalElegidas() }} elegida{{ seleccion.totalElegidas() === 1 ? '' : 's' }}</strong>
+    @if (kcalElegidas() !== null) {
+      <small>{{ kcalElegidas() }} kcal aprox.</small>
+    }
+  </div>
+  <button
+    type="button"
+    class="boton-armar"
+    [disabled]="seleccion.totalElegidas() === 0 || guardando()"
+    (click)="armar()"
+  >
+    @if (guardando()) { Guardando… } @else { Armar mi día }
+  </button>
+</footer>

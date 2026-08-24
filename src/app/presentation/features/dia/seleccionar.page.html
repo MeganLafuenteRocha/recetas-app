@@ -1,0 +1,60 @@
+<header class="encabezado">
+  <h1>¿Qué tienes hoy?</h1>
+  <p>Marca lo que tienes disponible y te sugiero recetas.</p>
+</header>
+
+<div class="controles">
+  <label class="buscador">
+    <span class="icono">search</span>
+    <input
+      type="search"
+      placeholder="Busca un ingrediente"
+      [value]="consulta()"
+      (input)="buscar($event)"
+    />
+  </label>
+
+  <button type="button" class="chip-despensa" (click)="seleccion.usarDespensa()">
+    <span class="icono">shopping_basket</span>
+    Usar mi despensa ({{ despensa.total() }})
+  </button>
+</div>
+
+<section class="lista">
+  @for (grupo of grupos(); track grupo.nombre) {
+    <h2>{{ grupo.nombre }}</h2>
+    @for (ingrediente of grupo.visibles; track ingrediente.id) {
+      <button
+        type="button"
+        class="fila"
+        [class.marcada]="seleccion.tieneSeleccionado(ingrediente.id)"
+        (click)="seleccion.alternar(ingrediente.id)"
+      >
+        <span class="icono categoria">{{ grupo.icono }}</span>
+        <span class="nombre">{{ ingrediente.nombre }}</span>
+        <span class="icono check">
+          {{ seleccion.tieneSeleccionado(ingrediente.id) ? 'check_circle' : 'radio_button_unchecked' }}
+        </span>
+      </button>
+    }
+    @if (grupo.ocultos > 0) {
+      <p class="mas">+{{ grupo.ocultos }} más en esta categoría</p>
+    }
+  }
+
+  @if (!mostrarTodos()) {
+    <button type="button" class="mostrar-todos" (click)="mostrarTodos.set(true)">
+      Mostrar los {{ totalIngredientes() }} ingredientes
+    </button>
+  }
+</section>
+
+<footer class="pie">
+  <a
+    class="boton-buscar"
+    [class.deshabilitado]="seleccion.totalSeleccionados() === 0"
+    routerLink="/dia/opciones"
+  >
+    Buscar recetas ({{ seleccion.totalSeleccionados() }})
+  </a>
+</footer>
