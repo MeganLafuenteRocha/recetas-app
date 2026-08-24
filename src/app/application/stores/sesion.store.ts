@@ -2,6 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { SesionPort } from '../../domain/usuarios/sesion.port';
 import { esAdmin, puedeUsarLaApp, Usuario } from '../../domain/usuarios/usuario.model';
 import { UsuarioRepository } from '../../domain/usuarios/usuario.port';
+import { CargarDatosInicialesUseCase } from '../use-cases/cargar-datos-iniciales.usecase';
 import { IniciarSesionUseCase } from '../use-cases/iniciar-sesion.usecase';
 
 export type FaseSesion = 'cargando' | 'anonimo' | 'con-sesion';
@@ -11,6 +12,7 @@ export class SesionStore {
   private readonly sesion = inject(SesionPort);
   private readonly usuarios = inject(UsuarioRepository);
   private readonly iniciarSesion = inject(IniciarSesionUseCase);
+  private readonly cargarDatos = inject(CargarDatosInicialesUseCase);
 
   private readonly _fase = signal<FaseSesion>('cargando');
   private readonly _usuario = signal<Usuario | null>(null);
@@ -39,6 +41,7 @@ export class SesionStore {
     const usuario = await this.iniciarSesion.ejecutar(cuenta);
     this._usuario.set(usuario);
     this._fase.set('con-sesion');
+    await this.cargarSiActiva();
   }
 
   async entrarConGoogle(): Promise<void> {
@@ -48,6 +51,7 @@ export class SesionStore {
       const usuario = await this.iniciarSesion.ejecutar(cuenta);
       this._usuario.set(usuario);
       this._fase.set('con-sesion');
+      await this.cargarSiActiva();
     } catch {
       this._error.set('No se pudo iniciar sesión. Intenta de nuevo.');
     }
@@ -59,6 +63,14 @@ export class SesionStore {
     if (!actual) return;
     const fresco = await this.usuarios.obtener(actual.uid);
     if (fresco) this._usuario.set(fresco);
+    await this.cargarSiActiva();
+  }
+
+  /** La única puerta a los datos: se cargan una vez, solo con cuenta activa. */
+  private async cargarSiActiva(): Promise<void> {
+    if (this.activo()) {
+      await this.cargarDatos.ejecutar();
+    }
   }
 
   async salir(): Promise<void> {
