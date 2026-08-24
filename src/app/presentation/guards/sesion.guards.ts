@@ -19,6 +19,14 @@ export const soloAnonimosGuard: CanActivateFn = () => {
   return router.parseUrl(sesion.activo() ? '/inicio' : '/pendiente');
 };
 
+/** Rutas de administración: exigen rol admin activo. */
+export const soloAdminGuard: CanActivateFn = () => {
+  const sesion = inject(SesionStore);
+  const router = inject(Router);
+  if (!sesion.esAdmin()) return router.parseUrl('/inicio');
+  return true;
+};
+
 /** Pantalla de cuenta pendiente: solo para cuentas con sesión sin activar. */
 export const soloPendientesGuard: CanActivateFn = () => {
   const sesion = inject(SesionStore);

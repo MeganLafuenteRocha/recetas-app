@@ -1,0 +1,46 @@
+@if (ui.menuLateralAbierto()) {
+  <div class="velo" (click)="ui.cerrarMenuLateral()"></div>
+
+  <aside class="panel">
+    <div class="perfil">
+      <span class="avatar">{{ inicial() }}</span>
+      <div>
+        <strong>{{ sesion.usuario()?.nombre }}</strong>
+        <small>{{ sesion.esAdmin() ? 'Administradora' : 'Usuaria' }}</small>
+      </div>
+    </div>
+
+    <nav>
+      <button type="button" (click)="ir('/mi-dia')">
+        <span class="icono">today</span> Hoy
+      </button>
+      <button type="button" (click)="ir('/recetas')">
+        <span class="icono">menu_book</span> Todas las recetas
+      </button>
+
+      <p class="seccion">MIS GRUPOS</p>
+      <p class="grupos-vacios">Pronto podrás crear tus grupos de recetas aquí.</p>
+
+      @if (sesion.esAdmin()) {
+        <p class="seccion">ADMINISTRACIÓN</p>
+        <button type="button" (click)="ir('/admin/cuentas')">
+          <span class="icono">manage_accounts</span> Cuentas
+          @if (rotuloPendientes()) {
+            <small class="pendientes">· {{ rotuloPendientes() }}</small>
+          }
+        </button>
+        <button type="button" disabled>
+          <span class="icono">monitoring</span> Mi dashboard <small class="pronto">pronto</small>
+        </button>
+      }
+
+      <p class="seccion"></p>
+      <button type="button" disabled>
+        <span class="icono">settings</span> Ajustes <small class="pronto">pronto</small>
+      </button>
+      <button type="button" class="salir" (click)="salir()">
+        <span class="icono">logout</span> Cerrar sesión
+      </button>
+    </nav>
+  </aside>
+}

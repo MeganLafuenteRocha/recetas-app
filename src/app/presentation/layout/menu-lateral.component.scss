@@ -1,0 +1,133 @@
+.velo {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 31, 35, 0.4);
+  z-index: 20;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 290px;
+  background: #fff;
+  z-index: 21;
+  border-radius: 0 var(--radio-l) var(--radio-l) 0;
+  box-shadow: var(--sombra-2);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--plomo-100);
+
+  .avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--guindo-700);
+    color: #fff;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+
+    strong {
+      font-size: 14px;
+      color: var(--plomo-900);
+    }
+
+    small {
+      color: var(--dorado-700);
+      font-size: 12px;
+    }
+  }
+}
+
+nav {
+  padding: 10px 12px 24px;
+  display: flex;
+  flex-direction: column;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    background: none;
+    padding: 12px 10px;
+    border-radius: var(--radio-m);
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: var(--plomo-900);
+    cursor: pointer;
+    text-align: left;
+
+    .icono {
+      color: var(--plomo-700);
+      font-size: 21px;
+    }
+
+    &:hover {
+      background: var(--plomo-100);
+    }
+
+    &:disabled {
+      color: var(--plomo-400);
+      cursor: default;
+
+      .icono {
+        color: var(--plomo-300);
+      }
+    }
+  }
+}
+
+.seccion {
+  color: var(--plomo-400);
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  margin: 14px 10px 2px;
+}
+
+.grupos-vacios {
+  color: var(--plomo-400);
+  font-size: 12px;
+  margin: 4px 10px;
+}
+
+.pendientes {
+  color: var(--guindo-700);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pronto {
+  margin-left: auto;
+  background: var(--plomo-100);
+  color: var(--plomo-400);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radio-pill);
+}
+
+.salir {
+  margin-top: 8px;
+  color: var(--guindo-700) !important;
+
+  .icono {
+    color: var(--guindo-700) !important;
+  }
+}
