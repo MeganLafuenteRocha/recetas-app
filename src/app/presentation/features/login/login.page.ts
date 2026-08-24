@@ -16,7 +16,7 @@ export class LoginPage {
     // Cuando el login termina, decide a dónde ir según el estado de la cuenta.
     effect(() => {
       if (this.sesion.fase() !== 'con-sesion') return;
-      this.router.navigateByUrl(this.sesion.activo() ? '/inicio' : '/pendiente');
+      this.router.navigateByUrl(this.sesion.activo() ? '/bienvenida' : '/pendiente');
     });
   }
 

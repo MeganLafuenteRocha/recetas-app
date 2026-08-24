@@ -1,0 +1,32 @@
+<main class="pagina">
+  <h1>Hola, {{ primerNombre() }} 👋</h1>
+  @if (sesion.esAdmin()) {
+    <p class="admin"><span class="icono">shield_person</span> Administradora</p>
+  }
+
+  <!-- Aquí irá la imagen que Andrea va a elegir -->
+
+  @if (datos.listo()) {
+    <div class="cards">
+      <div class="card">
+        <span class="icono">menu_book</span>
+        <strong>{{ recetas.total() }}</strong>
+        <small>recetas</small>
+      </div>
+      <div class="card">
+        <span class="icono">grocery</span>
+        <strong>{{ ingredientes.total() }}</strong>
+        <small>ingredientes</small>
+      </div>
+    </div>
+    <p class="nota">
+      Tienes {{ recetas.total() }} recetas y {{ ingredientes.total() }} ingredientes
+      iniciales para empezar. Podrás ajustarlos a tu gusto o crear nuevos.
+    </p>
+    <button type="button" class="boton-principal" (click)="siguiente()">Siguiente</button>
+  } @else {
+    <p class="nota">Preparando tus datos…</p>
+  }
+
+  <button type="button" class="boton-texto" (click)="salir()">Cerrar sesión</button>
+</main>

@@ -21,7 +21,7 @@ export class PendientePage {
     await this.sesion.reverificar();
     this.verificando.set(false);
     if (this.sesion.activo()) {
-      await this.router.navigateByUrl('/inicio');
+      await this.router.navigateByUrl('/bienvenida');
     } else {
       this.sinCambios.set(true);
     }
