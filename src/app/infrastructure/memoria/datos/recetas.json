@@ -1,0 +1,3248 @@
+[
+ {
+  "id": "rec_aji_fideo",
+  "activo": true,
+  "nombre": "Ají de fideo",
+  "descripcion": "Fideo retostado cocido en salsa de ají colorado con carne, plato casero de toda la vida.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 15,
+   "coccionMin": 30,
+   "totalMin": 45
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_fideo",
+      "cantidad": 3,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_colorado",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_carne_molida",
+      "cantidad": 250,
+      "unidad": "g",
+      "nota": null
+     },
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 300,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Retostar el fideo en un poco de aceite hasta que dore ligeramente. Reservar.",
+     "importante": "El fideo retostado es el secreto del ají de fideo: le da color y sabor."
+    },
+    {
+     "numero": 2,
+     "instruccion": "Hacer un ahogado con la cebolla, el ajo, el comino y el ají colorado; dorar ahí la carne.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Agregar unas 3 tazas de agua caliente y la papa en cubos; incorporar el fideo.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Cocinar hasta que el fideo absorba el jugo y quede húmedo. Servir con perejil picado.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_api_con_pastel",
+  "activo": true,
+  "nombre": "Api con pastel",
+  "descripcion": "Desayuno tradicional: bebida caliente y espesa de maíz morado con canela y clavo, acompañada de pastel frito relleno de queso.",
+  "tipoComida": "desayuno",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 3,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 30,
+   "coccionMin": 30,
+   "totalMin": 60
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_api_morado",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_harina_trigo",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": "para el pastel"
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_queso_fresco",
+      "cantidad": 200,
+      "unidad": "g",
+      "nota": "para el relleno"
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar",
+      "cantidad": 0.75,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_canela",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "ramas"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_clavo_olor",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar_impalpable",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": "para espolvorear"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Hervir 1 litro de agua con la canela y los clavos de olor.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Disolver la harina de maíz morado en 2 tazas de agua fría y agregarla al agua hirviendo sin dejar de remover.",
+     "importante": "Remover constantemente para que el api no forme grumos ni se pegue."
+    },
+    {
+     "numero": 3,
+     "instruccion": "Cocinar a fuego lento hasta que espese y endulzar con el azúcar.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Para el pastel: preparar una masa con la harina, una pizca de sal y agua tibia; amasar y estirar delgado.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Rellenar con el queso, cerrar los bordes y freír en abundante aceite caliente hasta dorar.",
+     "importante": null
+    },
+    {
+     "numero": 6,
+     "instruccion": "Servir el pastel espolvoreado con azúcar impalpable, acompañando el api caliente.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_arroz_con_leche",
+  "activo": true,
+  "nombre": "Arroz con leche",
+  "descripcion": "Postre cremoso de arroz cocido en leche con canela.",
+  "tipoComida": "postre",
+  "tipoCocina": "boliviana",
+  "porciones": 6,
+  "dificultad": 1,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 5,
+   "coccionMin": 40,
+   "totalMin": 45
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_leche",
+      "cantidad": 1,
+      "unidad": "l",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar",
+      "cantidad": 0.75,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_canela",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "ramas"
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_limon",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "solo la cáscara"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pasas",
+      "cantidad": 0.25,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocer el arroz en 2 tazas de agua con la canela y la cáscara de limón hasta que absorba el agua.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Agregar la leche y el azúcar; cocinar a fuego lento removiendo.",
+     "importante": "Fuego bajo y removiendo seguido: la leche se pega y se quema fácil."
+    },
+    {
+     "numero": 3,
+     "instruccion": "Cuando esté cremoso, retirar del fuego y agregar las pasas si se desea.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Servir tibio o frío, espolvoreado con canela molida.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_budin_pan",
+  "activo": true,
+  "nombre": "Budín de pan",
+  "descripcion": "Postre horneado que aprovecha el pan del día anterior, con leche, huevo y caramelo.",
+  "tipoComida": "postre",
+  "tipoCocina": "boliviana",
+  "porciones": 8,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 60,
+   "totalMin": 80
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pan_marraqueta",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": "del día anterior"
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_leche",
+      "cantidad": 1,
+      "unidad": "l",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar",
+      "cantidad": 1.5,
+      "unidad": "taza",
+      "nota": "una parte para el caramelo"
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_canela",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": "molida"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pasas",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Hacer un caramelo con media taza de azúcar directamente en el molde.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Desmenuzar el pan y remojarlo en la leche.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Batir los huevos con el azúcar restante y la canela; mezclar con el pan remojado y las pasas.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Verter en el molde acaramelado y hornear a baño maría a 180 °C durante una hora.",
+     "importante": "Al baño maría nunca le debe faltar agua en la bandeja; sin él, el budín queda seco."
+    },
+    {
+     "numero": 5,
+     "instruccion": "Dejar enfriar bien antes de desmoldar.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_chairo",
+  "activo": true,
+  "nombre": "Chairo paceño",
+  "descripcion": "Sopa paceña contundente a base de chuño martajado, carne y verduras, coronada con hierbabuena.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 6,
+  "dificultad": 3,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 30,
+   "coccionMin": 60,
+   "totalMin": 90
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": null
+     },
+     {
+      "ingredienteId": "ing_carne_cordero",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_chuno",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_zanahoria",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_haba_verde",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_trigo_pelado",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 13,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_hierbabuena",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Remojar el chuño desde la noche anterior, pelarlo y martajarlo (triturarlo grueso).",
+     "importante": "Sin el remojo del chuño desde la víspera no hay chairo."
+    },
+    {
+     "numero": 2,
+     "instruccion": "Cocer la carne en 2 litros de agua con sal hasta que ablande.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Hacer un ahogado con la cebolla, el ajo, el comino y el orégano; agregarlo al caldo.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Añadir el chuño martajado, el trigo, las habas, las arvejas y la zanahoria picada. Cocinar removiendo de vez en cuando.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Agregar las papas en cubos y cocinar hasta que todo esté suave.",
+     "importante": null
+    },
+    {
+     "numero": 6,
+     "instruccion": "Servir caliente con hierbabuena picada por encima.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_chorrellana",
+  "activo": true,
+  "nombre": "Chorrellana",
+  "descripcion": "Bistec de res cubierto con un salteado de cebolla, tomate y locoto, con huevo frito y arroz.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 1,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 15,
+   "coccionMin": 20,
+   "totalMin": 35
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_filete_res",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": "bistecs"
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": "para acompañar"
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_locoto",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": "para freír"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pimienta",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Salpimentar los bistecs y freírlos en aceite caliente, vuelta y vuelta.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "En la misma sartén, saltear la cebolla en pluma, el tomate en rodajas y el locoto en tiras: esa es la chorrellana.",
+     "importante": "El salteado va en la misma sartén de la carne para aprovechar su jugo."
+    },
+    {
+     "numero": 3,
+     "instruccion": "Freír los huevos y, si se desea, papas fritas.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Servir el bistec cubierto con la chorrellana y el huevo encima, acompañado de arroz.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_chupe_verduras",
+  "activo": true,
+  "nombre": "Chupe de verduras",
+  "descripcion": "Sopa cremosa de verduras variadas con un toque de leche y queso fresco.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 35,
+   "totalMin": 55
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 3,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_zanahoria",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_choclo",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_haba_verde",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_leche",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_apio",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "tallo"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 0.5,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "diente"
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_queso_fresco",
+      "cantidad": 100,
+      "unidad": "g",
+      "nota": "en cubos"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Hacer un ahogado con la cebolla, el ajo y el orégano.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Agregar 1,5 litros de agua y las verduras: papa en cubos, zanahoria, choclo desgranado, habas, arvejas y apio picado.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Cocinar hasta que todo esté suave. Sazonar con sal.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Añadir la leche y dar un último hervor suave.",
+     "importante": "La leche va al final y a fuego bajo: si hierve fuerte, se corta."
+    },
+    {
+     "numero": 5,
+     "instruccion": "Servir con queso fresco en cubos si se desea.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_falso_conejo",
+  "activo": true,
+  "nombre": "Falso conejo",
+  "descripcion": "Clásico valluno: carne apanada y aplanada cocida en salsa de ají amarillo con arvejas, servida con arroz.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 40,
+   "totalMin": 60
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_filete_res",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": "en filetes delgados"
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pan_molido",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_amarillo",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": "para acompañar"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_chuno",
+      "cantidad": 8,
+      "unidad": "u",
+      "nota": "para el phuti"
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Aplanar los filetes hasta dejarlos bien delgados, salpimentar y pasarlos por el pan molido.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Dorarlos en aceite caliente y reservar.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "En la misma olla, hacer un ahogado con la cebolla, el ajo, el comino, el orégano y el ají amarillo.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Agregar 2 tazas de agua y las arvejas. Incorporar las carnes y cocinar a fuego lento hasta que la salsa espese.",
+     "importante": "La carne debe cocinar dentro de la salsa: así se ablanda y toma el gusto del ají."
+    },
+    {
+     "numero": 5,
+     "instruccion": "Servir con arroz graneado y, si se desea, chuño phuti y perejil.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_lawa_choclo",
+  "activo": true,
+  "nombre": "Lawa de choclo",
+  "descripcion": "Sopa espesa de choclo molido con carne, tradicional de los valles.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 45,
+   "totalMin": 65
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_choclo",
+      "cantidad": 3,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 400,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 3,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_haba_verde",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 0.5,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_amarillo",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_hierbabuena",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocer la carne en 2 litros de agua hasta que ablande.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Desgranar los choclos y molerlos o licuarlos con un poco del caldo.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Hacer un ahogado con la cebolla y el ají amarillo; incorporarlo a la olla.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Agregar el choclo molido removiendo, luego las papas en cubos y las habas.",
+     "importante": "Remover seguido: la lawa se pega fácilmente al fondo de la olla."
+    },
+    {
+     "numero": 5,
+     "instruccion": "Cocinar hasta que espese y las papas estén suaves. Servir caliente con hierbabuena.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_licuado_platano_avena",
+  "activo": true,
+  "nombre": "Licuado de plátano con avena",
+  "descripcion": "Licuado cremoso y nutritivo para el desayuno, con plátano, avena y leche.",
+  "tipoComida": "desayuno",
+  "tipoCocina": "boliviana",
+  "porciones": 2,
+  "dificultad": 1,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 5,
+   "coccionMin": 0,
+   "totalMin": 5
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_platano",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_avena",
+      "cantidad": 4,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_leche",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_canela",
+      "cantidad": 1,
+      "unidad": "pizca",
+      "nota": "molida"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Licuar los plátanos con la avena, la leche y el azúcar hasta que quede cremoso.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Servir de inmediato, espolvoreado con canela molida si se desea.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_majadito",
+  "activo": true,
+  "nombre": "Majadito cruceño",
+  "descripcion": "Arroz húmedo al estilo cruceño con charque desmenuzado, servido con huevo y plátano fritos.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 40,
+   "totalMin": 60
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_charque",
+      "cantidad": 300,
+      "unidad": "g",
+      "nota": null
+     },
+     {
+      "ingredienteId": "ing_pollo",
+      "cantidad": 400,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pimenton",
+      "cantidad": 0.5,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_urucu",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_platano",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocer el charque, desmenuzarlo y retostarlo en un poco de aceite (si es pollo, dorarlo y desmenuzarlo). Guardar el agua de la cocción.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Hacer un ahogado con la cebolla, el tomate, el pimentón, el ajo y el urucú disuelto en un poquito de aceite.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Agregar el arroz, el charque y unas 4 tazas del agua de cocción. Cocinar removiendo de vez en cuando.",
+     "importante": "El majadito debe quedar húmedo: ni seco como arroz graneado, ni caldoso como sopa."
+    },
+    {
+     "numero": 4,
+     "instruccion": "Servir con huevo frito y plátano frito encima.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_picante_pollo",
+  "activo": true,
+  "nombre": "Picante de pollo",
+  "descripcion": "Pollo cocido a fuego lento en salsa de ají colorado, servido con papa y arroz.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 50,
+   "totalMin": 70
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pollo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": "presas"
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_colorado",
+      "cantidad": 3,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": "para acompañar"
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Retostar el ají colorado en un poco de aceite hasta que oscurezca.",
+     "importante": "Si el ají se quema, amarga todo el plato: fuego medio y ojo constante."
+    },
+    {
+     "numero": 2,
+     "instruccion": "Hacer un ahogado con la cebolla, el tomate, el ajo, el comino y el orégano.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Agregar las presas de pollo, cubrir con agua y cocinar a fuego lento hasta que el pollo esté suave y la salsa espese.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Cocer las papas aparte y preparar arroz graneado.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Servir el pollo con su salsa, la papa, el arroz y perejil picado.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_pique_macho",
+  "activo": true,
+  "nombre": "Pique macho",
+  "descripcion": "Plato cochabambino abundante: carne y salchicha salteadas sobre papas fritas, con tomate, cebolla, locoto y huevo duro.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 3,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 30,
+   "coccionMin": 30,
+   "totalMin": 60
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_filete_res",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_salchicha",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 6,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_locoto",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_mayonesa",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_mostaza",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ketchup",
+      "cantidad": 2,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pimienta",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cortar la carne en trozos medianos, salpimentar y saltearla en aceite bien caliente hasta dorar.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Freír las salchichas en rodajas y mezclarlas con la carne.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Freír las papas en bastones.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Picar la cebolla, el tomate y el locoto en trozos grandes; darles un salteado corto junto a la carne para que queden frescos.",
+     "importante": "El locoto es el que hace 'macho' al pique: su cantidad define el picante."
+    },
+    {
+     "numero": 5,
+     "instruccion": "Armar el plato: papas fritas de base, encima la carne con las verduras, rodajas de huevo duro y las salsas al gusto.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_sajta_pollo",
+  "activo": true,
+  "nombre": "Sajta de pollo",
+  "descripcion": "Pollo en salsa picante de ají amarillo al estilo paceño, con papa, chuño y sarza de cebolla y tomate.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 20,
+   "coccionMin": 45,
+   "totalMin": 65
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pollo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": "presas"
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_amarillo",
+      "cantidad": 3,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "una para la sarza"
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "para la sarza"
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_chuno",
+      "cantidad": 8,
+      "unidad": "u",
+      "nota": "para el phuti"
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocer las presas de pollo en agua con sal hasta que estén suaves.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Retostar el ají amarillo con el ajo, el comino y el orégano en un poco de aceite.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Agregar el ají al caldo con el pollo y las arvejas; cocinar hasta que la salsa espese.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Cocer las papas aparte y preparar el chuño phuti si se desea.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Preparar la sarza: cebolla en pluma y tomate en tiras, con sal.",
+     "importante": "La sarza va cruda y fresca, se prepara justo antes de servir."
+    },
+    {
+     "numero": 6,
+     "instruccion": "Servir el pollo bañado en su salsa, con papa y chuño, y la sarza encima.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_sandwich_huevo",
+  "activo": true,
+  "nombre": "Sándwich de huevo",
+  "descripcion": "Desayuno rápido y liviano: marraqueta con huevo frito, con tomate y mayonesa a gusto.",
+  "tipoComida": "desayuno",
+  "tipoCocina": "boliviana",
+  "porciones": 2,
+  "dificultad": 1,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 10,
+   "coccionMin": 5,
+   "totalMin": 15
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pan_marraqueta",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_mayonesa",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Freír los huevos en un poco de aceite y salarlos.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Abrir las marraquetas y untar mayonesa si se desea.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Armar el sándwich con el huevo y rodajas de tomate. Servir acompañado de té o café.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_silpancho",
+  "activo": true,
+  "nombre": "Silpancho",
+  "descripcion": "Plato emblemático de Cochabamba: carne apanada bien delgada servida sobre arroz y papas, coronada con huevo frito y ensalada fresca de tomate y cebolla.",
+  "tipoComida": "seco",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 3,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 30,
+   "coccionMin": 40,
+   "totalMin": 70
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_filete_res",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": "en filetes delgados"
+     },
+     {
+      "ingredienteId": "ing_carne_molida",
+      "cantidad": 500,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pan_molido",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arroz",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 8,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_huevo",
+      "cantidad": 4,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_pimienta",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_locoto",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para la ensalada"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocinar el arroz graneado con un poco de sal.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Cocer las papas con cáscara hasta que estén suaves. Pelarlas, cortarlas en rodajas y dorarlas en aceite.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Sazonar la carne con sal y pimienta, pasarla por el pan molido y aplanarla sobre una tabla hasta dejarla bien delgada y ancha.",
+     "importante": "Cuanto más delgada quede la carne, mejor: es la característica del silpancho."
+    },
+    {
+     "numero": 4,
+     "instruccion": "Freír las carnes apanadas en aceite caliente, vuelta y vuelta.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Freír los huevos.",
+     "importante": null
+    },
+    {
+     "numero": 6,
+     "instruccion": "Picar en cuadritos el tomate, la cebolla, el locoto y el perejil. Sazonar la ensalada con sal y un chorrito de aceite.",
+     "importante": null
+    },
+    {
+     "numero": 7,
+     "instruccion": "Armar el plato: arroz y papas doradas como base, la carne encima, el huevo frito sobre la carne y la ensalada por encima.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_sopa_fideo",
+  "activo": true,
+  "nombre": "Sopa de fideo",
+  "descripcion": "Sopa casera de todos los días, con fideo, papa y verduras en caldo de carne.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 1,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 15,
+   "coccionMin": 30,
+   "totalMin": 45
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_fideo",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 300,
+      "unidad": "g",
+      "nota": null
+     },
+     {
+      "ingredienteId": "ing_pollo",
+      "cantidad": 300,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_zanahoria",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 0.5,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "diente"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 0.5,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Cocer la carne en 1,5 litros de agua hasta que ablande.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "Hacer un ahogado con la cebolla, el ajo y el comino; agregarlo al caldo.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Añadir la papa en cubos y la zanahoria picada; a media cocción, incorporar el fideo y las arvejas.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Cocinar hasta que el fideo esté a punto. Sazonar con sal y servir con perejil picado.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_sopa_mani",
+  "activo": true,
+  "nombre": "Sopa de maní",
+  "descripcion": "La sopa de maní es una de las más deliciosas y tradicionales de Bolivia. Lleva como base maní, arvejas y papas. Usualmente va acompañada de trozos de carne o pollo.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 6,
+  "dificultad": 3,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 30,
+   "coccionMin": 90,
+   "totalMin": 120
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_carne_cordero",
+      "cantidad": 6,
+      "unidad": "u",
+      "nota": "en forma de nudos"
+     },
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 6,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_mani_molido",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 6,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_haba_verde",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tomate",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "dientes"
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_comino",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 11,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_aji_amarillo",
+      "cantidad": 1.5,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 12,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 13,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_perejil",
+      "cantidad": 1,
+      "unidad": "cda",
+      "nota": "para adornar"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Partir las papas peladas en cuatro, pelar las arvejas, picar la cebolla menuda y el tomate pelado. Freír la cebolla en 1/4 taza de aceite.",
+     "importante": null
+    },
+    {
+     "numero": 2,
+     "instruccion": "En una olla poner al fuego 3 litros de agua y agregar la carne.",
+     "importante": "La carne se agrega antes de que el agua empiece a hervir."
+    },
+    {
+     "numero": 3,
+     "instruccion": "Dejar dar un hervor y poner la sal, el tomate, la cebolla, el comino, el orégano, el ají y el ajo retostados en aceite. Luego agregar el maní molido.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Dejar cocer hasta que la carne quede blanda y cocida. Agregar las habas, las arvejas y las papas. Cocinar hasta que estén suaves.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Servir en plato hondo, con un pedazo de carne, y adornar con el perejil.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_sopa_quinua",
+  "activo": true,
+  "nombre": "Sopa de quinua",
+  "descripcion": "Sopa andina liviana y nutritiva a base de quinua con verduras.",
+  "tipoComida": "sopa",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 15,
+   "coccionMin": 40,
+   "totalMin": 55
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_quinua",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_papa",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_zanahoria",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_arveja",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 5,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_costilla_res",
+      "cantidad": 300,
+      "unidad": "g",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 6,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_cebolla",
+      "cantidad": 0.5,
+      "unidad": "u",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 7,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_ajo",
+      "cantidad": 1,
+      "unidad": "u",
+      "nota": "diente"
+     }
+    ]
+   },
+   {
+    "orden": 8,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_oregano",
+      "cantidad": 1,
+      "unidad": "cdta",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 9,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_sal",
+      "cantidad": null,
+      "unidad": null,
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 10,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_queso_fresco",
+      "cantidad": 100,
+      "unidad": "g",
+      "nota": "para servir"
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Lavar la quinua frotándola en varias aguas.",
+     "importante": "Lavar hasta que el agua salga clara: así se le quita el amargor."
+    },
+    {
+     "numero": 2,
+     "instruccion": "Si lleva carne, cocerla en 1,5 litros de agua hasta que ablande. Si no, usar solo el agua.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Hacer un ahogado con la cebolla, el ajo y el orégano; añadirlo a la olla.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Agregar la quinua y cocinar 15 minutos. Añadir la papa en cubos, la zanahoria y las arvejas, y cocinar hasta que estén suaves. Sazonar con sal.",
+     "importante": null
+    },
+    {
+     "numero": 5,
+     "instruccion": "Servir caliente, con queso fresco desmenuzado encima si se desea.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ },
+ {
+  "id": "rec_tojori",
+  "activo": true,
+  "nombre": "Tojorí",
+  "descripcion": "Bebida-mazamorra espesa de maíz willkaparu pelado, dulce y caliente, típica de los desayunos de invierno.",
+  "tipoComida": "desayuno",
+  "tipoCocina": "boliviana",
+  "porciones": 4,
+  "dificultad": 2,
+  "imagen": null,
+  "tiempo": {
+   "preparacionMin": 10,
+   "coccionMin": 60,
+   "totalMin": 70
+  },
+  "ingredientes": [
+   {
+    "orden": 1,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_tojori",
+      "cantidad": 2,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 2,
+    "rol": "esencial",
+    "opciones": [
+     {
+      "ingredienteId": "ing_azucar",
+      "cantidad": 0.5,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   },
+   {
+    "orden": 3,
+    "rol": "condimento",
+    "opciones": [
+     {
+      "ingredienteId": "ing_canela",
+      "cantidad": 2,
+      "unidad": "u",
+      "nota": "ramas"
+     }
+    ]
+   },
+   {
+    "orden": 4,
+    "rol": "opcional",
+    "opciones": [
+     {
+      "ingredienteId": "ing_leche",
+      "cantidad": 1,
+      "unidad": "taza",
+      "nota": null
+     }
+    ]
+   }
+  ],
+  "preparacion": {
+   "descripcion": null,
+   "pasos": [
+    {
+     "numero": 1,
+     "instruccion": "Remojar el maíz pelado en agua desde la noche anterior.",
+     "importante": "Sin el remojo de la víspera el tojorí no cocina bien."
+    },
+    {
+     "numero": 2,
+     "instruccion": "Cocinar el maíz en 2 litros de agua con la canela, a fuego lento, removiendo de vez en cuando, hasta que el grano reviente y la preparación espese.",
+     "importante": null
+    },
+    {
+     "numero": 3,
+     "instruccion": "Endulzar con el azúcar y, si se quiere, agregar la leche antes de servir.",
+     "importante": null
+    },
+    {
+     "numero": 4,
+     "instruccion": "Servir bien caliente.",
+     "importante": null
+    }
+   ]
+  },
+  "nutricionPorcion": null,
+  "nutricionConOpcionales": null,
+  "nutricionCalculadaEn": null
+ }
+]

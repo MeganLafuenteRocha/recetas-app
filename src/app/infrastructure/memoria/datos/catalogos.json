@@ -1,0 +1,147 @@
+{
+ "unidades": [
+  {
+   "codigo": "g",
+   "nombre": "gramo",
+   "sinonimos": [
+    "gr",
+    "gramos"
+   ]
+  },
+  {
+   "codigo": "kg",
+   "nombre": "kilogramo",
+   "sinonimos": [
+    "kilo",
+    "kilos"
+   ]
+  },
+  {
+   "codigo": "l",
+   "nombre": "litro",
+   "sinonimos": [
+    "lt",
+    "litros"
+   ]
+  },
+  {
+   "codigo": "ml",
+   "nombre": "mililitro",
+   "sinonimos": []
+  },
+  {
+   "codigo": "taza",
+   "nombre": "taza",
+   "sinonimos": [
+    "tazas"
+   ]
+  },
+  {
+   "codigo": "cda",
+   "nombre": "cucharada",
+   "sinonimos": [
+    "cuchara",
+    "cucharadas"
+   ]
+  },
+  {
+   "codigo": "cdta",
+   "nombre": "cucharadita",
+   "sinonimos": [
+    "cucharilla",
+    "cucharaditas"
+   ]
+  },
+  {
+   "codigo": "u",
+   "nombre": "unidad",
+   "sinonimos": [
+    "unidades",
+    "pieza"
+   ]
+  },
+  {
+   "codigo": "pizca",
+   "nombre": "pizca",
+   "sinonimos": []
+  }
+ ],
+ "tiposComida": [
+  {
+   "codigo": "desayuno",
+   "nombre": "Desayuno",
+   "orden": 1
+  },
+  {
+   "codigo": "sopa",
+   "nombre": "Sopa",
+   "orden": 2
+  },
+  {
+   "codigo": "seco",
+   "nombre": "Segundo",
+   "orden": 3
+  },
+  {
+   "codigo": "postre",
+   "nombre": "Postre",
+   "orden": 4
+  }
+ ],
+ "tiposCocina": [
+  {
+   "codigo": "boliviana",
+   "nombre": "Boliviana"
+  },
+  {
+   "codigo": "italiana",
+   "nombre": "Italiana"
+  },
+  {
+   "codigo": "asiatica",
+   "nombre": "Asiática"
+  }
+ ],
+ "categorias": [
+  {
+   "codigo": "verduras",
+   "nombre": "Verduras",
+   "orden": 1
+  },
+  {
+   "codigo": "frutas",
+   "nombre": "Frutas",
+   "orden": 2
+  },
+  {
+   "codigo": "legumbres",
+   "nombre": "Legumbres",
+   "orden": 3
+  },
+  {
+   "codigo": "carnes",
+   "nombre": "Carnes",
+   "orden": 4
+  },
+  {
+   "codigo": "lacteos",
+   "nombre": "Lácteos y huevos",
+   "orden": 5
+  },
+  {
+   "codigo": "cereales",
+   "nombre": "Cereales y harinas",
+   "orden": 6
+  },
+  {
+   "codigo": "condimentos",
+   "nombre": "Condimentos",
+   "orden": 7
+  },
+  {
+   "codigo": "abarrotes",
+   "nombre": "Abarrotes",
+   "orden": 8
+  }
+ ]
+}
