@@ -1,4 +1,4 @@
-import { Usuario } from './usuario.model';
+import { EstadoUsuario, Usuario } from './usuario.model';
 
 /**
  * Puerto del repositorio de usuarios (colección usuarios/{uid}).
@@ -10,9 +10,9 @@ export abstract class UsuarioRepository {
   /** Crea el documento del usuario en estado "pendiente". */
   abstract crearPendiente(usuario: Usuario): Promise<void>;
 
-  /** Solo admin (S11): cuentas esperando activación. */
-  abstract listarPendientes(): Promise<Usuario[]>;
+  /** Solo admin: cuentas en un estado (pendientes, activas o bloqueadas). */
+  abstract listarPorEstado(estado: EstadoUsuario): Promise<Usuario[]>;
 
-  /** Solo admin (S11). */
-  abstract cambiarEstado(uid: string, estado: Usuario['estado']): Promise<void>;
+  /** Solo admin. */
+  abstract cambiarEstado(uid: string, estado: EstadoUsuario): Promise<void>;
 }

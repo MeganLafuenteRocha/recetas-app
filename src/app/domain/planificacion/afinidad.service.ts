@@ -1,20 +1,25 @@
 import { EspacioIngrediente, Receta } from '../recetas/receta.model';
 
-/** Qué tan bien se puede cocinar una receta con lo que hay disponible. */
+/**
+ * Qué tan bien se puede cocinar una receta con lo que hay disponible.
+ * Regla de Andrea: faltar algo NO descalifica la receta, solo la baja en la lista.
+ */
 export interface ResultadoAfinidad {
   receta: Receta;
-  /** 0 a 100: cobertura de esenciales (70%) + condimentos (30%). */
+  /** 0 a 100: 85 × esenciales + 15 × condimentos + hasta 5 de bonus por opcionales. */
   puntaje: number;
-  /** Un ingrediente representativo por espacio esencial sin cubrir. */
+  /** Un ingrediente representativo por espacio sin cubrir, agrupado por rol. */
   faltantesEsenciales: string[];
   faltantesCondimentos: string[];
+  faltantesOpcionales: string[];
 }
 
-const PESO_ESENCIALES = 0.7;
-const PESO_CONDIMENTOS = 0.3;
+export const PESO_ESENCIALES = 85;
+export const PESO_CONDIMENTOS = 15;
+export const BONUS_OPCIONALES = 5;
 
 /** Un espacio está cubierto si ALGUNA de sus alternativas está disponible o es básica (sal, azúcar…). */
-function espacioCubierto(
+export function espacioCubierto(
   espacio: EspacioIngrediente,
   disponibles: ReadonlySet<string>,
   basicos: ReadonlySet<string>,
@@ -24,49 +29,63 @@ function espacioCubierto(
   );
 }
 
+interface Cobertura {
+  cubiertos: number;
+  total: number;
+  faltantes: string[];
+}
+
+function cobertura(
+  espacios: EspacioIngrediente[],
+  disponibles: ReadonlySet<string>,
+  basicos: ReadonlySet<string>,
+): Cobertura {
+  const faltantes: string[] = [];
+  let cubiertos = 0;
+  for (const espacio of espacios) {
+    if (espacioCubierto(espacio, disponibles, basicos)) {
+      cubiertos++;
+    } else {
+      faltantes.push(espacio.opciones[0]?.ingredienteId ?? '');
+    }
+  }
+  return { cubiertos, total: espacios.length, faltantes };
+}
+
+/** Sin espacios de un rol, ese rol cuenta como completo. */
+function fraccion(c: Cobertura): number {
+  return c.total === 0 ? 1 : c.cubiertos / c.total;
+}
+
 export function evaluarReceta(
   receta: Receta,
   disponibles: ReadonlySet<string>,
   basicos: ReadonlySet<string>,
 ): ResultadoAfinidad {
-  const esenciales = receta.ingredientes.filter((e) => e.rol === 'esencial');
-  const condimentos = receta.ingredientes.filter((e) => e.rol === 'condimento');
-  // Los opcionales nunca penalizan.
+  const porRol = (rol: EspacioIngrediente['rol']) =>
+    cobertura(
+      receta.ingredientes.filter((e) => e.rol === rol),
+      disponibles,
+      basicos,
+    );
+  const esenciales = porRol('esencial');
+  const condimentos = porRol('condimento');
+  const opcionales = porRol('opcional');
 
-  const faltantesEsenciales: string[] = [];
-  const faltantesCondimentos: string[] = [];
+  const base = PESO_ESENCIALES * fraccion(esenciales) + PESO_CONDIMENTOS * fraccion(condimentos);
+  // Los opcionales solo suman: tenerlos mejora, faltarles no baja.
+  const bonus = opcionales.total === 0 ? 0 : BONUS_OPCIONALES * fraccion(opcionales);
 
-  let esencialesCubiertos = 0;
-  for (const espacio of esenciales) {
-    if (espacioCubierto(espacio, disponibles, basicos)) {
-      esencialesCubiertos++;
-    } else {
-      faltantesEsenciales.push(espacio.opciones[0]?.ingredienteId ?? '');
-    }
-  }
-
-  let condimentosCubiertos = 0;
-  for (const espacio of condimentos) {
-    if (espacioCubierto(espacio, disponibles, basicos)) {
-      condimentosCubiertos++;
-    } else {
-      faltantesCondimentos.push(espacio.opciones[0]?.ingredienteId ?? '');
-    }
-  }
-
-  const fraccionEsenciales =
-    esenciales.length === 0 ? 1 : esencialesCubiertos / esenciales.length;
-  const fraccionCondimentos =
-    condimentos.length === 0 ? 1 : condimentosCubiertos / condimentos.length;
-
-  const puntaje = Math.round(
-    (fraccionEsenciales * PESO_ESENCIALES + fraccionCondimentos * PESO_CONDIMENTOS) * 100,
-  );
-
-  return { receta, puntaje, faltantesEsenciales, faltantesCondimentos };
+  return {
+    receta,
+    puntaje: Math.min(100, Math.round(base + bonus)),
+    faltantesEsenciales: esenciales.faltantes,
+    faltantesCondimentos: condimentos.faltantes,
+    faltantesOpcionales: opcionales.faltantes,
+  };
 }
 
-/** Evalúa todas las recetas y las agrupa por franja, mejores primero. */
+/** Evalúa todas las recetas y las agrupa por franja, mejores primero. Nunca oculta ninguna. */
 export function sugerirPorFranja(
   recetas: readonly Receta[],
   disponibles: ReadonlySet<string>,
@@ -84,4 +103,41 @@ export function sugerirPorFranja(
     lista.sort((a, b) => b.puntaje - a.puntaje);
   }
   return porFranja;
+}
+
+/** Una receta "se puede cocinar ya" cuando no le falta ningún esencial. */
+export function sePuedeCocinar(resultado: ResultadoAfinidad): boolean {
+  return resultado.faltantesEsenciales.length === 0;
+}
+
+export interface SugerenciaCompra {
+  ingredienteId: string;
+  /** Recetas que quedarían sin esenciales faltantes si se compra este ingrediente. */
+  recetaIds: string[];
+}
+
+/**
+ * "Compra 1 y cocina N más": el ingrediente que, por sí solo, completa más recetas.
+ * Solo cuenta recetas a las que les falta EXACTAMENTE un esencial.
+ */
+export function mejorCompra(
+  recetas: readonly Receta[],
+  disponibles: ReadonlySet<string>,
+  basicos: ReadonlySet<string>,
+): SugerenciaCompra | null {
+  const conteo = new Map<string, string[]>();
+  for (const receta of recetas) {
+    if (!receta.activo) continue;
+    const { faltantesEsenciales } = evaluarReceta(receta, disponibles, basicos);
+    if (faltantesEsenciales.length !== 1) continue;
+    const id = faltantesEsenciales[0]!;
+    conteo.set(id, [...(conteo.get(id) ?? []), receta.id]);
+  }
+  let mejor: SugerenciaCompra | null = null;
+  for (const [ingredienteId, recetaIds] of conteo) {
+    if (!mejor || recetaIds.length > mejor.recetaIds.length) {
+      mejor = { ingredienteId, recetaIds };
+    }
+  }
+  return mejor;
 }
