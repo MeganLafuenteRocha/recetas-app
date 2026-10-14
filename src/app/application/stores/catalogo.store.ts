@@ -23,10 +23,16 @@ export class CatalogoStore {
   readonly categorias = computed(() =>
     [...this._catalogos().categorias].sort((a, b) => a.orden - b.orden),
   );
+  readonly tiposCocina = computed(() => this._catalogos().tiposCocina);
+  readonly unidades = computed(() => this._catalogos().unidades);
 
   cargar(catalogos: Catalogos, referencias: ReferenciasNutricionales): void {
     this._catalogos.set(catalogos);
     this._referencias.set(referencias);
+  }
+
+  actualizar(catalogos: Catalogos): void {
+    this._catalogos.set(catalogos);
   }
 
   /** Nombre visible de una franja: "seco" → "Segundo". */
@@ -40,5 +46,9 @@ export class CatalogoStore {
 
   nombreCategoria(codigo: string): string {
     return this._catalogos().categorias.find((c) => c.codigo === codigo)?.nombre ?? codigo;
+  }
+
+  nombreCocina(codigo: string): string {
+    return this._catalogos().tiposCocina.find((c) => c.codigo === codigo)?.nombre ?? codigo;
   }
 }

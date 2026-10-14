@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { Catalogos } from '../../domain/catalogos/catalogo.model';
 import { CatalogoRepository } from '../../domain/catalogos/catalogo.port';
 import { ReferenciasNutricionales } from '../../domain/nutricion/nutricion.model';
@@ -17,5 +17,9 @@ export class FirestoreCatalogosRepo extends CatalogoRepository {
     const snap = await getDoc(doc(db, 'config', 'referencias'));
     if (!snap.exists()) throw new Error('Falta el documento config/referencias (seed).');
     return snap.data() as ReferenciasNutricionales;
+  }
+
+  async guardarCatalogos(catalogos: Catalogos): Promise<void> {
+    await setDoc(doc(db, 'catalogos', 'base'), catalogos);
   }
 }

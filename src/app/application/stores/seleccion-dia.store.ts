@@ -16,20 +16,22 @@ export class SeleccionDiaStore {
 
   private readonly _seleccionados = signal<Set<string>>(new Set());
   private readonly _elecciones = signal<Map<string, string>>(new Map());
+  /** Si se eligió "Usar este grupo", las sugerencias salen solo de sus recetas. */
+  private readonly _grupo = signal<{ nombre: string; recetaIds: ReadonlySet<string> } | null>(null);
+  readonly grupo = this._grupo.asReadonly();
 
   readonly seleccionados = this._seleccionados.asReadonly();
   readonly elecciones = this._elecciones.asReadonly();
 
   readonly totalSeleccionados = computed(() => this._seleccionados().size);
 
-  /** Básicos (sal, azúcar…): siempre se consideran disponibles. */
-  private readonly basicos = computed(
-    () => new Set(this.ingredientes.todos().filter((i) => i.esBasico).map((i) => i.id)),
-  );
-
-  /** Rankings por franja, recalculados solos cuando cambia la selección. */
+  /** Rankings por franja, recalculados solos cuando cambia la selección. Básicos = siempre disponibles. */
   readonly sugerencias = computed(() =>
-    sugerirPorFranja(this.recetas.todas(), this._seleccionados(), this.basicos()),
+    sugerirPorFranja(
+      this.recetas.todas().filter((r) => !this._grupo() || this._grupo()!.recetaIds.has(r.id)),
+      this._seleccionados(),
+      this.ingredientes.basicos(),
+    ),
   );
 
   readonly totalElegidas = computed(() => this._elecciones().size);
@@ -68,8 +70,18 @@ export class SeleccionDiaStore {
     this._elecciones.set(nuevo);
   }
 
+  usarGrupo(nombre: string, recetaIds: readonly string[]): void {
+    this._grupo.set({ nombre, recetaIds: new Set(recetaIds) });
+    this._elecciones.set(new Map());
+  }
+
+  quitarGrupo(): void {
+    this._grupo.set(null);
+  }
+
   reiniciar(): void {
     this._seleccionados.set(new Set());
     this._elecciones.set(new Map());
+    this._grupo.set(null);
   }
 }

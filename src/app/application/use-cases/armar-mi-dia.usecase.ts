@@ -18,7 +18,7 @@ export class ArmarMiDiaUseCase {
       })),
       creadoEn: new Date(),
     };
-    await this.plan.guardarHoy(plan);
+    await this.plan.guardar(plan);
     this.seleccion.reiniciar();
     return plan;
   }

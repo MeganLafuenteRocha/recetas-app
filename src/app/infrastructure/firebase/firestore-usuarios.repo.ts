@@ -45,8 +45,8 @@ export class FirestoreUsuariosRepo extends UsuarioRepository {
     });
   }
 
-  async listarPendientes(): Promise<Usuario[]> {
-    const q = query(collection(db, 'usuarios'), where('estado', '==', 'pendiente'));
+  async listarPorEstado(estado: EstadoUsuario): Promise<Usuario[]> {
+    const q = query(collection(db, 'usuarios'), where('estado', '==', estado));
     const snap = await getDocs(q);
     return snap.docs.map((d) => aUsuario(d.id, d.data()));
   }
