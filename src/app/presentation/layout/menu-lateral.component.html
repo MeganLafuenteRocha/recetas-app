@@ -1,7 +1,7 @@
 @if (ui.menuLateralAbierto()) {
   <div class="velo" (click)="ui.cerrarMenuLateral()"></div>
 
-  <aside class="panel">
+  <aside class="panel" aria-label="Menú">
     <div class="perfil">
       <span class="avatar">{{ inicial() }}</span>
       <div>
@@ -11,32 +11,43 @@
     </div>
 
     <nav>
-      <button type="button" (click)="ir('/mi-dia')">
-        <span class="icono">today</span> Hoy
+      <button type="button" class="activo" (click)="ir('/mi-dia')">
+        <span class="icono">today</span> Hoy <small class="contador">{{ comidasHoy() }}</small>
       </button>
       <button type="button" (click)="ir('/recetas')">
-        <span class="icono">menu_book</span> Todas las recetas
+        <span class="icono">menu_book</span> Todas las recetas <small class="contador">{{ recetas.total() }}</small>
+      </button>
+      <button type="button" (click)="ir('/listas')">
+        <span class="icono">shopping_cart</span> Listas de compras
       </button>
 
-      <p class="seccion">MIS GRUPOS</p>
-      <p class="grupos-vacios">Pronto podrás crear tus grupos de recetas aquí.</p>
+      <div class="seccion-grupos">
+        <p class="seccion">MIS GRUPOS</p>
+        @if (sesion.esAdmin()) {
+          <button type="button" class="nuevo-grupo" (click)="ir('/grupos/nuevo')" aria-label="Nuevo grupo"><span class="icono">add</span></button>
+        }
+      </div>
+      @for (g of grupos.todos(); track g.id) {
+        <button type="button" (click)="ir('/grupos/' + g.id)">
+          <span class="icono">{{ g.icono }}</span> {{ g.nombre }} <small class="contador">{{ g.recetaIds.length }}</small>
+        </button>
+      } @empty {
+        <p class="grupos-vacios">
+          {{ sesion.esAdmin() ? 'Crea grupos con el botón +.' : 'La administradora aún no creó grupos.' }}
+        </p>
+      }
 
+      <p class="seccion"></p>
       @if (sesion.esAdmin()) {
-        <p class="seccion">ADMINISTRACIÓN</p>
         <button type="button" (click)="ir('/admin/cuentas')">
           <span class="icono">manage_accounts</span> Cuentas
           @if (rotuloPendientes()) {
             <small class="pendientes">· {{ rotuloPendientes() }}</small>
           }
         </button>
-        <button type="button" disabled>
-          <span class="icono">monitoring</span> Mi dashboard <small class="pronto">pronto</small>
-        </button>
       }
-
-      <p class="seccion"></p>
-      <button type="button" disabled>
-        <span class="icono">settings</span> Ajustes <small class="pronto">pronto</small>
+      <button type="button" (click)="ir('/ajustes')">
+        <span class="icono">settings</span> Ajustes
       </button>
       <button type="button" class="salir" (click)="salir()">
         <span class="icono">logout</span> Cerrar sesión

@@ -1,0 +1,140 @@
+@if (receta(); as r) {
+  <div class="foto-hero">
+    <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" [tamanoIcono]="34" />
+    <button type="button" class="circular izquierda" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
+    <div class="derecha">
+      <a class="circular" [routerLink]="['/recetas', r.id, 'editar']" aria-label="Editar receta"><span class="icono">edit</span></a>
+      @if (sesion.esAdmin()) {
+        <button type="button" class="circular" (click)="hoja.set('grupo')" aria-label="Guardar en un grupo"><span class="icono">bookmark</span></button>
+      }
+    </div>
+  </div>
+
+  <main class="vista cuerpo">
+    <div class="titulo">
+      <small class="sobretitulo">{{ catalogos.nombreFranja(r.tipoComida) }} · {{ catalogos.nombreCocina(r.tipoCocina) }}</small>
+      <h1>{{ r.nombre }}</h1>
+      @if (r.descripcion) { <p class="descripcion">{{ r.descripcion }}</p> }
+    </div>
+
+    <div class="meta">
+      <span><span class="icono">schedule</span> {{ duracion(r.tiempo.totalMin) }}</span>
+      <span><span class="icono">group</span> {{ r.porciones }} porc.</span>
+      <span><span class="icono">signal_cellular_alt</span> {{ dificultad(r.dificultad) }}</span>
+    </div>
+
+    @if (mensaje(); as m) {
+      <p class="aviso ok"><span class="icono">check_circle</span> {{ m }}</p>
+    }
+
+    @if (afinidad(); as a) {
+      <div class="tarjeta afinidad">
+        <div class="aro" [style.background]="'conic-gradient(' + colorAfinidad() + ' ' + a.puntaje * 3.6 + 'deg, #e4e4e7 0)'">
+          <span [style.color]="colorAfinidad()">{{ a.puntaje }}%</span>
+        </div>
+        <div class="afinidad-texto">
+          <strong>{{ tituloAfinidad() }}</strong>
+          <app-faltantes [resultado]="a" [mostrarCompleto]="false" />
+        </div>
+      </div>
+    }
+
+    <section class="nutricion">
+      <div class="nutricion-tit">
+        <p class="subtitulo">Por porción</p>
+        @if (r.nutricionPorcion) {
+          <span class="chip dorado chico"><span class="icono">auto_awesome</span> Estimado por IA</span>
+        }
+      </div>
+      @if (r.nutricionPorcion; as n) {
+        <div class="tiles">
+          <div class="tile principal"><strong>{{ n.kcal }}</strong><small>kcal</small></div>
+          <div class="tile"><strong>{{ n.proteinaG }} g</strong><small>proteína</small></div>
+          <div class="tile"><strong>{{ n.carbohidratosG }} g</strong><small>carbos</small></div>
+          <div class="tile"><strong>{{ n.grasaG }} g</strong><small>grasa</small></div>
+        </div>
+        @if (r.nutricionConOpcionales && r.nutricionConOpcionales.kcal !== n.kcal) {
+          <p class="texto-suave">{{ r.nutricionConOpcionales.kcal }} kcal con los opcionales.</p>
+        }
+      } @else {
+        <div class="tarjeta-dorada sin-nutricion">
+          <span class="icono">auto_awesome</span>
+          <span class="texto">Aún no tiene nutrición. La IA la estima a partir de los ingredientes y la preparación.</span>
+          <button type="button" class="btn btn-dorado" [disabled]="calculando()" (click)="calcularNutricion()">
+            {{ calculando() ? 'Calculando…' : 'Calcular' }}
+          </button>
+        </div>
+      }
+    </section>
+
+    <div class="segmentado" role="tablist">
+      <button type="button" role="tab" [class.activo]="pestana() === 'ingredientes'" (click)="pestana.set('ingredientes')">Ingredientes</button>
+      <button type="button" role="tab" [class.activo]="pestana() === 'preparacion'" (click)="pestana.set('preparacion')">Preparación</button>
+    </div>
+
+    @if (pestana() === 'ingredientes') {
+      @for (g of grupos(); track g.rol) {
+        <section class="grupo" [class]="'grupo rol-' + g.rol">
+          <p class="grupo-tit"><span class="punto-rol"></span> {{ g.nombre }}</p>
+          @for (f of g.filas; track f.id) {
+            <button type="button" class="fila-ing" [class.falta]="!f.tiene" (click)="ui.abrirFicha(f.id, r.id)">
+              <span class="icono estado">{{ f.tiene ? 'check_circle' : 'radio_button_unchecked' }}</span>
+              <span class="nombres">
+                <span class="nombre">{{ f.nombre }}</span>
+                @if (f.alternativas.length) { <small>o {{ f.alternativas.join(', o ') }}</small> }
+                @if (f.nota) { <small>{{ f.nota }}</small> }
+                @if (f.basico) { <small>básico</small> }
+              </span>
+              <span class="cantidad">{{ f.cantidad }}</span>
+            </button>
+          }
+        </section>
+      }
+    } @else {
+      @if (r.preparacion.descripcion) {
+        <p class="descripcion">{{ r.preparacion.descripcion }}</p>
+      }
+      <ol class="pasos">
+        @for (p of pasos(); track p.numero) {
+          <li [class.importante]="!!p.importante">
+            <span class="numero">{{ p.numero }}</span>
+            <div>
+              <p>{{ p.instruccion }}</p>
+              @if (p.importante) {
+                <p class="nota-importante"><span class="icono">star</span> {{ p.importante }}</p>
+              }
+            </div>
+          </li>
+        } @empty {
+          <p class="texto-suave">Esta receta aún no tiene pasos.</p>
+        }
+      </ol>
+    }
+
+    <div class="acciones-pie">
+      <a class="btn btn-borde" [routerLink]="['/recetas', r.id, 'cocinar']"><span class="icono">skillet</span> Cocinar</a>
+      <button type="button" class="btn btn-primario crecer" (click)="hoja.set('dia')">
+        <span class="icono">calendar_add_on</span> Agregar a mi día
+      </button>
+    </div>
+  </main>
+
+  @if (hoja() === 'dia') {
+    <app-agregar-a-dia [receta]="r" (cerrar)="hoja.set(null)" (agregado)="alAgregar($event)" />
+  }
+  @if (hoja() === 'grupo') {
+    <app-agregar-a-grupo [recetaId]="r.id" (cerrar)="hoja.set(null)" />
+  }
+} @else {
+  <main class="vista">
+    <header class="cabecera">
+      <a class="icono-btn" routerLink="/recetas" aria-label="Volver"><span class="icono">arrow_back</span></a>
+      <h1>Receta</h1>
+    </header>
+    <div class="vacio-estado">
+      <span class="icono">menu_book</span>
+      <p>No encontramos esta receta.</p>
+      <a class="btn btn-suave" routerLink="/recetas">Ver todas las recetas</a>
+    </div>
+  </main>
+}

@@ -1,0 +1,153 @@
+<header class="barra-superior">
+  <button type="button" class="icono-btn" (click)="cancelar()" aria-label="Cancelar"><span class="icono">close</span></button>
+  <h1>{{ esNueva() ? 'Nueva receta' : 'Editar receta' }}</h1>
+  <button type="button" class="btn btn-primario" [disabled]="guardando()" (click)="guardar()">
+    {{ guardando() ? (recalcular() ? 'Calculando…' : 'Guardando…') : 'Guardar' }}
+  </button>
+</header>
+
+<main class="vista">
+  @if (errores().length > 0) {
+    <div class="aviso error">
+      <span class="icono">error</span>
+      <div>@for (e of errores(); track e) { <div>{{ e }}</div> }</div>
+    </div>
+  }
+
+  <label class="foto-selector">
+    <input type="file" accept="image/*" (change)="elegirFoto($event)" hidden />
+    @if (fotoNueva(); as f) {
+      <img [src]="f.url" alt="Foto nueva" />
+    } @else if (borrador().imagen) {
+      <app-foto class="foto-actual" [clave]="borrador().imagen" [radio]="16" />
+    } @else {
+      <span class="icono">add_a_photo</span>
+      <small>Agregar foto</small>
+    }
+  </label>
+
+  <!-- Datos básicos -->
+  <p class="seccion"><span class="num"><span class="icono">info</span></span> Datos básicos</p>
+  <label class="campo">
+    <span>Nombre</span>
+    <input type="text" [value]="borrador().nombre" (input)="cambiar('nombre', $any($event.target).value)" placeholder="ej. Silpancho" />
+  </label>
+  <label class="campo">
+    <span>Descripción corta</span>
+    <textarea rows="2" [value]="borrador().descripcion" (input)="cambiar('descripcion', $any($event.target).value)" placeholder="De dónde es, cómo se sirve…"></textarea>
+  </label>
+  <div class="fila">
+    <label class="campo">
+      <span>Franja</span>
+      <select (change)="cambiar('tipoComida', $any($event.target).value)">
+        @for (t of catalogos.tiposComida(); track t.codigo) { <option [value]="t.codigo" [selected]="t.codigo === borrador().tipoComida">{{ t.nombre }}</option> }
+      </select>
+    </label>
+    <label class="campo">
+      <span>Cocina</span>
+      <select (change)="cambiar('tipoCocina', $any($event.target).value)">
+        @for (c of catalogos.tiposCocina(); track c.codigo) { <option [value]="c.codigo" [selected]="c.codigo === borrador().tipoCocina">{{ c.nombre }}</option> }
+      </select>
+    </label>
+  </div>
+  <div class="fila">
+    <label class="campo">
+      <span>Porciones</span>
+      <input type="number" min="1" inputmode="numeric" [value]="borrador().porciones" (change)="cambiarNumero('porciones', $any($event.target).value)" />
+    </label>
+    <label class="campo">
+      <span>Prep. (min)</span>
+      <input type="number" min="0" inputmode="numeric" [value]="borrador().tiempo.preparacionMin" (change)="cambiarTiempo('preparacionMin', $any($event.target).value)" />
+    </label>
+    <label class="campo">
+      <span>Cocción (min)</span>
+      <input type="number" min="0" inputmode="numeric" [value]="borrador().tiempo.coccionMin" (change)="cambiarTiempo('coccionMin', $any($event.target).value)" />
+    </label>
+  </div>
+  <label class="campo">
+    <span>Dificultad</span>
+    <select (change)="cambiarNumero('dificultad', $any($event.target).value)">
+      @for (d of dificultades; track d.valor) { <option [value]="d.valor" [selected]="d.valor === borrador().dificultad">{{ d.nombre }}</option> }
+    </select>
+  </label>
+
+  <!-- Ingredientes (simplificado: filas compactas, el detalle va en la hoja) -->
+  <p class="seccion"><span class="num"><span class="icono">grocery</span></span> Ingredientes</p>
+  <app-buscador-ingrediente [excluir]="idsUsados()" (elegido)="agregarIngrediente($event)" />
+
+  @for (g of grupos(); track g.rol) {
+    @if (g.filas.length > 0) {
+      <div class="grupo-ing" [class]="'grupo-ing rol-' + g.rol">
+        <p class="grupo-tit"><span class="punto-rol"></span> {{ g.nombre }} <span class="cuenta">{{ g.filas.length }}</span></p>
+        @for (f of g.filas; track f.indice) {
+          <button type="button" class="fila-ing" (click)="editando.set(f.indice)">
+            <span class="nombres">
+              <span class="nombre">{{ ingredientes.nombre(f.espacio.opciones[0]!.ingredienteId) }}</span>
+              @if (f.espacio.opciones.length > 1) { <small>o {{ alternativas(f.espacio) }}</small> }
+            </span>
+            <span class="cantidad" [class.vacia]="f.espacio.opciones[0]!.cantidad === null">{{ textoCantidad(f.espacio.opciones[0]!) }}</span>
+            <span class="icono">chevron_right</span>
+          </button>
+        }
+      </div>
+    }
+  }
+  @if (borrador().ingredientes.length > 0) {
+    <p class="ayuda"><span class="icono">touch_app</span> Toca un ingrediente para cambiar cantidad, rol o alternativas.</p>
+  } @else {
+    <p class="ayuda"><span class="icono">info</span> Busca y agrega los ingredientes. Los condimentos se marcan solos.</p>
+  }
+
+  <!-- Preparación -->
+  <p class="seccion"><span class="num"><span class="icono">format_list_numbered</span></span> Preparación</p>
+  @for (p of pasos(); track $index; let i = $index) {
+    <div class="paso" [class.importante]="p.importante !== null">
+      <span class="numero">{{ i + 1 }}</span>
+      <div class="paso-cuerpo">
+        <textarea rows="2" placeholder="Describe el paso…" [value]="p.instruccion" (input)="editarPaso(i, { instruccion: $any($event.target).value })"></textarea>
+        @if (p.importante !== null) {
+          <textarea class="nota-imp" rows="2" placeholder="¿Qué es lo importante de este paso?" [value]="p.importante" (input)="editarPaso(i, { importante: $any($event.target).value })"></textarea>
+        }
+        <div class="paso-acciones">
+          <button type="button" class="btn-mini" [class.activo]="p.importante !== null" (click)="alternarImportante(i)">
+            <span class="icono">{{ p.importante !== null ? 'star' : 'star_outline' }}</span> Importante
+          </button>
+          <span class="espacio"></span>
+          <button type="button" class="btn-mini" [disabled]="i === 0" (click)="moverPaso(i, -1)" aria-label="Subir"><span class="icono">arrow_upward</span></button>
+          <button type="button" class="btn-mini" [disabled]="i === pasos().length - 1" (click)="moverPaso(i, 1)" aria-label="Bajar"><span class="icono">arrow_downward</span></button>
+          <button type="button" class="btn-mini" (click)="quitarPaso(i)" aria-label="Quitar paso"><span class="icono">delete</span></button>
+        </div>
+      </div>
+    </div>
+  }
+  <button type="button" class="btn btn-texto agregar-paso" (click)="agregarPaso()"><span class="icono">add</span> Agregar paso</button>
+
+  <!-- Nutrición -->
+  <p class="seccion"><span class="num"><span class="icono">monitoring</span></span> Nutrición por porción</p>
+  <div class="tarjeta nutricion">
+    <div class="valores">
+      <label><input type="number" min="0" [value]="borrador().nutricionPorcion?.kcal ?? ''" placeholder="—" (change)="cambiarNutricion('kcal', $any($event.target).value)" /><small>kcal</small></label>
+      <label><input type="number" min="0" [value]="borrador().nutricionPorcion?.proteinaG ?? ''" placeholder="—" (change)="cambiarNutricion('proteinaG', $any($event.target).value)" /><small>prot. g</small></label>
+      <label><input type="number" min="0" [value]="borrador().nutricionPorcion?.carbohidratosG ?? ''" placeholder="—" (change)="cambiarNutricion('carbohidratosG', $any($event.target).value)" /><small>carb. g</small></label>
+      <label><input type="number" min="0" [value]="borrador().nutricionPorcion?.grasaG ?? ''" placeholder="—" (change)="cambiarNutricion('grasaG', $any($event.target).value)" /><small>grasa g</small></label>
+    </div>
+    <button type="button" class="ia" [class.activo]="recalcular()" (click)="alternarRecalcular()">
+      <span class="icono">{{ recalcular() ? 'check_box' : 'check_box_outline_blank' }}</span>
+      <span class="icono">auto_awesome</span> Recalcular con IA al guardar
+    </button>
+    <small class="nota">Puedes corregir los valores a mano: la IA estima, tú decides.</small>
+  </div>
+
+  <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="guardar()">
+    {{ guardando() ? 'Guardando…' : 'Guardar receta' }}
+  </button>
+</main>
+
+@if (espacioEditando(); as e) {
+  <app-editar-ingrediente
+    [espacio]="e"
+    (cambio)="actualizarEspacio(editando()!, $event)"
+    (quitar)="quitarEspacio(editando()!)"
+    (cerrar)="editando.set(null)"
+  />
+}

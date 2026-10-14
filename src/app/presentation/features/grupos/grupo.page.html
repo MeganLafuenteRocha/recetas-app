@@ -1,0 +1,92 @@
+<main class="vista">
+  <header class="cabecera">
+    <button type="button" class="icono-btn" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
+    <h1>{{ editando() ? (grupo() ? 'Editar grupo' : 'Nuevo grupo') : grupo()?.nombre ?? 'Grupo' }}</h1>
+    @if (sesion.esAdmin() && grupo() && !editando()) {
+      <button type="button" class="icono-btn" (click)="editando.set(true)" aria-label="Editar grupo"><span class="icono">edit</span></button>
+    }
+  </header>
+
+  @if (editando()) {
+    <!-- Formulario (solo admin) -->
+    <label class="campo"><span>Nombre</span>
+      <input type="text" placeholder="ej. Para visitas" [value]="borrador().nombre" (input)="cambiar({ nombre: $any($event.target).value })" />
+    </label>
+    <label class="campo"><span>Descripción</span>
+      <textarea rows="2" placeholder="¿Para qué es este grupo?" [value]="borrador().descripcion" (input)="cambiar({ descripcion: $any($event.target).value })"></textarea>
+    </label>
+    <p class="etiqueta-seccion">Ícono</p>
+    <div class="chips envolver">
+      @for (i of iconos; track i) {
+        <button type="button" class="icono-opcion" [class.activo]="borrador().icono === i" (click)="cambiar({ icono: i })" [attr.aria-label]="i">
+          <span class="icono">{{ i }}</span>
+        </button>
+      }
+    </div>
+    @if (error(); as e) { <p class="aviso error"><span class="icono">error</span> {{ e }}</p> }
+    <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="guardar()">{{ guardando() ? 'Guardando…' : 'Guardar grupo' }}</button>
+    @if (grupo()) {
+      <button type="button" class="btn btn-peligro" (click)="eliminar()"><span class="icono">delete</span> Eliminar grupo</button>
+    }
+  } @else if (grupo(); as g) {
+    <div class="cabecera-grupo">
+      <span class="icono-grupo"><span class="icono">{{ g.icono }}</span></span>
+      <div class="textos">
+        @if (g.descripcion) { <p>{{ g.descripcion }}</p> }
+        <small>{{ recetasDelGrupo().length }} receta{{ recetasDelGrupo().length === 1 ? '' : 's' }} · creado por la administradora</small>
+      </div>
+    </div>
+
+    @for (fila of pares(recetasDelGrupo()); track $index) {
+      <div class="fila-cards">
+        @for (r of fila; track r.id) {
+          <a class="card" [routerLink]="['/recetas', r.id]">
+            <div class="foto-card">
+              <app-foto [clave]="r.imagen" [alt]="r.nombre" />
+              @if (sesion.esAdmin()) {
+                <button type="button" class="quitar" (click)="$event.preventDefault(); $event.stopPropagation(); alternar(r.id)" aria-label="Quitar del grupo">
+                  <span class="icono">close</span>
+                </button>
+              }
+            </div>
+            <strong>{{ r.nombre }}</strong>
+            <small>{{ catalogos.nombreFranja(r.tipoComida) }} · {{ duracion(r.tiempo.totalMin) }}</small>
+          </a>
+        }
+      </div>
+    } @empty {
+      <div class="vacio-estado"><span class="icono">menu_book</span><p>Este grupo aún no tiene recetas.</p></div>
+    }
+
+    @if (sesion.esAdmin()) {
+      <button type="button" class="btn agregar" (click)="agregando.set(true)"><span class="icono">add</span> Agregar recetas al grupo</button>
+    }
+    @if (recetasDelGrupo().length > 0) {
+      <button type="button" class="tarjeta-dorada usar" (click)="usarParaElDia()">
+        <span class="icono">event_upcoming</span>
+        <span>Usar este grupo para armar un día</span>
+        <span class="icono">arrow_forward</span>
+      </button>
+    }
+  } @else {
+    <div class="vacio-estado"><span class="icono">folder_off</span><p>No encontramos este grupo.</p></div>
+  }
+</main>
+
+@if (agregando() && grupo(); as g) {
+  <app-hoja titulo="Recetas del grupo" (cerrar)="agregando.set(false)">
+    <label class="buscador">
+      <span class="icono">search</span>
+      <input type="search" placeholder="Buscar receta…" [value]="filtro()" (input)="filtro.set($any($event.target).value)" />
+    </label>
+    <div class="lista-filas">
+      @for (r of candidatas(); track r.id) {
+        <button type="button" class="fila-btn" (click)="alternar(r.id)">
+          <span class="principal"><strong>{{ r.nombre }}</strong><small>{{ catalogos.nombreFranja(r.tipoComida) }}</small></span>
+          <span class="icono" [class.marca]="g.recetaIds.includes(r.id)">{{ g.recetaIds.includes(r.id) ? 'check_box' : 'check_box_outline_blank' }}</span>
+        </button>
+      }
+    </div>
+    <button type="button" class="btn btn-primario ancho" (click)="agregando.set(false)">Listo</button>
+  </app-hoja>
+}

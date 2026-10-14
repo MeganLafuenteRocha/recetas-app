@@ -19,9 +19,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     nav {
       position: fixed;
       bottom: 0;
-      left: 0;
-      right: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 560px;
       height: 72px;
+      padding-bottom: env(safe-area-inset-bottom);
       background: #fff;
       border-top: 1px solid var(--plomo-100);
       display: flex;

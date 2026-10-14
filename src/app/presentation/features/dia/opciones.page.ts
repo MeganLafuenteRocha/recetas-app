@@ -1,31 +1,28 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
-import { IngredientesStore } from '../../../application/stores/ingredientes.store';
+import { PreferenciasStore } from '../../../application/stores/preferencias.store';
 import { SeleccionDiaStore } from '../../../application/stores/seleccion-dia.store';
 import { ArmarMiDiaUseCase } from '../../../application/use-cases/armar-mi-dia.usecase';
 import { ResultadoAfinidad } from '../../../domain/planificacion/afinidad.service';
-
-const ICONO_FRANJA: Record<string, string> = {
-  desayuno: 'coffee',
-  sopa: 'soup_kitchen',
-  seco: 'dinner_dining',
-  postre: 'cake',
-};
+import { AfinidadComponent } from '../../ui/afinidad.component';
+import { FaltantesComponent } from '../../ui/faltantes.component';
+import { FotoComponent } from '../../ui/foto.component';
+import { duracion, iconoFranja } from '../../ui/iconos';
 
 const MAX_POR_FRANJA = 6;
 
 interface OpcionVista {
+  resultado: ResultadoAfinidad;
   receta: ResultadoAfinidad['receta'];
   puntaje: number;
-  faltantes: string;
   kcal: number | null;
 }
 
 /** Pantalla 05B: recetas sugeridas por franja según los ingredientes marcados. */
 @Component({
   selector: 'app-opciones-dia',
-  imports: [RouterLink],
+  imports: [RouterLink, AfinidadComponent, FaltantesComponent, FotoComponent],
   templateUrl: './opciones.page.html',
   styleUrl: './opciones.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,7 +30,7 @@ interface OpcionVista {
 export class OpcionesDiaPage {
   protected readonly seleccion = inject(SeleccionDiaStore);
   private readonly catalogos = inject(CatalogoStore);
-  private readonly ingredientes = inject(IngredientesStore);
+  protected readonly preferencias = inject(PreferenciasStore);
   private readonly armarMiDia = inject(ArmarMiDiaUseCase);
   private readonly router = inject(Router);
 
@@ -46,7 +43,7 @@ export class OpcionesDiaPage {
       .map((tipo) => ({
         codigo: tipo.codigo,
         nombre: tipo.nombre,
-        icono: ICONO_FRANJA[tipo.codigo] ?? 'restaurant',
+        icono: iconoFranja(tipo.codigo),
         opciones: (sugerencias.get(tipo.codigo) ?? [])
           .slice(0, MAX_POR_FRANJA)
           .map((r) => this.aVista(r)),
@@ -67,18 +64,21 @@ export class OpcionesDiaPage {
     return conDato ? suma : null;
   });
 
+  /** Nombres de lo elegido, para la barra oscura ("Sopa de fideo + Chorrellana"). */
+  protected readonly nombresElegidos = computed(() =>
+    [...this.seleccion.elecciones().values()]
+      .map((id) => this.franjas().flatMap((f) => f.opciones).find((o) => o.receta.id === id)?.receta.nombre)
+      .filter(Boolean)
+      .join(' + '),
+  );
+
+  protected readonly duracion = duracion;
+
   private aVista(resultado: ResultadoAfinidad): OpcionVista {
-    const nombres = resultado.faltantesEsenciales
-      .map((id) => this.ingredientes.obtener(id)?.nombre ?? id)
-      .slice(0, 2);
-    const extras = resultado.faltantesEsenciales.length - nombres.length;
     return {
+      resultado,
       receta: resultado.receta,
       puntaje: resultado.puntaje,
-      faltantes:
-        nombres.length === 0
-          ? ''
-          : `Te falta: ${nombres.join(', ')}${extras > 0 ? ` +${extras}` : ''}`,
       kcal: resultado.receta.nutricionPorcion?.kcal ?? null,
     };
   }

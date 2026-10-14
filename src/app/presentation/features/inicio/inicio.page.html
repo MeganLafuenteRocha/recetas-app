@@ -44,7 +44,19 @@
     }
   </div>
 
-  <div class="otros-dias">
-    <p class="proximamente">Los demás días de tu semana aparecerán aquí.</p>
-  </div>
+  @if (proximosDias().length > 0) {
+    <div class="otros-dias">
+      @for (d of proximosDias(); track d.iso) {
+        <a class="mini-dia" routerLink="/mi-dia">
+          <span class="etiqueta-dia">{{ d.etiqueta }}</span>
+          @for (r of d.recetas; track $index) { <span class="receta">{{ r }}</span> }
+        </a>
+      }
+    </div>
+  } @else {
+    <a class="planear" routerLink="/mi-dia">
+      <span class="icono">calendar_view_week</span>
+      Planifica los próximos días desde Mi día
+    </a>
+  }
 </section>

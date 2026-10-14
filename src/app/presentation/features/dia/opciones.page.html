@@ -1,63 +1,70 @@
-<header class="encabezado">
-  <a class="volver" routerLink="/dia"><span class="icono">arrow_back</span></a>
-  <div>
+<main class="vista">
+  <header class="cabecera">
+    <a class="icono-btn" routerLink="/dia" aria-label="Volver"><span class="icono">arrow_back</span></a>
     <h1>Opciones para tu día</h1>
-    <p>Con tus {{ seleccion.totalSeleccionados() }} ingredientes. Elige una por franja.</p>
-  </div>
-</header>
+  </header>
 
-<section class="franjas">
-  @for (franja of franjas(); track franja.codigo) {
-    <div class="franja">
-      <h2><span class="icono">{{ franja.icono }}</span> {{ franja.nombre }}</h2>
+  <a class="resumen-ingredientes" routerLink="/dia">
+    <span>{{ seleccion.totalSeleccionados() }} ingrediente{{ seleccion.totalSeleccionados() === 1 ? '' : 's' }} marcados</span>
+    <span class="icono">edit</span>
+  </a>
 
-      @for (opcion of franja.opciones; track opcion.receta.id) {
-        <button
-          type="button"
-          class="card"
-          [class.elegida]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
-          (click)="seleccion.elegir(franja.codigo, opcion.receta.id)"
-        >
-          <span class="foto"><span class="icono">restaurant</span></span>
-          <span class="datos">
-            <span class="nombre">{{ opcion.receta.nombre }}</span>
-            <span class="detalles">
-              <span class="chip-afinidad" [class.completa]="opcion.puntaje === 100">
-                {{ opcion.puntaje }}%
-              </span>
-              <small>{{ opcion.receta.tiempo.totalMin }} min</small>
-              @if (opcion.kcal !== null) {
-                <small>{{ opcion.kcal }} kcal</small>
-              }
-            </span>
-            @if (opcion.faltantes) {
-              <small class="faltantes">{{ opcion.faltantes }}</small>
-            }
-          </span>
-          <span class="icono check">
-            {{ seleccion.eleccionDe(franja.codigo) === opcion.receta.id ? 'check_circle' : 'radio_button_unchecked' }}
-          </span>
-        </button>
-      }
+  @if (seleccion.grupo(); as g) {
+    <div class="chips envolver">
+      <span class="chip marcado">
+        <span class="icono">bookmark</span> Solo: {{ g.nombre }}
+        <button type="button" class="quitar" (click)="seleccion.quitarGrupo()" aria-label="Quitar filtro de grupo"><span class="icono">close</span></button>
+      </span>
     </div>
-  } @empty {
-    <p class="vacio">Marca algún ingrediente primero para ver sugerencias.</p>
   }
-</section>
+
+  @for (franja of franjas(); track franja.codigo) {
+    <section class="franja">
+      <p class="subtitulo"><span class="icono">{{ franja.icono }}</span> {{ franja.nombre }}</p>
+      <div class="cards">
+        @for (opcion of franja.opciones; track opcion.receta.id) {
+          <button
+            type="button"
+            class="card"
+            [class.elegida]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
+            [attr.aria-pressed]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
+            (click)="seleccion.elegir(franja.codigo, opcion.receta.id)"
+          >
+            <app-foto class="foto-card" [clave]="opcion.receta.imagen" />
+            @if (seleccion.eleccionDe(franja.codigo) === opcion.receta.id) {
+              <span class="marca"><span class="icono">check</span></span>
+            }
+            <strong>{{ opcion.receta.nombre }}</strong>
+            <span class="detalles">
+              <app-afinidad [puntaje]="opcion.puntaje" />
+              <small>{{ duracion(opcion.receta.tiempo.totalMin) }}@if (opcion.kcal !== null) { · {{ opcion.kcal }} kcal}</small>
+            </span>
+            <app-faltantes [resultado]="opcion.resultado" [incluirOpcionales]="false" [interactivo]="false" />
+          </button>
+        }
+      </div>
+    </section>
+  } @empty {
+    <div class="vacio-estado">
+      <span class="icono">grocery</span>
+      <p>Marca algún ingrediente primero para ver sugerencias.</p>
+      <a class="btn btn-suave" routerLink="/dia">Elegir ingredientes</a>
+    </div>
+  }
+</main>
 
 <footer class="barra-armar">
   <div class="resumen">
-    <strong>{{ seleccion.totalElegidas() }} elegida{{ seleccion.totalElegidas() === 1 ? '' : 's' }}</strong>
+    <strong>{{ nombresElegidos() || 'Elige una receta por franja' }}</strong>
     @if (kcalElegidas() !== null) {
-      <small>{{ kcalElegidas() }} kcal aprox.</small>
+      <small [class.ok]="kcalElegidas()! <= preferencias.metas().kcalMax">
+        {{ kcalElegidas() }} kcal
+        @if (kcalElegidas()! <= preferencias.metas().kcalMax) { · dentro de tu meta ✓ } @else { · sobre tu meta }
+      </small>
     }
   </div>
-  <button
-    type="button"
-    class="boton-armar"
-    [disabled]="seleccion.totalElegidas() === 0 || guardando()"
-    (click)="armar()"
-  >
+  <button type="button" class="btn btn-primario ancho" [disabled]="seleccion.totalElegidas() === 0 || guardando()" (click)="armar()">
     @if (guardando()) { Guardando… } @else { Armar mi día }
   </button>
+  <a class="btn volver" routerLink="/dia">Volver a elegir</a>
 </footer>

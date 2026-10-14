@@ -114,13 +114,33 @@ nav {
   font-weight: 600;
 }
 
-.pronto {
+.contador {
   margin-left: auto;
-  background: var(--plomo-100);
-  color: var(--plomo-400);
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: var(--radio-pill);
+  color: var(--plomo-500);
+  font-size: 12px;
+}
+
+nav button.activo {
+  background: var(--guindo-100);
+  color: var(--guindo-900);
+
+  .icono { color: var(--guindo-700); }
+}
+
+.seccion-grupos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 4px;
+
+  .seccion { margin-right: 0; }
+
+  .nuevo-grupo {
+    padding: 6px;
+    margin-top: 10px;
+
+    .icono { color: var(--guindo-700); font-size: 20px; }
+  }
 }
 
 .salir {
