@@ -1,59 +1,73 @@
-# Recetas
+# Recetas — Mi menú de cada día
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+PWA para una cocinera de casa: registra lo que hay en la **despensa**, sugiere **recetas bolivianas**
+según lo disponible (afinidad) y arma el **menú del día** (desayuno + almuerzo) controlando calorías
+y proteína frente a metas. Nutrición estimada por IA (Gemini) al guardar cada receta.
 
-## Development server
+- **App publicada:** https://appfoodrecipes.web.app
+- **Diseños:** `designMockups/mochup.pen` (Pencil) — cada pantalla se diseñó antes de programarse.
+- Trabajo final del Módulo I — Diplomado en Full Stack Development & Advanced QA Automation 2026.
 
-To start a local development server, run:
+## Stack
 
-```bash
-ng serve
+| Pieza | Tecnología |
+|---|---|
+| Frontend | Angular 21 (standalone, signals, zoneless, control de flujo `@if/@for`) |
+| Datos | Cloud Firestore con caché offline persistente |
+| Autenticación | Firebase Auth (Google) + activación de cuentas por la administradora |
+| IA | Firebase AI Logic (Gemini) — solo al guardar una receta |
+| Hosting | Firebase Hosting (HTTPS + CDN) |
+| PWA | `@angular/service-worker` — instalable en Android, funciona offline |
+| Tests | Vitest |
+
+## Arquitectura: DDD + hexagonal
+
+```
+src/app/
+├── domain/          TS puro (sin Angular ni Firebase): modelos, reglas y PUERTOS
+│   ├── recetas/  ingredientes/  despensa/  planificacion/ (afinidad, plan)
+│   ├── listas/   grupos/  catalogos/  nutricion/  preferencias/  usuarios/
+├── application/     casos de uso + stores con signals (estado en memoria)
+├── infrastructure/  ADAPTADORES: firebase/ (Firestore, Auth, Gemini), local/ (fotos en IndexedDB),
+│                    memoria/ (modo demo)
+└── presentation/    páginas por módulo (features/*), layout y componentes ui/
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Regla de dependencia: `presentation → application → domain ← infrastructure`.
+Los puertos son clases abstractas en `domain/` y se conectan a sus adaptadores en `app.config.ts`.
+Cambiar Firebase por otra cosa = tocar solo `infrastructure/` (el modo demo lo demuestra).
 
-## Code scaffolding
+**Control de lecturas:** una sola carga al abrir (~80 lecturas la primera vez, ~0 después gracias a la
+caché offline); todo lo demás se calcula en memoria. Listas y semanas se leen al abrirlas.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Cómo ejecutarlo
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Requisitos: Node.js LTS. Desde esta carpeta (`xCode/recetas`):
 
 ```bash
-ng build
+npm install          # solo la primera vez
+npm start            # app real (Firebase) → http://localhost:4200
+npm run demo         # MODO DEMO: datos del seed en memoria, sin login ni base real → http://localhost:4200
+npm test             # tests unitarios (Vitest)
+npm run build        # build de producción en dist/recetas/browser
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+> El modo demo no guarda nada: al recargar vuelve al estado inicial. Sirve para probar la interfaz.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Despliegue (Firebase)
 
 ```bash
-ng test
+npm install -g firebase-tools     # una sola vez
+firebase login                    # una sola vez
+npm run build
+firebase deploy --only firestore:rules,hosting
 ```
 
-## Running end-to-end tests
+Antes de usar la nutrición por IA hay que habilitar **AI Logic → Gemini Developer API** en la consola
+de Firebase (ver `Guia_Firebase_AI.md`).
 
-For end-to-end (e2e) testing, run:
+## Seguridad
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- La llave `serviceAccountKey.json` del seed **nunca** entra al repo (`.gitignore`).
+- Reglas de Firestore: toda colección exige cuenta `activo`; catálogos, grupos y cuentas solo admin.
+- La clave de Gemini no está en la app: Firebase AI Logic la maneja del lado del servidor.
