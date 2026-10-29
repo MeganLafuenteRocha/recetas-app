@@ -2,10 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import {
   collection,
   CollectionReference,
-  deleteDoc,
   doc,
   DocumentData,
-  getDocs,
   serverTimestamp,
   setDoc,
   Timestamp,
@@ -14,6 +12,7 @@ import { HogarActualStore } from '../../application/stores/hogar-actual.store';
 import { ItemLista, ListaCompra, OrigenLista } from '../../domain/listas/lista.model';
 import { ListaRepository } from '../../domain/listas/lista.port';
 import { db } from './firebase.providers';
+import { leerIncremental } from './lectura-incremental';
 
 function aLista(id: string, data: DocumentData): ListaCompra {
   return {
@@ -36,8 +35,8 @@ export class FirestoreListasRepo extends ListaRepository {
   }
 
   async obtenerTodas(): Promise<ListaCompra[]> {
-    const snap = await getDocs(this.coleccion());
-    return snap.docs.map((d) => aLista(d.id, d.data()));
+    const docs = await leerIncremental(this.coleccion());
+    return docs.filter((d) => d.get('eliminada') !== true).map((d) => aLista(d.id, d.data()));
   }
 
   async guardar(lista: ListaCompra): Promise<void> {
@@ -45,10 +44,13 @@ export class FirestoreListasRepo extends ListaRepository {
     await setDoc(doc(this.coleccion(), id), {
       ...datos,
       creadaEn: creadaEn ? Timestamp.fromDate(creadaEn) : serverTimestamp(),
+      eliminada: false,
+      actualizadoEn: serverTimestamp(),
     });
   }
 
+  /** Borrado lógico: así el otro celular del hogar se entera en su próxima lectura de cambios. */
   async eliminar(id: string): Promise<void> {
-    await deleteDoc(doc(this.coleccion(), id));
+    await setDoc(doc(this.coleccion(), id), { eliminada: true, actualizadoEn: serverTimestamp() }, { merge: true });
   }
 }

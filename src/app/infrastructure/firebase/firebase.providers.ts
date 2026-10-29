@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import {
+  CACHE_SIZE_UNLIMITED,
   initializeFirestore,
   persistentLocalCache,
   persistentSingleTabManager,
@@ -19,8 +20,12 @@ export const firebaseApp = initializeApp(firebaseConfig);
 
 export const auth = getAuth(firebaseApp);
 
-// Caché persistente: las aperturas siguientes leen de disco (0 lecturas de cuota)
-// y la app funciona offline. Single-tab: una sola pestaña a la vez.
+// Caché persistente: la app funciona offline y la lectura incremental (lectura-incremental.ts)
+// parte de lo que ya está en disco. Sin límite de tamaño para que Firestore no descarte
+// documentos que luego no se volverían a pedir. Single-tab: una sola pestaña a la vez.
 export const db = initializeFirestore(firebaseApp, {
-  localCache: persistentLocalCache({ tabManager: persistentSingleTabManager({}) }),
+  localCache: persistentLocalCache({
+    tabManager: persistentSingleTabManager({}),
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+  }),
 });

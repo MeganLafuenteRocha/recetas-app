@@ -19,6 +19,7 @@ import { RecetasStore } from '../stores/recetas.store';
 /**
  * LA carga de datos: se ejecuta UNA sola vez por sesión, cuando la cuenta está activa y tiene hogar.
  * Trae lo común (semilla) y lo propio del hogar, y los combina en memoria.
+ * Las colecciones se leen de forma incremental: caché del dispositivo + solo lo que cambió.
  * Después de esto, toda la app trabaja en memoria. Listas y semanas se leen al abrirlas.
  */
 @Injectable({ providedIn: 'root' })

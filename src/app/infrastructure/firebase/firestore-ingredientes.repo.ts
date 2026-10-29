@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, CollectionReference, doc, getDocs, writeBatch } from 'firebase/firestore';
+import { collection, CollectionReference, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { HogarActualStore } from '../../application/stores/hogar-actual.store';
 import { Ambito } from '../../domain/hogares/hogar.model';
 import { Ingrediente } from '../../domain/ingredientes/ingrediente.model';
 import { IngredienteRepository } from '../../domain/ingredientes/ingrediente.port';
 import { db } from './firebase.providers';
+import { leerIncremental } from './lectura-incremental';
 
 /** Límite de Firestore por lote atómico. */
 const MAX_POR_LOTE = 500;
@@ -21,8 +22,8 @@ export class FirestoreIngredientesRepo extends IngredienteRepository {
   }
 
   private async leer(ambito: Ambito): Promise<Ingrediente[]> {
-    const snap = await getDocs(this.coleccion(ambito));
-    return snap.docs.map((d) => ({ ...(d.data() as Omit<Ingrediente, 'id' | 'ambito'>), id: d.id, ambito }));
+    const docs = await leerIncremental(this.coleccion(ambito));
+    return docs.map((d) => ({ ...(d.data() as Omit<Ingrediente, 'id' | 'ambito'>), id: d.id, ambito }));
   }
 
   obtenerComunes(): Promise<Ingrediente[]> {
@@ -37,7 +38,7 @@ export class FirestoreIngredientesRepo extends IngredienteRepository {
     for (let i = 0; i < ingredientes.length; i += MAX_POR_LOTE) {
       const lote = writeBatch(db);
       for (const { id, ambito, ...datos } of ingredientes.slice(i, i + MAX_POR_LOTE)) {
-        lote.set(doc(this.coleccion(ambito), id), datos);
+        lote.set(doc(this.coleccion(ambito), id), { ...datos, actualizadoEn: serverTimestamp() });
       }
       await lote.commit();
     }

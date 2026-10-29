@@ -3,7 +3,6 @@ import {
   collection,
   CollectionReference,
   doc,
-  getDocs,
   serverTimestamp,
   setDoc,
   Timestamp,
@@ -13,6 +12,7 @@ import { Ambito } from '../../domain/hogares/hogar.model';
 import { Receta } from '../../domain/recetas/receta.model';
 import { RecetaRepository } from '../../domain/recetas/receta.port';
 import { db } from './firebase.providers';
+import { leerIncremental } from './lectura-incremental';
 
 function aReceta(id: string, ambito: Ambito, data: Record<string, unknown>): Receta {
   const calculadaEn = data['nutricionCalculadaEn'];
@@ -36,8 +36,8 @@ export class FirestoreRecetasRepo extends RecetaRepository {
   }
 
   private async leer(ambito: Ambito): Promise<Receta[]> {
-    const snap = await getDocs(this.coleccion(ambito));
-    return snap.docs.map((d) => aReceta(d.id, ambito, d.data()));
+    const docs = await leerIncremental(this.coleccion(ambito));
+    return docs.map((d) => aReceta(d.id, ambito, d.data()));
   }
 
   obtenerComunes(): Promise<Receta[]> {
