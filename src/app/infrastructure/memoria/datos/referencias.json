@@ -1,61 +1,18 @@
 {
- "diario": {
-  "kcal": {
-   "valor": 1900,
-   "unidad": "kcal",
-   "nombre": "Calorías"
+  "diario": {
+    "kcal": { "valor": 1900, "unidad": "kcal", "nombre": "Calorías" },
+    "proteinaG": { "valor": 65, "unidad": "g", "nombre": "Proteína" },
+    "carbohidratosG": { "valor": 250, "unidad": "g", "nombre": "Carbohidratos" },
+    "grasaG": { "valor": 65, "unidad": "g", "nombre": "Grasas" },
+    "fibraG": { "valor": 28, "unidad": "g", "nombre": "Fibra" },
+    "sodioMg": { "valor": 2000, "unidad": "mg", "nombre": "Sodio" }
   },
-  "proteinaG": {
-   "valor": 65,
-   "unidad": "g",
-   "nombre": "Proteína"
+  "porFranja": {
+    "desayuno": { "kcalMin": 400, "kcalMax": 500, "proteinaMinG": 15, "proteinaMaxG": 20 },
+    "almuerzo": { "kcalMin": 650, "kcalMax": 800, "proteinaMinG": 25, "proteinaMaxG": 30 },
+    "sopa": { "kcalMin": 200, "kcalMax": 280 },
+    "seco": { "kcalMin": 450, "kcalMax": 550 },
+    "postre": { "kcalMin": 0, "kcalMax": 150 }
   },
-  "carbohidratosG": {
-   "valor": 250,
-   "unidad": "g",
-   "nombre": "Carbohidratos"
-  },
-  "grasaG": {
-   "valor": 65,
-   "unidad": "g",
-   "nombre": "Grasas"
-  },
-  "fibraG": {
-   "valor": 28,
-   "unidad": "g",
-   "nombre": "Fibra"
-  },
-  "sodioMg": {
-   "valor": 2000,
-   "unidad": "mg",
-   "nombre": "Sodio"
-  }
- },
- "porFranja": {
-  "desayuno": {
-   "kcalMin": 400,
-   "kcalMax": 500,
-   "proteinaMinG": 15,
-   "proteinaMaxG": 20
-  },
-  "almuerzo": {
-   "kcalMin": 650,
-   "kcalMax": 800,
-   "proteinaMinG": 25,
-   "proteinaMaxG": 30
-  },
-  "sopa": {
-   "kcalMin": 200,
-   "kcalMax": 280
-  },
-  "seco": {
-   "kcalMin": 450,
-   "kcalMax": 550
-  },
-  "postre": {
-   "kcalMin": 0,
-   "kcalMax": 150
-  }
- },
- "nota": "Referencia: persona de 1,60 m, actividad ligera a moderada."
+  "nota": "Referencia: persona de 1,60 m, actividad ligera a moderada."
 }

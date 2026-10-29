@@ -35,27 +35,13 @@ import referencias from './datos/referencias.json';
 
 const copia = <T>(x: T): T => structuredClone(x);
 
-/** Algunas recetas con nutrición para que se vean totales y metas. */
-const NUTRICION_DEMO: Record<string, [number, number, number, number]> = {
-  rec_silpancho: [620, 34, 68, 22],
-  rec_sopa_mani: [320, 14, 30, 16],
-  rec_api_con_pastel: [380, 8, 62, 11],
-  rec_majadito: [540, 22, 70, 18],
-  rec_licuado_platano_avena: [260, 8, 46, 5],
-  rec_sopa_quinua: [240, 10, 34, 6],
-};
-
+/** El seed ya trae la nutrición estimada de cada receta. */
 function recetasDemo(): Receta[] {
-  return (recetas as unknown as Receta[]).map((r) => {
-    const n = NUTRICION_DEMO[r.id];
-    return {
-      ...r,
-      ambito: 'comun',
-      nutricionPorcion: n ? { kcal: n[0], proteinaG: n[1], carbohidratosG: n[2], grasaG: n[3] } : null,
-      nutricionConOpcionales: n ? { kcal: n[0] + 30, proteinaG: n[1], carbohidratosG: n[2] + 4, grasaG: n[3] + 1 } : null,
-      nutricionCalculadaEn: null,
-    };
-  });
+  return (copia(recetas) as unknown as Omit<Receta, 'ambito'>[]).map((r) => ({
+    ...r,
+    ambito: 'comun',
+    nutricionCalculadaEn: null,
+  }));
 }
 
 const ADMIN_DEMO: Usuario = {
