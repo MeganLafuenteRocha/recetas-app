@@ -78,4 +78,31 @@ describe('GuardarRecetaUseCase', () => {
     await casoDeUso.ejecutar(valida(), false);
     expect(estimador.llamadas).toBe(0);
   });
+
+  it('dos recetas con el mismo nombre reciben ids distintos', async () => {
+    const primera = await casoDeUso.ejecutar(valida(), false);
+    const segunda = await casoDeUso.ejecutar(valida(), false);
+    expect(primera.receta?.id).toBe('rec_sopa_de_mani');
+    expect(segunda.receta?.id).toBe('rec_sopa_de_mani_2');
+  });
+
+  it('al editar conserva el id aunque cambie el nombre', async () => {
+    const r = await casoDeUso.ejecutar({ ...valida(), id: 'rec_viejo', nombre: 'Nombre nuevo' }, false);
+    expect(r.receta?.id).toBe('rec_viejo');
+  });
+
+  it('guarda la receta ya limpia (nombre sin espacios, total recalculado)', async () => {
+    const r = await casoDeUso.ejecutar(
+      { ...valida(), nombre: '  Sopa de maní  ', tiempo: { preparacionMin: 5, coccionMin: 10, totalMin: 0 } },
+      false,
+    );
+    expect(repo.guardadas[0]).toMatchObject({ nombre: 'Sopa de maní', tiempo: { totalMin: 15 } });
+    expect(r.receta?.nutricionCalculadaEn).toBeNull();
+  });
+
+  it('con IA guarda la fecha del cálculo', async () => {
+    const r = await casoDeUso.ejecutar(valida(), true);
+    expect(r.receta?.nutricionCalculadaEn).toBeInstanceOf(Date);
+    expect(r.receta?.nutricionConOpcionales?.kcal).toBe(450);
+  });
 });

@@ -48,7 +48,7 @@ Requisitos: Node.js LTS. Desde esta carpeta (`xCode/recetas`):
 npm install          # solo la primera vez
 npm start            # app real (Firebase) → http://localhost:4200
 npm run demo         # MODO DEMO: datos del seed en memoria, sin login ni base real → http://localhost:4200
-npm test             # tests unitarios (Vitest)
+npm test             # tests unitarios (Vitest) — ver TESTS.md
 npm run build        # build de producción en dist/recetas/browser
 ```
 

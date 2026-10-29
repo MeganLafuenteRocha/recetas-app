@@ -66,3 +66,61 @@ describe('catálogos con integridad referencial', () => {
     expect(eliminarElemento(base, 'tiposCocina', 'asiatica').tiposCocina).toHaveLength(1);
   });
 });
+
+describe('catálogos: valores límite', () => {
+  it.each([
+    ['  Cocina   Peruana!! ', 'cocina_peruana'],
+    ['Asiática', 'asiatica'],
+    ['¡¿?!', ''],
+    ['', ''],
+  ])('código de "%s" → "%s"', (nombre, codigo) => {
+    expect(codigoDesdeNombre(nombre)).toBe(codigo);
+  });
+
+  it('un nombre sin letras ni números no se puede agregar', () => {
+    expect(agregarElemento(base, 'tiposCocina', '¡¿?!')).toBeNull();
+  });
+
+  it('detecta duplicados aunque cambien tildes y mayúsculas', () => {
+    expect(agregarElemento(base, 'tiposCocina', 'ASIÁTICA')).toBeNull();
+  });
+
+  it('cada tipo de catálogo se agrega con su forma', () => {
+    expect(agregarElemento(base, 'unidades', ' Taza ')?.unidades.at(-1)).toEqual({
+      codigo: 'taza',
+      nombre: 'Taza',
+      sinonimos: [],
+    });
+    expect(agregarElemento(base, 'tiposComida', 'Postre')?.tiposComida.at(-1)).toEqual({
+      codigo: 'postre',
+      nombre: 'Postre',
+      orden: 2,
+    });
+    expect(agregarElemento(base, 'categorias', 'Lácteos')?.categorias.at(-1)).toEqual({
+      codigo: 'lacteos',
+      nombre: 'Lácteos',
+      orden: 2,
+    });
+  });
+
+  it('agregar, renombrar y eliminar no modifican el catálogo original', () => {
+    agregarElemento(base, 'tiposCocina', 'Peruana');
+    renombrarElemento(base, 'tiposCocina', 'boliviana', 'Andina');
+    eliminarElemento(base, 'tiposCocina', 'boliviana');
+    expect(base.tiposCocina.map((c) => c.nombre)).toEqual(['Boliviana', 'Asiática']);
+  });
+
+  it('renombrar o eliminar un código inexistente no cambia nada', () => {
+    expect(renombrarElemento(base, 'tiposCocina', 'nada', 'X').tiposCocina).toEqual(base.tiposCocina);
+    expect(eliminarElemento(base, 'tiposCocina', 'nada').tiposCocina).toEqual(base.tiposCocina);
+  });
+
+  it('una receta que usa la misma unidad varias veces cuenta como 1 uso', () => {
+    const r = recetaDePrueba({ nombre: 'Chairo', ingredientes: [espacio('esencial', 'a'), espacio('esencial', 'b')] });
+    expect(usosDeCodigo('unidades', 'u', [r], [])).toEqual({ total: 1, nombres: ['Chairo'] });
+  });
+
+  it('sin recetas ni ingredientes no hay usos', () => {
+    expect(usosDeCodigo('categorias', 'verduras', [], []).total).toBe(0);
+  });
+});

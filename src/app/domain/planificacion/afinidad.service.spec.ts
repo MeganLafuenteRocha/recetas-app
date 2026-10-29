@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { recetaDePrueba, espacio } from '../recetas/receta.fixtures';
-import { evaluarReceta, mejorCompra, sePuedeCocinar, sugerirPorFranja } from './afinidad.service';
+import { espacioCubierto, evaluarReceta, mejorCompra, sePuedeCocinar, sugerirPorFranja } from './afinidad.service';
 
 const SIN_BASICOS = new Set<string>();
 
@@ -128,5 +128,70 @@ describe('mejorCompra', () => {
   it('devuelve null si todo se puede cocinar', () => {
     const recetas = [recetaDePrueba({ ingredientes: [espacio('esencial', 'papa')] })];
     expect(mejorCompra(recetas, new Set(['papa']), SIN_BASICOS)).toBeNull();
+  });
+});
+
+describe('afinidad: valores límite', () => {
+  const evaluar = (ingredientes: ReturnType<typeof espacio>[], hay: string[]) =>
+    evaluarReceta(recetaDePrueba({ ingredientes }), new Set(hay), SIN_BASICOS).puntaje;
+
+  it('receta sin ingredientes cuenta como completa (100)', () => {
+    expect(evaluar([], [])).toBe(100);
+  });
+
+  it.each([
+    [0, 15],
+    [1, 43], // 28.33 + 15
+    [2, 72], // 56.67 + 15
+    [3, 100],
+  ])('con %i de 3 esenciales (sin condimentos) → %i', (cuantos, puntaje) => {
+    const esenciales = ['a', 'b', 'c'].map((x) => espacio('esencial', x));
+    expect(evaluar(esenciales, ['a', 'b', 'c'].slice(0, cuantos))).toBe(puntaje);
+  });
+
+  it('redondea .5 hacia arriba: 42.5 + 15 = 57.5 → 58', () => {
+    expect(evaluar([espacio('esencial', 'a'), espacio('esencial', 'b')], ['a'])).toBe(58);
+  });
+
+  it('el bonus de opcionales es proporcional: 15 + 2.5 → 18', () => {
+    const r = [espacio('esencial', 'a'), espacio('opcional', 'x'), espacio('opcional', 'y')];
+    expect(evaluar(r, ['x'])).toBe(18);
+  });
+
+  it('un espacio sin opciones nunca se cubre y no rompe el cálculo', () => {
+    const r = evaluarReceta(recetaDePrueba({ ingredientes: [espacio('esencial')] }), new Set(['a']), SIN_BASICOS);
+    expect(r.puntaje).toBe(15);
+    expect(r.faltantesEsenciales).toEqual(['']);
+  });
+
+  it('espacioCubierto: ni disponible ni básico → false; básico → true', () => {
+    const e = espacio('condimento', 'sal');
+    expect(espacioCubierto(e, new Set(), new Set())).toBe(false);
+    expect(espacioCubierto(e, new Set(), new Set(['sal']))).toBe(true);
+  });
+
+  it('el faltante que se muestra es la primera alternativa del espacio', () => {
+    const r = evaluarReceta(recetaDePrueba({ ingredientes: [espacio('esencial', 'papa', 'chuno')] }), new Set(), SIN_BASICOS);
+    expect(r.faltantesEsenciales).toEqual(['papa']);
+  });
+
+  it('sugerirPorFranja sin recetas → mapa vacío', () => {
+    expect(sugerirPorFranja([], new Set(), SIN_BASICOS).size).toBe(0);
+  });
+
+  it('mejorCompra ignora recetas inactivas y las que les faltan 2 o más esenciales', () => {
+    const recetas = [
+      recetaDePrueba({ id: 'inactiva', activo: false, ingredientes: [espacio('esencial', 'carne')] }),
+      recetaDePrueba({ id: 'dos', ingredientes: [espacio('esencial', 'carne'), espacio('esencial', 'arroz')] }),
+    ];
+    expect(mejorCompra(recetas, new Set(), SIN_BASICOS)).toBeNull();
+  });
+
+  it('mejorCompra en empate se queda con el primero encontrado', () => {
+    const recetas = [
+      recetaDePrueba({ id: 'x', ingredientes: [espacio('esencial', 'a')] }),
+      recetaDePrueba({ id: 'y', ingredientes: [espacio('esencial', 'b')] }),
+    ];
+    expect(mejorCompra(recetas, new Set(), SIN_BASICOS)?.ingredienteId).toBe('a');
   });
 });
