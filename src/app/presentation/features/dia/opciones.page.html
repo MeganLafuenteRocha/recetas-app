@@ -19,13 +19,14 @@
   }
 
   @for (franja of franjas(); track franja.codigo) {
-    <section class="franja">
+    <section class="franja" [attr.data-testid]="'franja-' + franja.codigo">
       <p class="subtitulo"><span class="icono">{{ franja.icono }}</span> {{ franja.nombre }}</p>
       <div class="cards">
         @for (opcion of franja.opciones; track opcion.receta.id) {
           <button
             type="button"
             class="card"
+            [attr.data-testid]="'opcion-' + opcion.receta.id"
             [class.elegida]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
             [attr.aria-pressed]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
             (click)="seleccion.elegir(franja.codigo, opcion.receta.id)"
@@ -63,7 +64,7 @@
       </small>
     }
   </div>
-  <button type="button" class="btn btn-primario ancho" [disabled]="seleccion.totalElegidas() === 0 || guardando()" (click)="armar()">
+  <button type="button" class="btn btn-primario ancho" data-testid="btn-armar-dia" [disabled]="seleccion.totalElegidas() === 0 || guardando()" (click)="armar()">
     @if (guardando()) { Guardando… } @else { Armar mi día }
   </button>
   <a class="btn volver" routerLink="/dia">Volver a elegir</a>

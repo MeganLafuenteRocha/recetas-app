@@ -9,12 +9,13 @@
     <input
       type="search"
       placeholder="Busca un ingrediente"
+      data-testid="buscar-ingrediente"
       [value]="consulta()"
       (input)="buscar($event)"
     />
   </label>
 
-  <button type="button" class="chip-despensa" (click)="seleccion.usarDespensa()">
+  <button type="button" class="chip-despensa" data-testid="btn-usar-despensa" (click)="seleccion.usarDespensa()">
     <span class="icono">shopping_basket</span>
     Usar mi despensa ({{ despensa.total() }})
   </button>
@@ -27,6 +28,7 @@
       <button
         type="button"
         class="fila"
+        [attr.data-testid]="'ingrediente-' + ingrediente.id"
         [class.marcada]="seleccion.tieneSeleccionado(ingrediente.id)"
         (click)="seleccion.alternar(ingrediente.id)"
       >
@@ -54,6 +56,7 @@
     class="boton-buscar"
     [class.deshabilitado]="seleccion.totalSeleccionados() === 0"
     routerLink="/dia/opciones"
+    data-testid="btn-buscar-recetas"
   >
     Buscar recetas ({{ seleccion.totalSeleccionados() }})
   </a>

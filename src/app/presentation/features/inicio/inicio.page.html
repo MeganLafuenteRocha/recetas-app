@@ -8,7 +8,7 @@
       {{ primerNombre().charAt(0) }}
     </button>
   </div>
-  <a class="boton-dorado" routerLink="/dia">
+  <a class="boton-dorado" routerLink="/dia" data-testid="btn-elegir-ingredientes">
     <span class="icono">grocery</span>
     Elegir mis ingredientes
   </a>
@@ -22,7 +22,7 @@
 
   <h2>Tu semana</h2>
 
-  <div class="card-hoy">
+  <div class="card-hoy" data-testid="card-hoy">
     <div class="card-hoy-encabezado">
       <span class="etiqueta">HOY</span>
       <span class="fecha">{{ fechaDeHoy() }}</span>

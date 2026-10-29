@@ -5,14 +5,14 @@
   </header>
 
   @if (elecciones().length > 0) {
-    <div class="aviso ok listo">
+    <div class="aviso ok listo" data-testid="dia-armado">
       <span class="icono">celebration</span>
       <div><strong>¡Tu día está armado!</strong><small>{{ fecha }}</small></div>
     </div>
 
     <div class="lista-filas">
       @for (e of elecciones(); track e.franja) {
-        <div class="comida">
+        <div class="comida" [attr.data-testid]="'comida-' + e.franja">
           <app-foto class="foto-52" [clave]="e.receta?.imagen ?? null" [radio]="10" />
           <a class="textos" [routerLink]="['/recetas', e.receta?.id]">
             <small class="franja">{{ e.nombreFranja }}</small>

@@ -20,7 +20,7 @@
 
   <label class="buscador">
     <span class="icono">search</span>
-    <input type="search" placeholder="Buscar por receta o ingrediente…" [value]="consulta()" (input)="buscar($event)" />
+    <input type="search" data-testid="buscar-receta" placeholder="Buscar por receta o ingrediente…" [value]="consulta()" (input)="buscar($event)" />
   </label>
 
   @if (ui.vistaRecetas() === 'lista') {
@@ -59,7 +59,7 @@
     @if (filtradas().length > 0) {
       <div class="lista-filas">
         @for (e of filtradas(); track e.receta.id) {
-          <a class="fila-btn" [routerLink]="['/recetas', e.receta.id]">
+          <a class="fila-btn" [routerLink]="['/recetas', e.receta.id]" [attr.data-testid]="'receta-' + e.receta.id">
             <app-foto class="foto-52" [clave]="e.receta.imagen" [radio]="10" />
             <span class="principal">
               <strong class="nombre">{{ e.receta.nombre }}</strong>
