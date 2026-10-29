@@ -6,6 +6,7 @@ import {
 } from '../../domain/ingredientes/ingrediente.model';
 import { IngredienteRepository } from '../../domain/ingredientes/ingrediente.port';
 import { IngredientesStore } from '../stores/ingredientes.store';
+import { HogarActualStore } from '../stores/hogar-actual.store';
 
 export type CambioLote = Partial<Pick<Ingrediente, 'esBasico' | 'categoria' | 'activo'>>;
 
@@ -14,6 +15,7 @@ export type CambioLote = Partial<Pick<Ingrediente, 'esBasico' | 'categoria' | 'a
 export class AdministrarIngredientesUseCase {
   private readonly repo = inject(IngredienteRepository);
   private readonly store = inject(IngredientesStore);
+  private readonly hogar = inject(HogarActualStore);
 
   /** "papa, cebolla, haba" → crea los que no existan. Devuelve cuántos se crearon. */
   async altaRapida(texto: string, categoria: string): Promise<number> {
@@ -40,8 +42,11 @@ export class AdministrarIngredientesUseCase {
     await this.guardar(cambiados);
   }
 
+  /** Mismo criterio que las recetas: cambiar uno común (p. ej. marcarlo básico) crea la copia del hogar. */
   private async guardar(ingredientes: Ingrediente[]): Promise<void> {
-    await this.repo.guardarLote(ingredientes);
-    this.store.actualizarVarios(ingredientes);
+    const ambito = this.hogar.ambitoAlGuardar();
+    const conAmbito = ingredientes.map((i) => ({ ...i, ambito }));
+    await this.repo.guardarLote(conAmbito);
+    this.store.actualizarVarios(conAmbito);
   }
 }

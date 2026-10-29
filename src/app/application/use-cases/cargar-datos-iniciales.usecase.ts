@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { CatalogoRepository } from '../../domain/catalogos/catalogo.port';
 import { DespensaRepository } from '../../domain/despensa/despensa.port';
+import { combinarConPropios } from '../../domain/hogares/hogar.model';
 import { GrupoRepository } from '../../domain/grupos/grupo.port';
 import { IngredienteRepository } from '../../domain/ingredientes/ingrediente.port';
 import { fechaISO } from '../../domain/planificacion/plan.model';
@@ -16,8 +17,8 @@ import { PreferenciasStore } from '../stores/preferencias.store';
 import { RecetasStore } from '../stores/recetas.store';
 
 /**
- * LA carga de datos: se ejecuta UNA sola vez por sesión, cuando la cuenta está activa.
- * Primera apertura ≈ 80 lecturas; las siguientes salen de la caché offline (0 de cuota).
+ * LA carga de datos: se ejecuta UNA sola vez por sesión, cuando la cuenta está activa y tiene hogar.
+ * Trae lo común (semilla) y lo propio del hogar, y los combina en memoria.
  * Después de esto, toda la app trabaja en memoria. Listas y semanas se leen al abrirlas.
  */
 @Injectable({ providedIn: 'root' })
@@ -44,12 +45,25 @@ export class CargarDatosInicialesUseCase {
   async ejecutar(): Promise<void> {
     if (this._listo()) return;
 
-    const [catalogos, referencias, ingredientes, recetas, despensa, planHoy, preferencias, grupos] =
+    const [
+      catalogos,
+      referencias,
+      ingredientesComunes,
+      ingredientesPropios,
+      recetasComunes,
+      recetasPropias,
+      despensa,
+      planHoy,
+      preferencias,
+      grupos,
+    ] =
       await Promise.all([
         this.catalogosRepo.obtenerCatalogos(),
         this.catalogosRepo.obtenerReferencias(),
-        this.ingredientesRepo.obtenerTodos(),
-        this.recetasRepo.obtenerTodas(),
+        this.ingredientesRepo.obtenerComunes(),
+        this.ingredientesRepo.obtenerPropios(),
+        this.recetasRepo.obtenerComunes(),
+        this.recetasRepo.obtenerPropias(),
         this.despensaRepo.obtener(),
         this.planesRepo.obtenerDia(fechaISO(new Date())),
         this.preferenciasRepo.obtener(),
@@ -57,8 +71,9 @@ export class CargarDatosInicialesUseCase {
       ]);
 
     this.catalogoStore.cargar(catalogos, referencias);
-    this.ingredientesStore.cargar(ingredientes);
-    this.recetasStore.cargar(recetas);
+    // Lo propio del hogar (o su copia editada) tapa a lo común con el mismo id.
+    this.ingredientesStore.cargar(combinarConPropios(ingredientesComunes, ingredientesPropios));
+    this.recetasStore.cargar(combinarConPropios(recetasComunes, recetasPropias));
     this.despensaStore.cargar(despensa.ingredienteIds);
     this.planStore.cargar(planHoy);
     this.preferenciasStore.cargar(preferencias);

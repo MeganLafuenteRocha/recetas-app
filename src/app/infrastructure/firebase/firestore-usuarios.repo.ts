@@ -23,6 +23,7 @@ function aUsuario(uid: string, data: Record<string, unknown>): Usuario {
     foto: (data['foto'] as string | null) ?? null,
     rol: data['rol'] as Usuario['rol'],
     estado: data['estado'] as Usuario['estado'],
+    hogarId: (data['hogarId'] as string | null | undefined) ?? null,
     creadoEn: data['creadoEn'] instanceof Timestamp ? data['creadoEn'].toDate() : new Date(),
   };
 }
@@ -41,6 +42,7 @@ export class FirestoreUsuariosRepo extends UsuarioRepository {
       foto: usuario.foto,
       rol: usuario.rol,
       estado: usuario.estado,
+      hogarId: null,
       creadoEn: serverTimestamp(),
     });
   }
@@ -53,5 +55,9 @@ export class FirestoreUsuariosRepo extends UsuarioRepository {
 
   async cambiarEstado(uid: string, estado: EstadoUsuario): Promise<void> {
     await updateDoc(doc(db, 'usuarios', uid), { estado });
+  }
+
+  async activarEnHogar(uid: string, hogarId: string): Promise<void> {
+    await updateDoc(doc(db, 'usuarios', uid), { estado: 'activo', hogarId });
   }
 }

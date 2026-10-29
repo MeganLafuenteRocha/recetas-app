@@ -1,5 +1,9 @@
+import { Ambito } from '../hogares/hogar.model';
+
 export interface Ingrediente {
   id: string;
+  /** 'comun': semilla para todos; 'hogar': propio (o copia de uno común, p. ej. al marcarlo básico). */
+  ambito: Ambito;
   nombre: string;
   nombreNormalizado: string;
   sinonimos: string[];
@@ -67,6 +71,7 @@ export function crearIngredientesDesdeTexto(
     ids.add(id);
     nuevos.push({
       id,
+      ambito: 'hogar',
       nombre,
       nombreNormalizado: normalizarTexto(nombre),
       sinonimos: [],

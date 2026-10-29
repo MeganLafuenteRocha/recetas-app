@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { esAdmin, EstadoUsuario, puedeUsarLaApp, RolUsuario, Usuario } from './usuario.model';
 
-const usuario = (rol: RolUsuario, estado: EstadoUsuario): Usuario => ({
+const usuario = (rol: RolUsuario, estado: EstadoUsuario, hogarId: string | null = 'hog_casa'): Usuario => ({
   uid: 'u1',
   nombre: 'Prueba',
   email: 'prueba@ejemplo.com',
   foto: null,
   rol,
   estado,
+  hogarId,
   creadoEn: new Date(2026, 0, 1),
 });
 
@@ -24,5 +25,9 @@ describe('permisos de usuario', () => {
     const u = usuario(rol, estado);
     expect(esAdmin(u)).toBe(admin);
     expect(puedeUsarLaApp(u)).toBe(usa);
+  });
+
+  it('una cuenta activa sin hogar todavía no puede usar la app', () => {
+    expect(puedeUsarLaApp(usuario('usuario', 'activo', null))).toBe(false);
   });
 });

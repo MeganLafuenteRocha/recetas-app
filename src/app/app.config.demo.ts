@@ -11,6 +11,7 @@ import { SesionStore } from './application/stores/sesion.store';
 import { CatalogoRepository } from './domain/catalogos/catalogo.port';
 import { DespensaRepository } from './domain/despensa/despensa.port';
 import { GrupoRepository } from './domain/grupos/grupo.port';
+import { HogarRepository } from './domain/hogares/hogar.port';
 import { IngredienteRepository } from './domain/ingredientes/ingrediente.port';
 import { ListaRepository } from './domain/listas/lista.port';
 import { EstimadorNutricional } from './domain/nutricion/estimador.port';
@@ -34,6 +35,7 @@ export const appConfig: ApplicationConfig = {
 
     { provide: SesionPort, useExisting: memoria.SesionMemoria },
     { provide: UsuarioRepository, useExisting: memoria.UsuariosMemoria },
+    { provide: HogarRepository, useExisting: memoria.HogaresMemoria },
     { provide: CatalogoRepository, useExisting: memoria.CatalogosMemoria },
     { provide: IngredienteRepository, useExisting: memoria.IngredientesMemoria },
     { provide: RecetaRepository, useExisting: memoria.RecetasMemoria },

@@ -4,8 +4,8 @@ import { Usuario } from '../../domain/usuarios/usuario.model';
 import { UsuarioRepository } from '../../domain/usuarios/usuario.port';
 
 /**
- * Regla de negocio del ingreso: toda cuenta nueva nace "pendiente"
- * y solo la administradora la activa después.
+ * Regla de negocio del ingreso: toda cuenta nueva nace "pendiente" y sin hogar;
+ * solo la administradora la activa y la deja en un hogar.
  */
 @Injectable({ providedIn: 'root' })
 export class IniciarSesionUseCase {
@@ -24,6 +24,7 @@ export class IniciarSesionUseCase {
       foto: cuenta.foto,
       rol: 'usuario',
       estado: 'pendiente',
+      hogarId: null,
       creadoEn: new Date(),
     };
     await this.usuarios.crearPendiente(nuevo);

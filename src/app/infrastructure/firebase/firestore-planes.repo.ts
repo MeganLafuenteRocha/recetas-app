@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   collection,
+  CollectionReference,
   doc,
   documentId,
   DocumentData,
@@ -12,6 +13,7 @@ import {
   Timestamp,
   where,
 } from 'firebase/firestore';
+import { HogarActualStore } from '../../application/stores/hogar-actual.store';
 import { EleccionFranja, PlanDia } from '../../domain/planificacion/plan.model';
 import { PlanRepository } from '../../domain/planificacion/plan.port';
 import { db } from './firebase.providers';
@@ -24,17 +26,24 @@ function aPlan(fecha: string, data: DocumentData): PlanDia {
   };
 }
 
+/** hogares/{hogarId}/planes/{fecha}. */
 @Injectable({ providedIn: 'root' })
 export class FirestorePlanesRepo extends PlanRepository {
+  private readonly hogar = inject(HogarActualStore);
+
+  private coleccion(): CollectionReference {
+    return collection(db, 'hogares', this.hogar.requerido(), 'planes');
+  }
+
   async obtenerDia(fecha: string): Promise<PlanDia | null> {
-    const snap = await getDoc(doc(db, 'planes', fecha));
+    const snap = await getDoc(doc(this.coleccion(), fecha));
     return snap.exists() ? aPlan(fecha, snap.data()) : null;
   }
 
   async obtenerRango(desde: string, hasta: string): Promise<PlanDia[]> {
     // El id del documento ES la fecha (YYYY-MM-DD), así que se ordena como texto.
     const q = query(
-      collection(db, 'planes'),
+      this.coleccion(),
       where(documentId(), '>=', desde),
       where(documentId(), '<=', hasta),
     );
@@ -43,7 +52,7 @@ export class FirestorePlanesRepo extends PlanRepository {
   }
 
   async guardarDia(plan: PlanDia): Promise<void> {
-    await setDoc(doc(db, 'planes', plan.fecha), {
+    await setDoc(doc(this.coleccion(), plan.fecha), {
       elecciones: plan.elecciones,
       creadoEn: serverTimestamp(),
     });

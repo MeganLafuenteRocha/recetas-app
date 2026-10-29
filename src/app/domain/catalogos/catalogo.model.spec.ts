@@ -22,6 +22,7 @@ const base: Catalogos = {
 
 const papa: Ingrediente = {
   id: 'ing_papa',
+  ambito: 'comun',
   nombre: 'Papa',
   nombreNormalizado: 'papa',
   sinonimos: [],

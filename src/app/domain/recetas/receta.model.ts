@@ -1,3 +1,4 @@
+import { Ambito } from '../hogares/hogar.model';
 import { normalizarTexto } from '../ingredientes/ingrediente.model';
 import { NutricionPorcion } from '../nutricion/nutricion.model';
 
@@ -40,6 +41,8 @@ export interface TiempoReceta {
 
 export interface Receta {
   id: string;
+  /** 'comun': semilla para todos los hogares; 'hogar': propia (o copia editada de una común). */
+  ambito: Ambito;
   activo: boolean;
   nombre: string;
   descripcion: string;
@@ -79,6 +82,7 @@ export function idParaReceta(nombre: string, existentes: ReadonlySet<string>): s
 export function recetaNueva(tipoComida: string, tipoCocina: string): Receta {
   return {
     id: '',
+    ambito: 'hogar',
     activo: true,
     nombre: '',
     descripcion: '',

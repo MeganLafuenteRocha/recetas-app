@@ -12,6 +12,7 @@ import { SesionStore } from './application/stores/sesion.store';
 import { CatalogoRepository } from './domain/catalogos/catalogo.port';
 import { DespensaRepository } from './domain/despensa/despensa.port';
 import { GrupoRepository } from './domain/grupos/grupo.port';
+import { HogarRepository } from './domain/hogares/hogar.port';
 import { IngredienteRepository } from './domain/ingredientes/ingrediente.port';
 import { ListaRepository } from './domain/listas/lista.port';
 import { EstimadorNutricional } from './domain/nutricion/estimador.port';
@@ -25,6 +26,7 @@ import { AuthAdapter } from './infrastructure/firebase/auth.adapter';
 import { FirestoreCatalogosRepo } from './infrastructure/firebase/firestore-catalogos.repo';
 import { FirestoreDespensaRepo } from './infrastructure/firebase/firestore-despensa.repo';
 import { FirestoreGruposRepo } from './infrastructure/firebase/firestore-grupos.repo';
+import { FirestoreHogaresRepo } from './infrastructure/firebase/firestore-hogares.repo';
 import { FirestoreIngredientesRepo } from './infrastructure/firebase/firestore-ingredientes.repo';
 import { FirestoreListasRepo } from './infrastructure/firebase/firestore-listas.repo';
 import { FirestorePlanesRepo } from './infrastructure/firebase/firestore-planes.repo';
@@ -43,6 +45,7 @@ export const appConfig: ApplicationConfig = {
     // Puertos del dominio → adaptadores de infraestructura (hexagonal)
     { provide: SesionPort, useExisting: AuthAdapter },
     { provide: UsuarioRepository, useExisting: FirestoreUsuariosRepo },
+    { provide: HogarRepository, useExisting: FirestoreHogaresRepo },
     { provide: CatalogoRepository, useExisting: FirestoreCatalogosRepo },
     { provide: IngredienteRepository, useExisting: FirestoreIngredientesRepo },
     { provide: RecetaRepository, useExisting: FirestoreRecetasRepo },

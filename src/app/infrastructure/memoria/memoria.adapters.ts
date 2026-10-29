@@ -11,6 +11,8 @@ import { Despensa } from '../../domain/despensa/despensa.model';
 import { DespensaRepository } from '../../domain/despensa/despensa.port';
 import { Grupo } from '../../domain/grupos/grupo.model';
 import { GrupoRepository } from '../../domain/grupos/grupo.port';
+import { Hogar } from '../../domain/hogares/hogar.model';
+import { HogarRepository } from '../../domain/hogares/hogar.port';
 import { Ingrediente } from '../../domain/ingredientes/ingrediente.model';
 import { IngredienteRepository } from '../../domain/ingredientes/ingrediente.port';
 import { ListaCompra } from '../../domain/listas/lista.model';
@@ -48,6 +50,7 @@ function recetasDemo(): Receta[] {
     const n = NUTRICION_DEMO[r.id];
     return {
       ...r,
+      ambito: 'comun',
       nutricionPorcion: n ? { kcal: n[0], proteinaG: n[1], carbohidratosG: n[2], grasaG: n[3] } : null,
       nutricionConOpcionales: n ? { kcal: n[0] + 30, proteinaG: n[1], carbohidratosG: n[2] + 4, grasaG: n[3] + 1 } : null,
       nutricionCalculadaEn: null,
@@ -62,6 +65,7 @@ const ADMIN_DEMO: Usuario = {
   foto: null,
   rol: 'admin',
   estado: 'activo',
+  hogarId: 'hog_demo',
   creadoEn: new Date(),
 };
 
@@ -81,8 +85,8 @@ export class SesionMemoria extends SesionPort {
 export class UsuariosMemoria extends UsuarioRepository {
   private usuarios: Usuario[] = [
     ADMIN_DEMO,
-    { ...ADMIN_DEMO, uid: 'u1', nombre: 'María Rocha', email: 'maria.rocha@gmail.com', rol: 'usuario', estado: 'pendiente', creadoEn: new Date(Date.now() - 2 * 3600_000) },
-    { ...ADMIN_DEMO, uid: 'u2', nombre: 'Jorge Vega', email: 'jorgevega88@gmail.com', rol: 'usuario', estado: 'pendiente', creadoEn: new Date(Date.now() - 86_400_000) },
+    { ...ADMIN_DEMO, uid: 'u1', nombre: 'María Rocha', email: 'maria.rocha@gmail.com', rol: 'usuario', estado: 'pendiente', hogarId: null, creadoEn: new Date(Date.now() - 2 * 3600_000) },
+    { ...ADMIN_DEMO, uid: 'u2', nombre: 'Jorge Vega', email: 'jorgevega88@gmail.com', rol: 'usuario', estado: 'pendiente', hogarId: null, creadoEn: new Date(Date.now() - 86_400_000) },
   ];
   async obtener(uid: string) {
     return this.usuarios.find((u) => u.uid === uid) ?? null;
@@ -95,6 +99,20 @@ export class UsuariosMemoria extends UsuarioRepository {
   }
   async cambiarEstado(uid: string, estado: EstadoUsuario) {
     this.usuarios = this.usuarios.map((u) => (u.uid === uid ? { ...u, estado } : u));
+  }
+  async activarEnHogar(uid: string, hogarId: string) {
+    this.usuarios = this.usuarios.map((u) => (u.uid === uid ? { ...u, estado: 'activo' as const, hogarId } : u));
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class HogaresMemoria extends HogarRepository {
+  private hogares: Hogar[] = [{ id: 'hog_demo', nombre: 'Hogar de demostración', creadoEn: new Date() }];
+  async obtenerTodos() {
+    return copia(this.hogares);
+  }
+  async crear(h: Hogar) {
+    this.hogares.push(h);
   }
 }
 
@@ -114,16 +132,22 @@ export class CatalogosMemoria extends CatalogoRepository {
 
 @Injectable({ providedIn: 'root' })
 export class IngredientesMemoria extends IngredienteRepository {
-  async obtenerTodos() {
-    return copia(ingredientes) as Ingrediente[];
+  async obtenerComunes() {
+    return (copia(ingredientes) as Omit<Ingrediente, 'ambito'>[]).map((i) => ({ ...i, ambito: 'comun' as const }));
+  }
+  async obtenerPropios() {
+    return [];
   }
   async guardarLote() {}
 }
 
 @Injectable({ providedIn: 'root' })
 export class RecetasMemoria extends RecetaRepository {
-  async obtenerTodas() {
+  async obtenerComunes() {
     return recetasDemo();
+  }
+  async obtenerPropias() {
+    return [];
   }
   async guardar() {}
 }

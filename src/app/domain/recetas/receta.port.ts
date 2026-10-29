@@ -1,8 +1,12 @@
 import { Receta } from './receta.model';
 
 export abstract class RecetaRepository {
-  abstract obtenerTodas(): Promise<Receta[]>;
+  /** Recetario semilla: recetas/{id}. */
+  abstract obtenerComunes(): Promise<Receta[]>;
 
-  /** Alta o edición (S9/S10: el editor y la nutrición por IA pasan por aquí). */
+  /** Propias del hogar actual: hogares/{hogarId}/recetas/{id}. */
+  abstract obtenerPropias(): Promise<Receta[]>;
+
+  /** Alta o edición: va a lo común o al hogar según receta.ambito. */
   abstract guardar(receta: Receta): Promise<void>;
 }

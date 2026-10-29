@@ -10,6 +10,7 @@ import {
 
 const arveja: Ingrediente = {
   id: 'ing_arveja',
+  ambito: 'comun',
   nombre: 'Arveja',
   nombreNormalizado: 'arveja',
   sinonimos: ['arverja', 'alverja'],

@@ -4,6 +4,7 @@ import { EspacioIngrediente, Receta, RolIngrediente } from './receta.model';
 export function recetaDePrueba(parcial: Partial<Receta> = {}): Receta {
   return {
     id: 'rec_test',
+    ambito: 'comun',
     activo: true,
     nombre: 'Receta de prueba',
     descripcion: '',

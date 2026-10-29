@@ -9,6 +9,7 @@ import {
 import { RecetaRepository } from '../../domain/recetas/receta.port';
 import { IngredientesStore } from '../stores/ingredientes.store';
 import { RecetasStore } from '../stores/recetas.store';
+import { HogarActualStore } from '../stores/hogar-actual.store';
 
 export interface ResultadoGuardado {
   receta: Receta | null;
@@ -19,6 +20,7 @@ export interface ResultadoGuardado {
 
 /**
  * Alta o edición de una receta. ÚNICO lugar donde se llama a la IA (una vez por guardado).
+ * Decide el ámbito: lo común solo lo edita la admin; las demás cuentas editan una copia propia.
  * La receta se guarda SIEMPRE: si la IA falla, la nutrición queda null para recalcular después.
  */
 @Injectable({ providedIn: 'root' })
@@ -27,12 +29,14 @@ export class GuardarRecetaUseCase {
   private readonly estimador = inject(EstimadorNutricional);
   private readonly recetas = inject(RecetasStore);
   private readonly ingredientes = inject(IngredientesStore);
+  private readonly hogar = inject(HogarActualStore);
 
   async ejecutar(borrador: Receta, recalcularNutricion: boolean): Promise<ResultadoGuardado> {
     const errores = validarReceta(borrador);
     if (errores.length > 0) return { receta: null, errores, nutricionPendiente: false };
 
-    let receta = prepararParaGuardar(borrador);
+    // Una cuenta normal que edita una receta común guarda SU copia (mismo id, en su hogar).
+    let receta: Receta = { ...prepararParaGuardar(borrador), ambito: this.hogar.ambitoAlGuardar() };
     if (!receta.id) {
       receta = { ...receta, id: idParaReceta(receta.nombre, new Set(this.recetas.porId().keys())) };
     }

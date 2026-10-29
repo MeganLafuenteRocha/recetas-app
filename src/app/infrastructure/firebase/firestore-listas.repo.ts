@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   collection,
+  CollectionReference,
   deleteDoc,
   doc,
   DocumentData,
@@ -9,6 +10,7 @@ import {
   setDoc,
   Timestamp,
 } from 'firebase/firestore';
+import { HogarActualStore } from '../../application/stores/hogar-actual.store';
 import { ItemLista, ListaCompra, OrigenLista } from '../../domain/listas/lista.model';
 import { ListaRepository } from '../../domain/listas/lista.port';
 import { db } from './firebase.providers';
@@ -24,22 +26,29 @@ function aLista(id: string, data: DocumentData): ListaCompra {
   };
 }
 
+/** hogares/{hogarId}/listas/{id}. */
 @Injectable({ providedIn: 'root' })
 export class FirestoreListasRepo extends ListaRepository {
+  private readonly hogar = inject(HogarActualStore);
+
+  private coleccion(): CollectionReference {
+    return collection(db, 'hogares', this.hogar.requerido(), 'listas');
+  }
+
   async obtenerTodas(): Promise<ListaCompra[]> {
-    const snap = await getDocs(collection(db, 'listas'));
+    const snap = await getDocs(this.coleccion());
     return snap.docs.map((d) => aLista(d.id, d.data()));
   }
 
   async guardar(lista: ListaCompra): Promise<void> {
     const { id, creadaEn, ...datos } = lista;
-    await setDoc(doc(db, 'listas', id), {
+    await setDoc(doc(this.coleccion(), id), {
       ...datos,
       creadaEn: creadaEn ? Timestamp.fromDate(creadaEn) : serverTimestamp(),
     });
   }
 
   async eliminar(id: string): Promise<void> {
-    await deleteDoc(doc(db, 'listas', id));
+    await deleteDoc(doc(this.coleccion(), id));
   }
 }

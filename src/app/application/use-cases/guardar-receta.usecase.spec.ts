@@ -4,13 +4,17 @@ import { EstimacionNutricional, EstimadorNutricional } from '../../domain/nutric
 import { espacio, recetaDePrueba } from '../../domain/recetas/receta.fixtures';
 import { Receta } from '../../domain/recetas/receta.model';
 import { RecetaRepository } from '../../domain/recetas/receta.port';
+import { HogarActualStore } from '../stores/hogar-actual.store';
 import { RecetasStore } from '../stores/recetas.store';
 import { GuardarRecetaUseCase } from './guardar-receta.usecase';
 
 /** Puertos falsos: el caso de uso se prueba sin Firebase ni Gemini (hexagonal). */
 class RepoFalso extends RecetaRepository {
   guardadas: Receta[] = [];
-  async obtenerTodas() {
+  async obtenerComunes() {
+    return [];
+  }
+  async obtenerPropias() {
     return [];
   }
   async guardar(r: Receta) {
@@ -48,6 +52,7 @@ describe('GuardarRecetaUseCase', () => {
       ],
     });
     casoDeUso = TestBed.inject(GuardarRecetaUseCase);
+    TestBed.inject(HogarActualStore).fijar('hog_casa', false);
   });
 
   it('no guarda una receta inválida y explica por qué', async () => {
@@ -98,6 +103,19 @@ describe('GuardarRecetaUseCase', () => {
     );
     expect(repo.guardadas[0]).toMatchObject({ nombre: 'Sopa de maní', tiempo: { totalMin: 15 } });
     expect(r.receta?.nutricionCalculadaEn).toBeNull();
+  });
+
+  it('una cuenta normal que edita una receta común guarda su copia en el hogar, con el mismo id', async () => {
+    const comun = { ...valida(), id: 'rec_silpancho', ambito: 'comun' as const };
+    const r = await casoDeUso.ejecutar(comun, false);
+    expect(r.receta).toMatchObject({ id: 'rec_silpancho', ambito: 'hogar' });
+    expect(repo.guardadas[0]?.ambito).toBe('hogar');
+  });
+
+  it('la admin edita la receta común directamente (modo prueba)', async () => {
+    TestBed.inject(HogarActualStore).fijar('hog_casa', true);
+    const r = await casoDeUso.ejecutar({ ...valida(), id: 'rec_silpancho', ambito: 'comun' }, false);
+    expect(r.receta?.ambito).toBe('comun');
   });
 
   it('con IA guarda la fecha del cálculo', async () => {

@@ -4,6 +4,7 @@ import { esAdmin, puedeUsarLaApp, Usuario } from '../../domain/usuarios/usuario.
 import { UsuarioRepository } from '../../domain/usuarios/usuario.port';
 import { CargarDatosInicialesUseCase } from '../use-cases/cargar-datos-iniciales.usecase';
 import { IniciarSesionUseCase } from '../use-cases/iniciar-sesion.usecase';
+import { HogarActualStore } from './hogar-actual.store';
 
 export type FaseSesion = 'cargando' | 'anonimo' | 'con-sesion';
 
@@ -13,6 +14,7 @@ export class SesionStore {
   private readonly usuarios = inject(UsuarioRepository);
   private readonly iniciarSesion = inject(IniciarSesionUseCase);
   private readonly cargarDatos = inject(CargarDatosInicialesUseCase);
+  private readonly hogar = inject(HogarActualStore);
 
   private readonly _fase = signal<FaseSesion>('cargando');
   private readonly _usuario = signal<Usuario | null>(null);
@@ -38,8 +40,7 @@ export class SesionStore {
       this._fase.set('anonimo');
       return;
     }
-    const usuario = await this.iniciarSesion.ejecutar(cuenta);
-    this._usuario.set(usuario);
+    this.ponerUsuario(await this.iniciarSesion.ejecutar(cuenta));
     this._fase.set('con-sesion');
     await this.cargarSiActiva();
   }
@@ -48,8 +49,7 @@ export class SesionStore {
     this._error.set(null);
     try {
       const cuenta = await this.sesion.iniciarConGoogle();
-      const usuario = await this.iniciarSesion.ejecutar(cuenta);
-      this._usuario.set(usuario);
+      this.ponerUsuario(await this.iniciarSesion.ejecutar(cuenta));
       this._fase.set('con-sesion');
       await this.cargarSiActiva();
     } catch {
@@ -62,8 +62,14 @@ export class SesionStore {
     const actual = this._usuario();
     if (!actual) return;
     const fresco = await this.usuarios.obtener(actual.uid);
-    if (fresco) this._usuario.set(fresco);
+    if (fresco) this.ponerUsuario(fresco);
     await this.cargarSiActiva();
+  }
+
+  /** El hogar viaja con el usuario: los adaptadores lo necesitan para armar las rutas. */
+  private ponerUsuario(usuario: Usuario | null): void {
+    this._usuario.set(usuario);
+    this.hogar.fijar(usuario?.hogarId ?? null, usuario !== null && esAdmin(usuario));
   }
 
   /** La única puerta a los datos: se cargan una vez, solo con cuenta activa. */
@@ -75,7 +81,7 @@ export class SesionStore {
 
   async salir(): Promise<void> {
     await this.sesion.cerrarSesion();
-    this._usuario.set(null);
+    this.ponerUsuario(null);
     this._fase.set('anonimo');
   }
 }

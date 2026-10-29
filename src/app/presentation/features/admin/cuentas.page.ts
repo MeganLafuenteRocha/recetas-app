@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } 
 import { RouterLink } from '@angular/router';
 import { AdministrarCuentasUseCase } from '../../../application/use-cases/administrar-cuentas.usecase';
 import { EstadoUsuario, Usuario } from '../../../domain/usuarios/usuario.model';
+import { HojaComponent } from '../../ui/hoja.component';
 
 const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
   { estado: 'pendiente', nombre: 'Pendientes' },
@@ -9,10 +10,13 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
   { estado: 'bloqueado', nombre: 'Bloqueadas' },
 ];
 
-/** Pantalla 17 (solo admin): activar, rechazar o reactivar cuentas. */
+/** Valor del selector para crear un hogar en el momento. */
+const NUEVO = '__nuevo__';
+
+/** Pantalla 17 (solo admin): activar en un hogar, rechazar o reactivar cuentas. */
 @Component({
   selector: 'app-cuentas',
-  imports: [RouterLink],
+  imports: [RouterLink, HojaComponent],
   template: `
     <main class="vista">
       <header class="cabecera">
@@ -46,6 +50,7 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
               <div class="datos">
                 <strong>{{ u.nombre }}</strong>
                 <small>{{ u.email }}</small>
+                @if (u.hogarId) { <small class="hogar"><span class="icono">home</span> {{ cuentas.nombreHogar(u.hogarId) }}</small> }
               </div>
               <span class="cuando">{{ hace(u) }}</span>
             </div>
@@ -55,7 +60,7 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
                   <button type="button" class="btn btn-borde-plomo" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'bloqueado')">
                     <span class="icono">block</span> Rechazar
                   </button>
-                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'activo')">
+                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="abrirActivar(u)">
                     <span class="icono">check</span> Activar
                   </button>
                 }
@@ -69,7 +74,7 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
                   }
                 }
                 @case ('bloqueado') {
-                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'activo')">
+                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="reactivar(u)">
                     <span class="icono">lock_open</span> Reactivar
                   </button>
                 }
@@ -84,8 +89,30 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
         }
       }
 
-      <p class="aviso"><span class="icono">info</span> Las cuentas nuevas entran como pendientes. Solo tú puedes activarlas.</p>
+      <p class="aviso"><span class="icono">info</span> Las cuentas nuevas entran como pendientes. Al activarlas eliges su hogar: cada hogar ve solo su despensa, planes, listas y recetas propias.</p>
     </main>
+
+    @if (activando(); as u) {
+      <app-hoja [titulo]="'Activar a ' + u.nombre" (cerrar)="activando.set(null)">
+        <label class="campo">
+          <span>Hogar</span>
+          <select [value]="hogarElegido()" (change)="hogarElegido.set($any($event.target).value)">
+            @for (h of cuentas.hogares(); track h.id) {
+              <option [value]="h.id">{{ h.nombre }}</option>
+            }
+            <option [value]="nuevo">+ Hogar nuevo…</option>
+          </select>
+        </label>
+        @if (hogarElegido() === nuevo) {
+          <label class="campo">
+            <span>Nombre del hogar nuevo</span>
+            <input type="text" placeholder="Familia Rocha" [value]="nombreNuevo()" (input)="nombreNuevo.set($any($event.target).value)" />
+          </label>
+        }
+        @if (error(); as e) { <p class="aviso error"><span class="icono">error</span> {{ e }}</p> }
+        <button type="button" class="btn btn-primario ancho" [disabled]="ocupado() === u.uid" (click)="confirmarActivar(u)">Activar</button>
+      </app-hoja>
+    }
   `,
   styles: `
     .segmentado small { font-size: 11px; opacity: 0.8; }
@@ -96,6 +123,8 @@ const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
     .datos { flex: 1; display: flex; flex-direction: column; min-width: 0; }
     .datos strong { font-size: 14px; color: var(--plomo-900); }
     .datos small { color: var(--plomo-500); font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
+    .datos .hogar { display: flex; align-items: center; gap: 3px; color: var(--plomo-700); }
+    .datos .hogar .icono { font-size: 13px; }
     .cuando { font-size: 10px; font-weight: 500; color: var(--alerta); background: #b7791f1a; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
     .acciones { display: flex; gap: 8px; }
     .acciones .btn { flex: 1; padding: 9px; }
@@ -112,7 +141,14 @@ export class CuentasPage {
 
   protected readonly lista = computed(() => this.cuentas.cuentas(this.pestana()));
 
+  protected readonly nuevo = NUEVO;
+  protected readonly activando = signal<Usuario | null>(null);
+  protected readonly hogarElegido = signal<string>(NUEVO);
+  protected readonly nombreNuevo = signal('');
+  protected readonly error = signal<string | null>(null);
+
   constructor() {
+    void this.cuentas.cargarHogares();
     // Cada pestaña consulta la primera vez que se abre.
     effect(() => {
       const estado = this.pestana();
@@ -127,6 +163,40 @@ export class CuentasPage {
     } finally {
       this.cargando.set(false);
     }
+  }
+
+  protected abrirActivar(u: Usuario): void {
+    this.error.set(null);
+    this.nombreNuevo.set('');
+    this.hogarElegido.set(this.cuentas.hogares()[0]?.id ?? NUEVO);
+    this.activando.set(u);
+  }
+
+  protected async confirmarActivar(u: Usuario): Promise<void> {
+    this.ocupado.set(u.uid);
+    this.error.set(null);
+    try {
+      let hogarId: string | null = this.hogarElegido();
+      if (hogarId === NUEVO) {
+        const creado = await this.cuentas.crearHogar(this.nombreNuevo());
+        if (creado.error) {
+          this.error.set(creado.error);
+          return;
+        }
+        hogarId = creado.id;
+      }
+      if (!hogarId) return;
+      await this.cuentas.activarEnHogar(u, hogarId);
+      this.activando.set(null);
+    } finally {
+      this.ocupado.set(null);
+    }
+  }
+
+  /** Una cuenta bloqueada vuelve a su hogar; si nunca tuvo uno, se elige al reactivarla. */
+  protected reactivar(u: Usuario): void {
+    if (u.hogarId) void this.cambiar(u, 'activo');
+    else this.abrirActivar(u);
   }
 
   protected async cambiar(u: Usuario, estado: EstadoUsuario): Promise<void> {

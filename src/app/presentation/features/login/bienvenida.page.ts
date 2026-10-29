@@ -29,6 +29,7 @@ export class BienvenidaPage {
 
   async salir(): Promise<void> {
     await this.sesion.salir();
-    await this.router.navigateByUrl('/login');
+    // Recarga completa: no queda en memoria nada del hogar anterior.
+    window.location.assign('/login');
   }
 }

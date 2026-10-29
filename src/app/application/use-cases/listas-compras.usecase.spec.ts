@@ -34,6 +34,7 @@ class DespensaFalsa extends DespensaRepository {
 
 const ingrediente = (id: string, nombre: string, esBasico = false): Ingrediente => ({
   id,
+  ambito: 'comun',
   nombre,
   nombreNormalizado: nombre.toLowerCase(),
   sinonimos: [],

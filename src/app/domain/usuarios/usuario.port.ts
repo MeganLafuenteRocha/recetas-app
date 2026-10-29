@@ -15,4 +15,7 @@ export abstract class UsuarioRepository {
 
   /** Solo admin. */
   abstract cambiarEstado(uid: string, estado: EstadoUsuario): Promise<void>;
+
+  /** Solo admin: activa la cuenta y la deja en un hogar, en una sola escritura. */
+  abstract activarEnHogar(uid: string, hogarId: string): Promise<void>;
 }
