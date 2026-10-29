@@ -33,8 +33,21 @@ export class SesionStore {
     return u !== null && esAdmin(u);
   });
 
-  /** Al arrancar la app: restaura la sesión guardada, si la hay. */
+  /**
+   * Al arrancar la app: restaura la sesión guardada, si la hay.
+   * Sin sesión previa en este dispositivo no se espera a Auth: el login se pinta ya
+   * (mejor LCP) y, si Auth igual encuentra una sesión, el login redirige solo.
+   */
   async restaurar(): Promise<void> {
+    if (!this.sesion.haySesionGuardada()) {
+      this._fase.set('anonimo');
+      void this.restaurarSesion();
+      return;
+    }
+    await this.restaurarSesion();
+  }
+
+  private async restaurarSesion(): Promise<void> {
     const cuenta = await this.sesion.cuentaActual();
     if (!cuenta) {
       this._fase.set('anonimo');

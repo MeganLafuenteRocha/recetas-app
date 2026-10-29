@@ -79,6 +79,9 @@ export class SesionMemoria extends SesionPort {
     return this.cuenta;
   }
   async cerrarSesion(): Promise<void> {}
+  haySesionGuardada(): boolean {
+    return true;
+  }
 }
 
 @Injectable({ providedIn: 'root' })

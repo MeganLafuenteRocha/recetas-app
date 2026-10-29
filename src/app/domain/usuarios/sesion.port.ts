@@ -18,4 +18,10 @@ export abstract class SesionPort {
   abstract cuentaActual(): Promise<CuentaExterna | null>;
 
   abstract cerrarSesion(): Promise<void>;
+
+  /**
+   * Respuesta inmediata (sin esperar a la red): ¿este dispositivo tenía una sesión abierta?
+   * Si no, la app pinta el login enseguida en vez de esperar a que Auth termine de arrancar.
+   */
+  abstract haySesionGuardada(): boolean;
 }
