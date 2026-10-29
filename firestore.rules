@@ -7,6 +7,7 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Un get() por petición (Firestore lo cobra como 1 lectura, aunque se llame varias veces).
     function datosMios() {
       return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
     }
@@ -21,34 +22,37 @@ service cloud.firestore {
       return esActivo() && datosMios().rol == 'admin';
     }
 
-    // Cuentas: cada quien crea SOLO su propio doc, siempre pendiente y sin rol admin.
+    // Activa Y de ESTE hogar: un hogar nunca ve ni toca los datos de otro.
+    function esMiembro(hogarId) {
+      return esActivo() && datosMios().get('hogarId', null) == hogarId;
+    }
+
+    // Cuentas: cada quien crea SOLO su propio doc, siempre pendiente, sin rol admin y sin hogar.
+    // El hogar y la activación los pone solo la admin.
     match /usuarios/{uid} {
       allow get: if conSesion() && (request.auth.uid == uid || esAdmin());
       allow list: if esAdmin();
       allow create: if conSesion()
         && request.auth.uid == uid
         && request.resource.data.estado == 'pendiente'
-        && request.resource.data.rol == 'usuario';
+        && request.resource.data.rol == 'usuario'
+        && request.resource.data.get('hogarId', null) == null;
       allow update: if esAdmin();
       allow delete: if false;
     }
 
-    // Datos de la app: exigen cuenta activada por la administradora.
+    // Semillas comunes: las leen todas las cuentas activas; solo la admin las edita.
     match /catalogos/{doc} {
       allow read: if esActivo();
       allow write: if esAdmin();
     }
     match /ingredientes/{doc} {
-      allow read, write: if esActivo();
+      allow read: if esActivo();
+      allow write: if esAdmin();
     }
     match /recetas/{doc} {
-      allow read, write: if esActivo();
-    }
-    match /planes/{doc} {
-      allow read, write: if esActivo();
-    }
-    match /listas/{doc} {
-      allow read, write: if esActivo();
+      allow read: if esActivo();
+      allow write: if esAdmin();
     }
     match /grupos/{doc} {
       allow read: if esActivo();
@@ -56,7 +60,23 @@ service cloud.firestore {
     }
     match /config/{doc} {
       allow read: if esActivo();
-      allow write: if esActivo();
+      allow write: if esAdmin();
     }
+
+    // Hogares: la admin los crea y los lista para asignar cuentas.
+    match /hogares/{hogarId} {
+      allow read: if esMiembro(hogarId) || esAdmin();
+      allow create, update: if esAdmin();
+      allow delete: if false;
+
+      // Todo lo del hogar (despensa, preferencias, planes, listas, recetas e ingredientes propios):
+      // solo sus miembros. La admin tampoco entra a los datos de otro hogar.
+      match /{coleccion}/{doc} {
+        allow read, write: if esMiembro(hogarId);
+      }
+    }
+
+    // Lo de antes de los hogares (planes/, listas/, config/despensa…) queda cerrado:
+    // el script de migración lo copia con firebase-admin, que no pasa por estas reglas.
   }
 }
