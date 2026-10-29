@@ -526,7 +526,8 @@
     "nombre": "Pasas",
     "nombreNormalizado": "pasas",
     "sinonimos": [
-      "uvas pasas"
+      "uvas pasas",
+      "pasas de uva"
     ],
     "categoria": "abarrotes",
     "esBasico": false,
@@ -931,7 +932,9 @@
     "id": "ing_huacatay",
     "nombre": "Huacatay",
     "nombreNormalizado": "huacatay",
-    "sinonimos": [],
+    "sinonimos": [
+      "wacataya"
+    ],
     "categoria": "verduras",
     "esBasico": false,
     "activo": true
@@ -1235,15 +1238,6 @@
     "sinonimos": [
       "plátano macho"
     ],
-    "categoria": "frutas",
-    "esBasico": false,
-    "activo": true
-  },
-  {
-    "id": "ing_pasas_de_uva",
-    "nombre": "Pasas de uva",
-    "nombreNormalizado": "pasas de uva",
-    "sinonimos": [],
     "categoria": "frutas",
     "esBasico": false,
     "activo": true
@@ -2469,15 +2463,6 @@
     "activo": true
   },
   {
-    "id": "ing_wacataya",
-    "nombre": "Wacataya",
-    "nombreNormalizado": "wacataya",
-    "sinonimos": [],
-    "categoria": "condimentos",
-    "esBasico": false,
-    "activo": true
-  },
-  {
     "id": "ing_polvo_de_hornear",
     "nombre": "Polvo de hornear",
     "nombreNormalizado": "polvo de hornear",
@@ -2954,40 +2939,6 @@
     "activo": true
   },
   {
-    "id": "ing_gallina",
-    "nombre": "Gallina",
-    "nombreNormalizado": "gallina",
-    "sinonimos": [
-      "gallina criolla"
-    ],
-    "categoria": "carnes",
-    "esBasico": false,
-    "activo": true
-  },
-  {
-    "id": "ing_manteca_de_cerdo",
-    "nombre": "Manteca de cerdo",
-    "nombreNormalizado": "manteca de cerdo",
-    "sinonimos": [
-      "manteca de chancho",
-      "grasa de cerdo"
-    ],
-    "categoria": "abarrotes",
-    "esBasico": false,
-    "activo": true
-  },
-  {
-    "id": "ing_queso_mascarpone",
-    "nombre": "Queso mascarpone",
-    "nombreNormalizado": "queso mascarpone",
-    "sinonimos": [
-      "mascarpone"
-    ],
-    "categoria": "lacteos",
-    "esBasico": false,
-    "activo": true
-  },
-  {
     "id": "ing_pinones",
     "nombre": "Piñones",
     "nombreNormalizado": "pinones",
@@ -3098,6 +3049,550 @@
       "pasta de miso"
     ],
     "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_papa_imilla",
+    "nombre": "Papa imilla",
+    "nombreNormalizado": "papa imilla",
+    "sinonimos": [
+      "papa blanca"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_papa_holandesa",
+    "nombre": "Papa holandesa",
+    "nombreNormalizado": "papa holandesa",
+    "sinonimos": [],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_achojcha",
+    "nombre": "Achojcha",
+    "nombreNormalizado": "achojcha",
+    "sinonimos": [
+      "caigua"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_aji_dulce",
+    "nombre": "Ají dulce",
+    "nombreNormalizado": "aji dulce",
+    "sinonimos": [
+      "ají no picante"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pimiento_amarillo",
+    "nombre": "Pimiento amarillo",
+    "nombreNormalizado": "pimiento amarillo",
+    "sinonimos": [
+      "morrón amarillo"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_rucula",
+    "nombre": "Rúcula",
+    "nombreNormalizado": "rucula",
+    "sinonimos": [
+      "arúgula"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_repollo_morado",
+    "nombre": "Repollo morado",
+    "nombreNormalizado": "repollo morado",
+    "sinonimos": [
+      "col morada"
+    ],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_hongos_secos",
+    "nombre": "Hongos secos",
+    "nombreNormalizado": "hongos secos",
+    "sinonimos": [],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_ulupica",
+    "nombre": "Ulupica",
+    "nombreNormalizado": "ulupica",
+    "sinonimos": [],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_lechuga_crespa",
+    "nombre": "Lechuga crespa",
+    "nombreNormalizado": "lechuga crespa",
+    "sinonimos": [],
+    "categoria": "verduras",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_frambuesa",
+    "nombre": "Frambuesa",
+    "nombreNormalizado": "frambuesa",
+    "sinonimos": [
+      "frambuesas"
+    ],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_guayaba",
+    "nombre": "Guayaba",
+    "nombreNormalizado": "guayaba",
+    "sinonimos": [],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_granadilla",
+    "nombre": "Granadilla",
+    "nombreNormalizado": "granadilla",
+    "sinonimos": [],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_toronja",
+    "nombre": "Toronja",
+    "nombreNormalizado": "toronja",
+    "sinonimos": [
+      "pomelo"
+    ],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_ciruela",
+    "nombre": "Ciruela",
+    "nombreNormalizado": "ciruela",
+    "sinonimos": [],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_cereza",
+    "nombre": "Cereza",
+    "nombreNormalizado": "cereza",
+    "sinonimos": [
+      "cerezas"
+    ],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pacay",
+    "nombre": "Pacay",
+    "nombreNormalizado": "pacay",
+    "sinonimos": [],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_banana_de_freir",
+    "nombre": "Banana de freír",
+    "nombreNormalizado": "banana de freir",
+    "sinonimos": [
+      "plátano de freír",
+      "plátano postre"
+    ],
+    "categoria": "frutas",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pollo_entero",
+    "nombre": "Pollo entero",
+    "nombreNormalizado": "pollo entero",
+    "sinonimos": [],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_chuleta_de_cerdo",
+    "nombre": "Chuleta de cerdo",
+    "nombreNormalizado": "chuleta de cerdo",
+    "sinonimos": [],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pierna_de_cerdo",
+    "nombre": "Pierna de cerdo",
+    "nombreNormalizado": "pierna de cerdo",
+    "sinonimos": [
+      "pernil"
+    ],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_carne_de_res_para_milanesa",
+    "nombre": "Carne de res para milanesa",
+    "nombreNormalizado": "carne de res para milanesa",
+    "sinonimos": [
+      "milanesa de res"
+    ],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_mortadela",
+    "nombre": "Mortadela",
+    "nombreNormalizado": "mortadela",
+    "sinonimos": [],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_jamon_de_pavo",
+    "nombre": "Jamón de pavo",
+    "nombreNormalizado": "jamon de pavo",
+    "sinonimos": [
+      "pechuga de pavo"
+    ],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_conejo",
+    "nombre": "Conejo",
+    "nombreNormalizado": "conejo",
+    "sinonimos": [],
+    "categoria": "carnes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_huevo_de_codorniz",
+    "nombre": "Huevo de codorniz",
+    "nombreNormalizado": "huevo de codorniz",
+    "sinonimos": [
+      "huevos de codorniz"
+    ],
+    "categoria": "lacteos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_sabalo",
+    "nombre": "Sábalo",
+    "nombreNormalizado": "sabalo",
+    "sinonimos": [],
+    "categoria": "pescados",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_leche_deslactosada",
+    "nombre": "Leche deslactosada",
+    "nombreNormalizado": "leche deslactosada",
+    "sinonimos": [],
+    "categoria": "lacteos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_yogur_griego",
+    "nombre": "Yogur griego",
+    "nombreNormalizado": "yogur griego",
+    "sinonimos": [],
+    "categoria": "lacteos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_crema_chantilly",
+    "nombre": "Crema chantilly",
+    "nombreNormalizado": "crema chantilly",
+    "sinonimos": [
+      "crema batida",
+      "nata montada"
+    ],
+    "categoria": "lacteos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_queso_suizo",
+    "nombre": "Queso suizo",
+    "nombreNormalizado": "queso suizo",
+    "sinonimos": [
+      "queso gruyere"
+    ],
+    "categoria": "lacteos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pan_integral",
+    "nombre": "Pan integral",
+    "nombreNormalizado": "pan integral",
+    "sinonimos": [],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_harina_integral",
+    "nombre": "Harina integral",
+    "nombreNormalizado": "harina integral",
+    "sinonimos": [
+      "harina de trigo integral"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_harina_de_arroz",
+    "nombre": "Harina de arroz",
+    "nombreNormalizado": "harina de arroz",
+    "sinonimos": [],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_harina_leudante",
+    "nombre": "Harina leudante",
+    "nombreNormalizado": "harina leudante",
+    "sinonimos": [
+      "harina con polvo de hornear"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_fideo_cabello_de_angel",
+    "nombre": "Fideo cabello de ángel",
+    "nombreNormalizado": "fideo cabello de angel",
+    "sinonimos": [
+      "cabellos de ángel"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_fideo_tallarin",
+    "nombre": "Fideo tallarín",
+    "nombreNormalizado": "fideo tallarin",
+    "sinonimos": [
+      "tallarines"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pan_tostado",
+    "nombre": "Pan tostado",
+    "nombreNormalizado": "pan tostado",
+    "sinonimos": [
+      "tostadas"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_maiz_para_pipocas",
+    "nombre": "Maíz para pipocas",
+    "nombreNormalizado": "maiz para pipocas",
+    "sinonimos": [
+      "pipocas",
+      "palomitas"
+    ],
+    "categoria": "cereales",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_ajo_en_polvo",
+    "nombre": "Ajo en polvo",
+    "nombreNormalizado": "ajo en polvo",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_cebolla_en_polvo",
+    "nombre": "Cebolla en polvo",
+    "nombreNormalizado": "cebolla en polvo",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_pimienta_blanca",
+    "nombre": "Pimienta blanca",
+    "nombreNormalizado": "pimienta blanca",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_eneldo",
+    "nombre": "Eneldo",
+    "nombreNormalizado": "eneldo",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_menta",
+    "nombre": "Menta",
+    "nombreNormalizado": "menta",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_vinagre_balsamico",
+    "nombre": "Vinagre balsámico",
+    "nombreNormalizado": "vinagre balsamico",
+    "sinonimos": [],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_salsa_barbacoa",
+    "nombre": "Salsa barbacoa",
+    "nombreNormalizado": "salsa barbacoa",
+    "sinonimos": [
+      "salsa bbq"
+    ],
+    "categoria": "condimentos",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_stevia",
+    "nombre": "Stevia",
+    "nombreNormalizado": "stevia",
+    "sinonimos": [
+      "edulcorante"
+    ],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_chispas_de_chocolate",
+    "nombre": "Chispas de chocolate",
+    "nombreNormalizado": "chispas de chocolate",
+    "sinonimos": [],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_flan_en_polvo",
+    "nombre": "Flan en polvo",
+    "nombreNormalizado": "flan en polvo",
+    "sinonimos": [
+      "pudín en polvo"
+    ],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_gelatina_de_sabor",
+    "nombre": "Gelatina de sabor",
+    "nombreNormalizado": "gelatina de sabor",
+    "sinonimos": [],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_miel_de_maple",
+    "nombre": "Miel de maple",
+    "nombreNormalizado": "miel de maple",
+    "sinonimos": [
+      "sirope",
+      "jarabe de maple"
+    ],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_fruta_confitada",
+    "nombre": "Fruta confitada",
+    "nombreNormalizado": "fruta confitada",
+    "sinonimos": [],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_galletas_de_chocolate",
+    "nombre": "Galletas de chocolate",
+    "nombreNormalizado": "galletas de chocolate",
+    "sinonimos": [
+      "galletas oreo"
+    ],
+    "categoria": "abarrotes",
+    "esBasico": false,
+    "activo": true
+  },
+  {
+    "id": "ing_harina_de_almendra",
+    "nombre": "Harina de almendra",
+    "nombreNormalizado": "harina de almendra",
+    "sinonimos": [],
+    "categoria": "abarrotes",
     "esBasico": false,
     "activo": true
   }

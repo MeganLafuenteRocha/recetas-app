@@ -993,6 +993,12 @@
         "rol": "esencial",
         "opciones": [
           {
+            "ingredienteId": "ing_maiz_blanco_pelado",
+            "cantidad": 250,
+            "unidad": "g",
+            "nota": "molido o remojado"
+          },
+          {
             "ingredienteId": "ing_harina_de_maiz",
             "cantidad": 1,
             "unidad": "taza",
@@ -3662,6 +3668,12 @@
         "rol": "condimento",
         "opciones": [
           {
+            "ingredienteId": "ing_aji_amarillo_fresco",
+            "cantidad": 1,
+            "unidad": "u",
+            "nota": "picado fino"
+          },
+          {
             "ingredienteId": "ing_aji_verde",
             "cantidad": 1,
             "unidad": "u",
@@ -4527,6 +4539,12 @@
         "orden": 8,
         "rol": "opcional",
         "opciones": [
+          {
+            "ingredienteId": "ing_crema_acida",
+            "cantidad": 0.5,
+            "unidad": "taza",
+            "nota": null
+          },
           {
             "ingredienteId": "ing_crema_de_leche",
             "cantidad": 0.5,
@@ -7487,6 +7505,12 @@
         "rol": "opcional",
         "opciones": [
           {
+            "ingredienteId": "ing_crema_acida",
+            "cantidad": 0.5,
+            "unidad": "taza",
+            "nota": null
+          },
+          {
             "ingredienteId": "ing_crema_de_leche",
             "cantidad": 0.5,
             "unidad": "taza",
@@ -8900,6 +8924,12 @@
         "rol": "opcional",
         "opciones": [
           {
+            "ingredienteId": "ing_queso_cheddar",
+            "cantidad": 4,
+            "unidad": "u",
+            "nota": "lonjas"
+          },
+          {
             "ingredienteId": "ing_queso_menonita",
             "cantidad": 4,
             "unidad": "u",
@@ -9127,6 +9157,12 @@
         "orden": 9,
         "rol": "opcional",
         "opciones": [
+          {
+            "ingredienteId": "ing_miel_de_maple",
+            "cantidad": 4,
+            "unidad": "cda",
+            "nota": "para servir"
+          },
           {
             "ingredienteId": "ing_miel",
             "cantidad": 4,
@@ -10876,6 +10912,12 @@
         "rol": "esencial",
         "opciones": [
           {
+            "ingredienteId": "ing_maiz_blanco_pelado",
+            "cantidad": 500,
+            "unidad": "g",
+            "nota": "pisado, remojado la noche anterior"
+          },
+          {
             "ingredienteId": "ing_mote_de_maiz",
             "cantidad": 500,
             "unidad": "g",
@@ -11494,6 +11536,12 @@
         "orden": 13,
         "rol": "opcional",
         "opciones": [
+          {
+            "ingredienteId": "ing_aji_amarillo_fresco",
+            "cantidad": 1,
+            "unidad": "u",
+            "nota": "en tiras"
+          },
           {
             "ingredienteId": "ing_aji_verde",
             "cantidad": 1,
@@ -14123,10 +14171,16 @@
         "rol": "esencial",
         "opciones": [
           {
+            "ingredienteId": "ing_pinones",
+            "cantidad": 40,
+            "unidad": "g",
+            "nota": null
+          },
+          {
             "ingredienteId": "ing_nueces",
             "cantidad": 40,
             "unidad": "g",
-            "nota": "en lugar de piñones"
+            "nota": null
           },
           {
             "ingredienteId": "ing_almendras",
@@ -14138,7 +14192,7 @@
             "ingredienteId": "ing_mani_tostado",
             "cantidad": 40,
             "unidad": "g",
-            "nota": "sin sal"
+            "nota": null
           }
         ]
       },
@@ -15666,6 +15720,12 @@
         "rol": "esencial",
         "opciones": [
           {
+            "ingredienteId": "ing_vinagre_de_arroz",
+            "cantidad": 4,
+            "unidad": "cda",
+            "nota": null
+          },
+          {
             "ingredienteId": "ing_vinagre",
             "cantidad": 4,
             "unidad": "cda",
@@ -16141,6 +16201,12 @@
         "rol": "condimento",
         "opciones": [
           {
+            "ingredienteId": "ing_vinagre_de_arroz",
+            "cantidad": 1,
+            "unidad": "cda",
+            "nota": null
+          },
+          {
             "ingredienteId": "ing_vinagre_de_manzana",
             "cantidad": 1,
             "unidad": "cda",
@@ -16285,6 +16351,12 @@
         "orden": 2,
         "rol": "esencial",
         "opciones": [
+          {
+            "ingredienteId": "ing_maiz_blanco_pelado",
+            "cantidad": 500,
+            "unidad": "g",
+            "nota": "pozolero, remojado desde la noche anterior"
+          },
           {
             "ingredienteId": "ing_mote_de_maiz",
             "cantidad": 500,
@@ -16663,6 +16735,12 @@
         "orden": 12,
         "rol": "opcional",
         "opciones": [
+          {
+            "ingredienteId": "ing_crema_acida",
+            "cantidad": 4,
+            "unidad": "cda",
+            "nota": null
+          },
           {
             "ingredienteId": "ing_crema_de_leche",
             "cantidad": 4,
@@ -19181,6 +19259,12 @@
         "rol": "esencial",
         "opciones": [
           {
+            "ingredienteId": "ing_fideo_cabello_de_angel",
+            "cantidad": 150,
+            "unidad": "g",
+            "nota": null
+          },
+          {
             "ingredienteId": "ing_fideo",
             "cantidad": 150,
             "unidad": "g",
@@ -19924,6 +20008,12 @@
         "orden": 10,
         "rol": "opcional",
         "opciones": [
+          {
+            "ingredienteId": "ing_crema_acida",
+            "cantidad": 4,
+            "unidad": "cda",
+            "nota": null
+          },
           {
             "ingredienteId": "ing_crema_de_leche",
             "cantidad": 4,
