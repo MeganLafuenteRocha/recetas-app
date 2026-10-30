@@ -12,7 +12,7 @@ test.describe('Recetas', () => {
   test('REC-002 · el modo cocina avanza paso a paso', async ({ page }) => {
     await page.goto('/recetas/rec_silpancho/cocinar');
     await page.getByRole('button', { name: /Empezar/ }).click();
-    await expect(page.getByText(/^1\/\d+$/)).toBeVisible();
+    await expect(page.getByText(/^Paso 1 de \d+$/)).toBeVisible();
   });
 
   test('REC-003 · una ruta que no existe vuelve al inicio', async ({ page }) => {

@@ -6,19 +6,37 @@ import { IngredientesStore } from '../../../application/stores/ingredientes.stor
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
 import { UiStore } from '../../../application/stores/ui.store';
-import { evaluarReceta, ResultadoAfinidad, sePuedeCocinar } from '../../../domain/planificacion/afinidad.service';
-import { AfinidadComponent } from '../../ui/afinidad.component';
-import { FotoComponent } from '../../ui/foto.component';
-import { duracion, iconoFranja } from '../../ui/iconos';
+import { evaluarReceta, sePuedeCocinar } from '../../../domain/planificacion/afinidad.service';
+import { CabeceraSeccionComponent } from '../../ui/cabecera-seccion.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { HojaComponent } from '../../ui/hoja.component';
+import { iconoFranja } from '../../ui/iconos';
+import { InterruptorComponent } from '../../ui/interruptor.component';
+import { TarjetaPlatoComponent } from '../../ui/tarjeta-plato.component';
+import { TarjetaRecetaComponent } from '../../ui/tarjeta-receta.component';
 
 type Orden = 'afinidad' | 'nombre' | 'tiempo';
 const ORDENES: Orden[] = ['afinidad', 'nombre', 'tiempo'];
 const NOMBRE_ORDEN: Record<Orden, string> = { afinidad: 'Afinidad', nombre: 'A–Z', tiempo: 'Más rápidas' };
+/** Lo que se lee junto al conteo: «110 recetas · ordenadas por lo que tienes en casa». */
+const TEXTO_ORDEN: Record<Orden, string> = {
+  afinidad: 'ordenadas por lo que tienes en casa',
+  nombre: 'de la A a la Z',
+  tiempo: 'las más rápidas primero',
+};
 
 /** Pantallas 07A (lista) y 07B (por franjas). El modo de vista se recuerda en el dispositivo. */
 @Component({
   selector: 'app-recetas',
-  imports: [RouterLink, AfinidadComponent, FotoComponent],
+  imports: [
+    RouterLink,
+    EncabezadoComponent,
+    CabeceraSeccionComponent,
+    TarjetaRecetaComponent,
+    TarjetaPlatoComponent,
+    HojaComponent,
+    InterruptorComponent,
+  ],
   templateUrl: './recetas.page.html',
   styleUrl: './recetas.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,16 +49,29 @@ export class RecetasPage {
   private readonly despensa = inject(DespensaStore);
   private readonly ingredientes = inject(IngredientesStore);
 
-  /** ?listas=1 (desde la Despensa): abre ya filtrado por "Con mi despensa". */
+  /** ?listas=1 (desde la Despensa o el Inicio): abre ya filtrado por "Con mi despensa". */
   readonly listas = input<string>();
+  /** ?cocina=boliviana (desde los círculos de cocinas del Inicio): abre filtrado por esa cocina. */
+  readonly cocinaInicial = input<string | undefined>(undefined, { alias: 'cocina' });
 
   protected readonly consulta = signal('');
   protected readonly franja = signal<string | null>(null);
-  protected readonly cocina = signal<string | null>(null);
+  protected readonly cocina = linkedSignal<string | null>(() => this.cocinaInicial() ?? null);
   protected readonly soloConDespensa = linkedSignal(() => this.listas() === '1');
+  /** Si se llegó con un filtro (?cocina, ?listas) se muestra la lista, que es donde se aplica. */
+  private readonly forzarLista = linkedSignal(() => !!this.cocinaInicial() || this.listas() === '1');
+  protected readonly vista = computed(() => (this.forzarLista() ? 'lista' : this.ui.vistaRecetas()));
   protected readonly orden = signal<Orden>('afinidad');
 
-  protected readonly nombreOrden = computed(() => NOMBRE_ORDEN[this.orden()]);
+  protected readonly ordenes = ORDENES;
+  protected readonly nombresOrden = NOMBRE_ORDEN;
+  protected readonly textoOrden = computed(() => TEXTO_ORDEN[this.orden()]);
+  /** Hoja de filtros (cocina, despensa y orden) que abre el botón junto al buscador. */
+  protected readonly filtrosAbiertos = signal(false);
+  /** Cuántos filtros de la hoja están cambiados (punto en el botón). */
+  protected readonly filtrosActivos = computed(
+    () => (this.cocina() ? 1 : 0) + (this.soloConDespensa() ? 1 : 0) + (this.orden() !== 'afinidad' ? 1 : 0),
+  );
   protected readonly inicial = computed(() => this.sesion.usuario()?.nombre.charAt(0).toUpperCase() ?? '?');
 
   /** Afinidad de TODAS las recetas contra la despensa (en memoria, cero lecturas). */
@@ -86,13 +117,6 @@ export class RecetasPage {
       .filter((f) => f.items.length > 0),
   );
 
-  protected meta(e: ResultadoAfinidad): string {
-    const r = e.receta;
-    return `${this.catalogos.nombreFranja(r.tipoComida)} · ${duracion(r.tiempo.totalMin)} · ${this.catalogos.nombreCocina(r.tipoCocina)}`;
-  }
-
-  protected duracion = duracion;
-
   protected buscar(evento: Event): void {
     this.consulta.set((evento.target as HTMLInputElement).value);
   }
@@ -101,8 +125,10 @@ export class RecetasPage {
     this.cocina.set((evento.target as HTMLSelectElement).value || null);
   }
 
-  protected siguienteOrden(): void {
-    this.orden.set(ORDENES[(ORDENES.indexOf(this.orden()) + 1) % ORDENES.length]!);
+  protected limpiarFiltros(): void {
+    this.cocina.set(null);
+    this.soloConDespensa.set(false);
+    this.orden.set('afinidad');
   }
 
   /** "Ver" del hero / "Ver todas" de una franja: pasa a la lista ya filtrada. */
@@ -110,5 +136,11 @@ export class RecetasPage {
     this.franja.set(franja);
     this.soloConDespensa.set(soloListas);
     this.ui.cambiarVistaRecetas('lista');
+  }
+
+  protected cambiarVista(): void {
+    const destino = this.vista() === 'lista' ? 'franjas' : 'lista';
+    this.forzarLista.set(false);
+    this.ui.cambiarVistaRecetas(destino);
   }
 }

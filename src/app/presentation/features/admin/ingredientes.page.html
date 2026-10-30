@@ -1,80 +1,90 @@
-<main class="vista">
+<main class="pantalla">
   @if (enSeleccion()) {
-    <div class="barra-seleccion">
-      <button type="button" class="icono-btn" (click)="limpiarSeleccion()" aria-label="Cancelar selección"><span class="icono">close</span></button>
-      <strong>{{ seleccion().size }} seleccionado{{ seleccion().size === 1 ? '' : 's' }}</strong>
+    <div class="pila">
+      <div class="barra-seleccion">
+        <button type="button" class="boton-icono sin-fondo" (click)="limpiarSeleccion()" aria-label="Cancelar selección"><span class="icono">close</span></button>
+        <strong>{{ seleccion().size }} seleccionado{{ seleccion().size === 1 ? '' : 's' }}</strong>
+      </div>
+      <div class="chips envolver">
+        @if (!verArchivados()) {
+          <button type="button" class="chip" [disabled]="guardando()" (click)="enLote({ esBasico: !seleccionTodosBasicos() }, seleccionTodosBasicos() ? 'ya no son básicos' : 'marcados como básicos')">
+            {{ seleccionTodosBasicos() ? 'No básico' : 'Básico' }}
+          </button>
+          <button type="button" class="chip" (click)="hoja.set({ tipo: 'categoria' })">Categoría</button>
+          <button type="button" class="chip" [disabled]="guardando()" (click)="enLote({ activo: false }, 'archivados')">Archivar</button>
+        } @else {
+          <button type="button" class="chip" [disabled]="guardando()" (click)="enLote({ activo: true }, 'restaurados')"><span class="icono">unarchive</span> Restaurar</button>
+        }
+      </div>
     </div>
-    <div class="acciones-lote">
-      @if (!verArchivados()) {
-        <button type="button" class="btn-lote" [disabled]="guardando()" (click)="enLote({ esBasico: !seleccionTodosBasicos() }, seleccionTodosBasicos() ? 'ya no son básicos' : 'marcados como básicos')">
-          <span class="icono">inventory_2</span> {{ seleccionTodosBasicos() ? 'No básico' : 'Básico' }}
-        </button>
-        <button type="button" class="btn-lote" (click)="hoja.set({ tipo: 'categoria' })"><span class="icono">category</span> Categoría</button>
-        <button type="button" class="btn-lote" [disabled]="guardando()" (click)="enLote({ activo: false }, 'archivados')"><span class="icono">archive</span> Archivar</button>
-      } @else {
-        <button type="button" class="btn-lote" [disabled]="guardando()" (click)="enLote({ activo: true }, 'restaurados')"><span class="icono">unarchive</span> Restaurar</button>
+  } @else {
+    <app-encabezado titulo="Ingredientes" [volverAtras]="true" />
+  }
+
+  <div class="pila">
+    <label class="buscador">
+      <span class="icono">search</span>
+      <input type="search" placeholder="Buscar ingrediente o sinónimo…" aria-label="Buscar ingrediente o sinónimo" [value]="consulta()" (input)="consulta.set($any($event.target).value)" />
+    </label>
+
+    <div class="filtros">
+      <button type="button" class="chip" [class.acento]="soloBasicos()" [attr.aria-pressed]="soloBasicos()" (click)="soloBasicos.set(!soloBasicos())">
+        <span class="icono">star</span> Solo básicos
+      </button>
+      <span class="archivados">
+        Ver archivados
+        <app-interruptor etiqueta="Ver archivados" [valor]="verArchivados()" (valorChange)="cambiarArchivados($event)" />
+      </span>
+    </div>
+
+    @if (mensaje(); as m) {
+      <app-aviso icono="check_circle" tono="ok" [titulo]="m" />
+    }
+
+    <p class="t-detalle total">{{ lista().length }} {{ verArchivados() ? 'archivados' : 'activos' }}{{ soloBasicos() ? ' · básicos' : '' }}</p>
+  </div>
+
+  @if (lista().length > 0) {
+    <div class="tarjeta lista">
+      @for (i of lista(); track i.id) {
+        <div class="fila">
+          <button type="button" class="toque" (click)="abrirEdicion(i)" [attr.aria-label]="'Editar ' + i.nombre">
+            <app-fila-ingrediente
+              [emoji]="emojiDe(i)"
+              [nombre]="i.nombre"
+              [detalle]="(i.activo ? catalogos.nombreCategoria(i.categoria) : 'Archivado') + (i.sinonimos.length ? ' · ' + i.sinonimos.join(', ') : '')"
+              [class.apagado]="!i.activo"
+            >
+              @if (i.esBasico) { <span class="basico">básico</span> }
+            </app-fila-ingrediente>
+          </button>
+          @if (!i.activo) {
+            <button type="button" class="btn btn-texto" (click)="cambiarUno(i, { activo: true })">Restaurar</button>
+          }
+          <button
+            type="button"
+            class="casilla"
+            role="checkbox"
+            [class.marcada]="seleccion().has(i.id)"
+            [attr.aria-checked]="seleccion().has(i.id)"
+            [attr.aria-label]="'Seleccionar ' + i.nombre"
+            (click)="alternarSeleccion(i.id)"
+          >
+            <span class="icono">check</span>
+          </button>
+        </div>
       }
     </div>
   } @else {
-    <header class="cabecera">
-      <button type="button" class="icono-btn" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
-      <h1>Ingredientes</h1>
-    </header>
+    <div class="vacio-estado"><span class="icono">search_off</span><p>No hay ingredientes con ese filtro.</p></div>
   }
-
-  <label class="buscador">
-    <span class="icono">search</span>
-    <input type="search" placeholder="Buscar ingrediente o sinónimo…" [value]="consulta()" (input)="consulta.set($any($event.target).value)" />
-  </label>
-
-  <div class="filtros">
-    <button type="button" class="chip" [class.dorado]="soloBasicos()" (click)="soloBasicos.set(!soloBasicos())">
-      <span class="icono">inventory_2</span> Solo básicos
-    </button>
-    <span class="archivados">
-      Ver archivados
-      <app-interruptor etiqueta="Ver archivados" [valor]="verArchivados()" (valorChange)="cambiarArchivados($event)" />
-    </span>
-  </div>
-
-  @if (mensaje(); as m) {
-    <p class="aviso ok"><span class="icono">check_circle</span> {{ m }}</p>
-  }
-
-  <p class="texto-suave">{{ lista().length }} {{ verArchivados() ? 'archivados' : 'activos' }}{{ soloBasicos() ? ' · básicos' : '' }}</p>
-
-  <div class="lista-filas">
-    @for (i of lista(); track i.id) {
-      <div class="fila" [class.archivado]="!i.activo">
-        <button
-          type="button"
-          class="check"
-          role="checkbox"
-          [class.on]="seleccion().has(i.id)"
-          [attr.aria-checked]="seleccion().has(i.id)"
-          [attr.aria-label]="'Seleccionar ' + i.nombre"
-          (click)="alternarSeleccion(i.id)"
-        >
-          @if (seleccion().has(i.id)) { <span class="icono">check</span> }
-        </button>
-        <button type="button" class="textos" (click)="abrirEdicion(i)">
-          <strong>{{ i.nombre }}</strong>
-          <small>{{ i.activo ? catalogos.nombreCategoria(i.categoria) : 'Archivado' }}@if (i.sinonimos.length) { · {{ i.sinonimos.join(', ') }}}</small>
-        </button>
-        @if (i.esBasico) { <span class="chip dorado basico">básico</span> }
-        @if (!i.activo) {
-          <button type="button" class="btn btn-texto" (click)="cambiarUno(i, { activo: true })">Restaurar</button>
-        }
-      </div>
-    } @empty {
-      <div class="vacio-estado"><span class="icono">search_off</span><p>No hay ingredientes con ese filtro.</p></div>
-    }
-  </div>
 
   @if (!enSeleccion()) {
-    <button type="button" class="btn btn-primario ancho alta" (click)="hoja.set({ tipo: 'alta' })">
-      <span class="icono">playlist_add</span> Alta rápida (varios a la vez)
-    </button>
+    <div class="pie-fijo">
+      <button type="button" class="btn btn-primario btn-ancho" (click)="hoja.set({ tipo: 'alta' })">
+        <span class="icono">playlist_add</span> Alta rápida (varios a la vez)
+      </button>
+    </div>
   }
 </main>
 
@@ -84,24 +94,24 @@
       <app-hoja titulo="Alta rápida" (cerrar)="hoja.set(null)">
         <label class="campo">
           <span>Escribe varios, separados por comas o en líneas</span>
-          <textarea rows="4" placeholder="papa, haba verde, quinua" [value]="textoAlta()" (input)="textoAlta.set($any($event.target).value)"></textarea>
+          <textarea class="caja" rows="4" placeholder="papa, haba verde, quinua" [value]="textoAlta()" (input)="textoAlta.set($any($event.target).value)"></textarea>
         </label>
         <label class="campo">
           <span>Categoría</span>
-          <select (change)="categoriaAlta.set($any($event.target).value)">
+          <select class="caja" (change)="categoriaAlta.set($any($event.target).value)">
             @for (c of catalogos.categorias(); track c.codigo) { <option [value]="c.codigo" [selected]="c.codigo === categoriaAlta()">{{ c.nombre }}</option> }
           </select>
         </label>
-        <p class="texto-suave">Los que ya existen (por nombre o sinónimo) se ignoran. Se guardan todos juntos en una sola operación.</p>
-        <button type="button" class="btn btn-primario ancho" [disabled]="guardando() || !textoAlta().trim()" (click)="altaRapida()">Agregar</button>
+        <p class="t-detalle">Los que ya existen (por nombre o sinónimo) se ignoran. Se guardan todos juntos en una sola operación.</p>
+        <button type="button" class="btn btn-primario btn-ancho" [disabled]="guardando() || !textoAlta().trim()" (click)="altaRapida()">Agregar</button>
       </app-hoja>
     }
     @case ('categoria') {
       <app-hoja titulo="Cambiar categoría" (cerrar)="hoja.set(null)">
-        <div class="lista-filas">
+        <div class="tarjeta lista">
           @for (c of catalogos.categorias(); track c.codigo) {
             <button type="button" class="fila-btn" [disabled]="guardando()" (click)="enLote({ categoria: c.codigo }, 'movidos a ' + c.nombre)">
-              <span class="principal"><strong>{{ c.nombre }}</strong></span>
+              <strong>{{ c.nombre }}</strong>
               <span class="icono">chevron_right</span>
             </button>
           }
@@ -111,19 +121,19 @@
     @case ('editar') {
       @if (h.tipo === 'editar') {
         <app-hoja titulo="Editar ingrediente" (cerrar)="hoja.set(null)">
-          <label class="campo"><span>Nombre</span><input type="text" [value]="nombreEdicion()" (input)="nombreEdicion.set($any($event.target).value)" /></label>
-          <label class="campo"><span>Sinónimos (separados por comas)</span><input type="text" placeholder="arverja, alverja" [value]="sinonimosEdicion()" (input)="sinonimosEdicion.set($any($event.target).value)" /></label>
+          <label class="campo"><span>Nombre</span><input class="caja" type="text" [value]="nombreEdicion()" (input)="nombreEdicion.set($any($event.target).value)" /></label>
+          <label class="campo"><span>Sinónimos (separados por comas)</span><input class="caja" type="text" placeholder="arverja, alverja" [value]="sinonimosEdicion()" (input)="sinonimosEdicion.set($any($event.target).value)" /></label>
           <label class="campo">
             <span>Categoría</span>
-            <select (change)="cambiarUno(h.ingrediente, { categoria: $any($event.target).value })">
+            <select class="caja" (change)="cambiarUno(h.ingrediente, { categoria: $any($event.target).value })">
               @for (c of catalogos.categorias(); track c.codigo) { <option [value]="c.codigo" [selected]="c.codigo === h.ingrediente.categoria">{{ c.nombre }}</option> }
             </select>
           </label>
-          <div class="fila-basico">
-            <div><strong>Es básico en mi hogar</strong><small>Nunca se contará como faltante. Si marcas "carne", todas las recetas con carne darán 100%.</small></div>
+          <div class="tarjeta fila-basico">
+            <div class="textos"><strong>Es básico en mi hogar</strong><span class="t-detalle">Nunca se contará como faltante. Si marcas "carne", todas las recetas con carne la darán por disponible.</span></div>
             <app-interruptor etiqueta="Es básico" [valor]="h.ingrediente.esBasico" (valorChange)="cambiarUno(h.ingrediente, { esBasico: $event })" />
           </div>
-          <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="guardarEdicion(h.ingrediente)">Guardar</button>
+          <button type="button" class="btn btn-primario btn-ancho" [disabled]="guardando()" (click)="guardarEdicion(h.ingrediente)">Guardar</button>
           @if (h.ingrediente.activo) {
             <button type="button" class="btn btn-peligro" (click)="cambiarUno(h.ingrediente, { activo: false })"><span class="icono">archive</span> Archivar</button>
           } @else {

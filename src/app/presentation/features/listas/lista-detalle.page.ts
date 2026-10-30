@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
 import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { ListasStore } from '../../../application/stores/listas.store';
@@ -15,6 +15,10 @@ import {
   quitarItem,
 } from '../../../domain/listas/lista.model';
 import { BuscadorIngredienteComponent } from '../../ui/buscador-ingrediente.component';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 import { HojaComponent } from '../../ui/hoja.component';
 
 const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
@@ -26,23 +30,21 @@ const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
 /** Pantalla 12B: lista siempre editable (texto libre o ingredientes), con fecha de compra. */
 @Component({
   selector: 'app-lista-detalle',
-  imports: [RouterLink, BuscadorIngredienteComponent, HojaComponent],
+  imports: [BuscadorIngredienteComponent, HojaComponent, EncabezadoComponent, FilaIngredienteComponent, AvisoComponent],
   template: `
     @if (lista(); as l) {
-      <main class="vista">
-        <header class="cabecera">
-          <a class="icono-btn" routerLink="/listas" aria-label="Volver"><span class="icono">arrow_back</span></a>
-          <h1>{{ l.nombre }}</h1>
-          <button type="button" class="icono-btn" (click)="opciones.set(true)" aria-label="Opciones de la lista"><span class="icono">more_vert</span></button>
-        </header>
+      <main class="pantalla">
+        <app-encabezado [titulo]="l.nombre" volver="/listas">
+          <button type="button" class="boton-icono" (click)="opciones.set(true)" aria-label="Opciones de la lista"><span class="icono">more_vert</span></button>
+        </app-encabezado>
 
         <div class="meta">
           <label class="chip fecha">
             <span class="icono">event</span>
             <input type="date" [value]="l.fechaCompra" (change)="cambiar({ fechaCompra: $any($event.target).value })" aria-label="Fecha de compra" />
           </label>
-          <span class="chip dorado"><span class="icono">{{ origen(l.origen).icono }}</span> {{ origen(l.origen).nombre }}</span>
-          <span class="progreso">{{ progreso().comprados }}/{{ progreso().total }}</span>
+          <span class="chip acento origen"><span class="icono">{{ origen(l.origen).icono }}</span> {{ origen(l.origen).nombre }}</span>
+          <span class="t-detalle avance">{{ progreso().comprados }}/{{ progreso().total }}</span>
         </div>
 
         <app-buscador-ingrediente
@@ -54,76 +56,82 @@ const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
         />
 
         @for (g of grupos(); track g.nombre) {
-          <section class="grupo">
-            <p class="etiqueta-seccion">{{ g.nombre }}</p>
-            @for (i of g.items; track i.id) {
-              <div class="item" [class.comprado]="i.comprado">
-                <button type="button" class="check" role="checkbox" [attr.aria-checked]="i.comprado" (click)="alternar(i)" [attr.aria-label]="'Comprado: ' + nombre(i)">
-                  @if (i.comprado) { <span class="icono">check</span> }
-                </button>
-                <span class="textos" (click)="alternar(i)">
-                  <span class="nombre">{{ nombre(i) }}</span>
-                  @if (i.motivo) { <small>{{ i.motivo }}</small> }
-                </span>
-                @if (i.cantidad !== null) { <span class="cantidad">{{ i.cantidad }} {{ i.unidad ?? '' }}</span> }
-                <button type="button" class="quitar" (click)="quitar(i)" [attr.aria-label]="'Quitar ' + nombre(i)"><span class="icono">close</span></button>
-              </div>
-            }
+          <section class="tarjeta grupo">
+            <h2 class="t-sobretitulo">{{ g.nombre }}</h2>
+            <div>
+              @for (i of g.items; track i.id) {
+                <div class="item">
+                  <button type="button" class="toque" (click)="alternar(i)" [attr.aria-label]="(i.comprado ? 'Desmarcar ' : 'Marcar comprado: ') + nombre(i)">
+                    <app-fila-ingrediente
+                      [emoji]="emoji(i)"
+                      [nombre]="nombre(i)"
+                      [detalle]="i.motivo || (i.ingredienteId ? null : 'agregado a mano')"
+                      [class.hecho]="i.comprado"
+                    >
+                      @if (i.cantidad !== null) { <span class="cantidad">{{ i.cantidad }} {{ i.unidad ?? '' }}</span> }
+                    </app-fila-ingrediente>
+                  </button>
+                  <button
+                    type="button"
+                    class="casilla redonda ok"
+                    role="checkbox"
+                    [class.marcada]="i.comprado"
+                    [attr.aria-checked]="i.comprado"
+                    (click)="alternar(i)"
+                    [attr.aria-label]="'Comprado: ' + nombre(i)"
+                  >
+                    <span class="icono">check</span>
+                  </button>
+                  <button type="button" class="boton-icono sin-fondo quitar" (click)="quitar(i)" [attr.aria-label]="'Quitar ' + nombre(i)">
+                    <span class="icono">close</span>
+                  </button>
+                </div>
+              }
+            </div>
           </section>
         } @empty {
           <div class="vacio-estado"><span class="icono">playlist_add</span><p>La lista está vacía. Agrega lo que necesites.</p></div>
         }
 
         @if (mensaje(); as m) {
-          <p class="aviso ok"><span class="icono">check_circle</span> {{ m }}</p>
+          <app-aviso icono="check_circle" tono="ok" [titulo]="m" />
         }
 
-        <div class="pie">
-          <button type="button" class="btn btn-borde" (click)="compartir(l)" aria-label="Compartir lista"><span class="icono">share</span></button>
+        <div class="pie-fijo">
+          <button type="button" class="boton-icono compartir" (click)="compartir(l)" aria-label="Compartir lista"><span class="icono">share</span></button>
           <button type="button" class="btn btn-primario crecer" [disabled]="progreso().comprados === 0" (click)="pasarADespensa(l)">
-            <span class="icono">move_to_inbox</span> Pasar comprados a la despensa
+            <span class="icono">kitchen</span> Pasar a la despensa
           </button>
         </div>
       </main>
 
       @if (opciones()) {
         <app-hoja titulo="Lista" (cerrar)="opciones.set(false)">
-          <label class="campo"><span>Nombre</span><input type="text" [value]="l.nombre" (change)="cambiar({ nombre: $any($event.target).value || l.nombre })" /></label>
+          <label class="campo"><span>Nombre</span><input class="caja" type="text" [value]="l.nombre" (change)="cambiar({ nombre: $any($event.target).value || l.nombre })" /></label>
           <button type="button" class="btn btn-peligro" (click)="eliminar(l)"><span class="icono">delete</span> Eliminar lista</button>
-          <button type="button" class="btn btn-primario ancho" (click)="opciones.set(false)">Listo</button>
+          <button type="button" class="btn btn-primario btn-ancho" (click)="opciones.set(false)">Listo</button>
         </app-hoja>
       }
     } @else {
-      <main class="vista">
-        <header class="cabecera">
-          <a class="icono-btn" routerLink="/listas" aria-label="Volver"><span class="icono">arrow_back</span></a>
-          <h1>Lista</h1>
-        </header>
-        <p class="texto-suave">{{ listas.cargadas() ? 'No encontramos esta lista.' : 'Cargando…' }}</p>
+      <main class="pantalla">
+        <app-encabezado titulo="Lista" volver="/listas" />
+        <p class="t-detalle">{{ listas.cargadas() ? 'No encontramos esta lista.' : 'Cargando…' }}</p>
       </main>
     }
   `,
   styles: `
-    .meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: -8px; }
     .fecha { cursor: pointer; }
-    .fecha .icono { color: var(--guindo-700); }
-    .fecha input { border: none; background: none; font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--plomo-900); padding: 0; }
-    .chip.dorado { cursor: default; }
-    .progreso { margin-left: auto; font-size: 12px; color: var(--plomo-500); }
-    .grupo { display: flex; flex-direction: column; }
-    .item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid #e4e4e7; }
-    .check { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--plomo-400); background: #fff; display: grid; place-items: center; cursor: pointer; flex-shrink: 0; }
-    .check .icono { font-size: 16px; color: #fff; }
-    .comprado .check { background: var(--guindo-700); border-color: var(--guindo-700); }
-    .textos { flex: 1; display: flex; flex-direction: column; min-width: 0; cursor: pointer; }
-    .nombre { font-size: 13px; font-weight: 500; color: var(--plomo-900); }
-    .textos small { font-size: 10px; color: var(--plomo-500); }
-    .comprado .nombre { color: var(--plomo-400); text-decoration: line-through; }
-    .cantidad { font-size: 12px; color: var(--plomo-700); white-space: nowrap; }
-    .comprado .cantidad { color: var(--plomo-400); }
-    .quitar { border: none; background: none; color: var(--plomo-400); cursor: pointer; display: grid; padding: 4px; }
+    .fecha input { padding: 0; border: none; background: none; color: var(--color-texto); font-family: var(--fuente-texto); font-size: 12px; font-weight: 500; }
+    .origen { cursor: default; color: var(--color-texto); }
+    .avance { margin-left: auto; }
+    .grupo { gap: 4px; padding: 16px 20px 8px; }
+    .item { display: flex; align-items: center; gap: 8px; }
+    .item .toque { flex: 1; min-width: 0; }
+    .cantidad { font-size: 13px; color: var(--color-texto-suave); white-space: nowrap; }
+    .quitar { width: 32px; height: 32px; margin-right: -8px; color: var(--color-texto-tenue); }
     .quitar .icono { font-size: 18px; }
-    .pie { display: flex; gap: 10px; position: sticky; bottom: 88px; padding-top: 6px; }
+    .compartir { width: var(--alto-boton); height: var(--alto-boton); color: var(--color-primario); box-shadow: var(--sombra-suave); }
     .crecer { flex: 1; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -170,6 +178,10 @@ export class ListaDetallePage {
 
   protected origen(o: OrigenLista) {
     return ORIGEN[o];
+  }
+
+  protected emoji(i: ItemLista): string {
+    return i.ingredienteId ? emojiIngrediente(this.ingredientes.obtener(i.ingredienteId)) : '🛒';
   }
 
   protected nombre(i: ItemLista): string {

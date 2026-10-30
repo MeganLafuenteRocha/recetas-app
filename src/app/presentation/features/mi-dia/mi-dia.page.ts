@@ -18,17 +18,34 @@ import {
   sumarDias,
   totalesDelDia,
 } from '../../../domain/planificacion/plan.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { CabeceraSeccionComponent } from '../../ui/cabecera-seccion.component';
+import { emojiFranja } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { EstadoRecetaComponent } from '../../ui/estado-receta.component';
 import { FotoComponent } from '../../ui/foto.component';
 import { capitalizar, duracion, iconoFranja } from '../../ui/iconos';
+import { TarjetaRecetaComponent } from '../../ui/tarjeta-receta.component';
 import { ElegirRecetaComponent } from './elegir-receta.component';
+import { NumeroPipe } from '../../ui/numero.pipe';
 
 /** Franjas que siempre se muestran; las demás (postre) solo si tienen algo planificado. */
 const FRANJAS_FIJAS = ['desayuno', 'sopa', 'seco'];
 
-/** Pantallas 03A (compacta), 03B (completa) y 03C (semanal). */
+/** Pantallas 03A (compacta, ADIys), 03B (completa, CbuFk) y 03C (semanal, KU4vf). */
 @Component({
   selector: 'app-mi-dia',
-  imports: [RouterLink, FotoComponent, ElegirRecetaComponent],
+  imports: [
+    RouterLink,
+    EncabezadoComponent,
+    CabeceraSeccionComponent,
+    TarjetaRecetaComponent,
+    EstadoRecetaComponent,
+    AvisoComponent,
+    FotoComponent,
+    ElegirRecetaComponent,
+    NumeroPipe,
+  ],
   templateUrl: './mi-dia.page.html',
   styleUrl: './mi-dia.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,7 +64,7 @@ export class MiDiaPage {
 
   protected readonly hoy = fechaISO(new Date());
 
-  /** Toggles del header (estilo TickTick). */
+  /** Conmutadores del encabezado. */
   protected readonly vistaCompleta = signal(false);
   protected readonly semanal = signal(false);
 
@@ -59,6 +76,7 @@ export class MiDiaPage {
   protected readonly inicial = computed(() => this.sesion.usuario()?.nombre.charAt(0).toUpperCase() ?? '?');
   protected readonly duracion = duracion;
   protected readonly iconoFranja = iconoFranja;
+  protected readonly emojiFranja = emojiFranja;
 
   protected readonly dias = computed(() =>
     semanaDe(this.referencia()).map((iso) => {
@@ -105,7 +123,7 @@ export class MiDiaPage {
         nombreFranja: t.codigo === 'desayuno' ? t.nombre : `Almuerzo · ${t.nombre}`,
         icono: iconoFranja(t.codigo),
         receta,
-        puntaje: receta ? evaluarReceta(receta, disponibles, basicos).puntaje : null,
+        resultado: receta ? evaluarReceta(receta, disponibles, basicos) : null,
       };
     });
   });

@@ -2,20 +2,26 @@ import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
+import { DespensaStore } from '../../../application/stores/despensa.store';
 import { GruposStore } from '../../../application/stores/grupos.store';
+import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { SeleccionDiaStore } from '../../../application/stores/seleccion-dia.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
 import { alternarReceta, Grupo, grupoNuevo, ICONOS_GRUPO, validarGrupo } from '../../../domain/grupos/grupo.model';
 import { normalizarTexto } from '../../../domain/ingredientes/ingrediente.model';
-import { FotoComponent } from '../../ui/foto.component';
+import { evaluarReceta } from '../../../domain/planificacion/afinidad.service';
+import { Receta } from '../../../domain/recetas/receta.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
 import { HojaComponent } from '../../ui/hoja.component';
+import { TarjetaPlatoComponent } from '../../ui/tarjeta-plato.component';
 import { duracion } from '../../ui/iconos';
 
 /** Pantalla 13: un grupo de recetas. La admin lo crea, edita y llena; todas lo usan. */
 @Component({
   selector: 'app-grupo',
-  imports: [RouterLink, FotoComponent, HojaComponent],
+  imports: [RouterLink, HojaComponent, TarjetaPlatoComponent, AvisoComponent, EncabezadoComponent],
   templateUrl: './grupo.page.html',
   styleUrl: './grupo.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +32,8 @@ export class GrupoPage {
   private readonly grupos = inject(GruposStore);
   private readonly recetas = inject(RecetasStore);
   private readonly seleccion = inject(SeleccionDiaStore);
+  private readonly despensa = inject(DespensaStore);
+  private readonly ingredientes = inject(IngredientesStore);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
 
@@ -61,19 +69,25 @@ export class GrupoPage {
     return this.recetas.todas().filter((r) => !q || normalizarTexto(r.nombre).includes(q));
   });
 
+  /** Estado de cada plato según la despensa («Tienes todo» / «Te falta…»). */
+  protected resultado(receta: Receta) {
+    return evaluarReceta(receta, this.despensa.ids(), this.ingredientes.basicos());
+  }
+
   protected pares<T>(lista: T[]): T[][] {
     const filas: T[][] = [];
     for (let i = 0; i < lista.length; i += 2) filas.push(lista.slice(i, i + 2));
     return filas;
   }
 
-  protected volver(): void {
+  /** Volver del encabezado: primero sale del modo edición; si no, vuelve atrás. */
+  protected readonly volver = (): void => {
     if (this.editando() && this.grupo()) {
       this.editando.set(false);
       return;
     }
     this.location.back();
-  }
+  };
 
   protected cambiar(cambios: Partial<Grupo>): void {
     this.borrador.update((g) => ({ ...g, ...cambios }));

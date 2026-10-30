@@ -4,6 +4,8 @@ import { ListasStore } from '../../../application/stores/listas.store';
 import { ListasComprasUseCase } from '../../../application/use-cases/listas-compras.usecase';
 import { ListaCompra, OrigenLista, progresoLista } from '../../../domain/listas/lista.model';
 import { desdeISO, fechaISO, sumarDias } from '../../../domain/planificacion/plan.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
 import { HojaComponent } from '../../ui/hoja.component';
 
 const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
@@ -15,53 +17,55 @@ const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
 /** Pantalla 12A: listas por fecha de compra y las tres formas de crear una. */
 @Component({
   selector: 'app-listas',
-  imports: [RouterLink, HojaComponent],
+  imports: [RouterLink, HojaComponent, EncabezadoComponent, AvisoComponent],
   template: `
-    <main class="vista">
-      <header class="cabecera">
-        <a class="icono-btn" routerLink="/despensa" aria-label="Volver"><span class="icono">arrow_back</span></a>
-        <h1>Listas de compras</h1>
-      </header>
+    <main class="pantalla">
+      <app-encabezado titulo="Listas de compras" volver="/despensa" />
 
       <div class="nuevas">
         @for (o of origenes; track o.clave) {
           <button type="button" class="nueva" [class.principal]="o.clave === 'manual'" (click)="abrir(o.clave)">
             <span class="icono">{{ o.icono }}</span>
-            <small>{{ o.corto }}</small>
+            <span>{{ o.corto }}</span>
           </button>
         }
       </div>
 
       @if (!listas.cargadas()) {
-        <p class="texto-suave">Cargando…</p>
+        <p class="t-detalle">Cargando…</p>
       } @else {
-        <p class="etiqueta-seccion">Próximas</p>
-        @for (l of listas.proximas(); track l.id) {
-          <a class="tarjeta lista" [routerLink]="['/listas', l.id]">
-            <div class="lista-cab">
-              <div class="lista-tit">
-                <strong>{{ l.nombre }}</strong>
-                <small><span class="icono">event</span> Comprar: {{ cuando(l.fechaCompra) }}</small>
+        <section class="pila">
+          <h2 class="t-sobretitulo">Próximas</h2>
+          @for (l of listas.proximas(); track l.id) {
+            <a class="tarjeta toque tarjeta-lista" [routerLink]="['/listas', l.id]">
+              <div class="lista-cab">
+                <strong class="t-tarjeta">{{ l.nombre }}</strong>
+                <span class="pastilla">{{ origen(l.origen).nombre }}</span>
               </div>
-              <span class="chip dorado origen"><span class="icono">{{ origen(l.origen).icono }}</span> {{ origen(l.origen).nombre }}</span>
-            </div>
-            <div class="progreso">
-              <span class="barra"><span [style.width.%]="porcentaje(l)"></span></span>
-              <small>{{ progreso(l).comprados }}/{{ progreso(l).total }}</small>
-            </div>
-          </a>
-        } @empty {
-          <div class="vacio-estado"><span class="icono">shopping_cart</span><p>No tienes listas pendientes.</p></div>
-        }
+              <span class="t-detalle cuando"><span class="icono">event</span> Comprar: {{ cuando(l.fechaCompra) }}</span>
+              <div class="avance">
+                <div class="progreso"><span [style.width.%]="porcentaje(l)"></span></div>
+                <strong>{{ progreso(l).comprados }}/{{ progreso(l).total }}</strong>
+              </div>
+            </a>
+          } @empty {
+            <div class="vacio-estado"><span class="icono">shopping_cart</span><p>No tienes listas pendientes.</p></div>
+          }
+        </section>
 
         @if (listas.compradas().length > 0) {
-          <p class="etiqueta-seccion">Compradas</p>
-          @for (l of listas.compradas(); track l.id) {
-            <a class="comprada" [routerLink]="['/listas', l.id]">
-              <span class="icono">task_alt</span>
-              <span class="datos"><strong>{{ l.nombre }}</strong><small>{{ cuando(l.fechaCompra) }} · {{ l.items.length }} ítems</small></span>
-            </a>
-          }
+          <section class="pila">
+            <h2 class="t-sobretitulo">Compradas</h2>
+            @for (l of listas.compradas(); track l.id) {
+              <a class="tarjeta toque comprada" [routerLink]="['/listas', l.id]">
+                <span class="icono">task_alt</span>
+                <span class="datos">
+                  <strong>{{ l.nombre }}</strong>
+                  <span class="t-detalle">{{ cuando(l.fechaCompra) }} · {{ l.items.length }} ítems</span>
+                </span>
+              </a>
+            }
+          </section>
         }
       }
     </main>
@@ -69,52 +73,53 @@ const ORIGEN: Record<OrigenLista, { nombre: string; icono: string }> = {
     @if (creando(); as tipo) {
       <app-hoja [titulo]="titulo(tipo)" (cerrar)="creando.set(null)">
         @if (tipo === 'manual') {
-          <label class="campo"><span>Nombre</span><input type="text" placeholder="ej. Feria del sábado" [value]="nombre()" (input)="nombre.set($any($event.target).value)" /></label>
+          <label class="campo"><span>Nombre</span><input class="caja" type="text" placeholder="ej. Feria del sábado" [value]="nombre()" (input)="nombre.set($any($event.target).value)" /></label>
         }
         @if (tipo === 'dia') {
-          <label class="campo"><span>Día que vas a cocinar</span><input type="date" [value]="referencia()" (change)="referencia.set($any($event.target).value)" /></label>
+          <label class="campo"><span>Día que vas a cocinar</span><input class="caja" type="date" [value]="referencia()" (change)="referencia.set($any($event.target).value)" /></label>
         }
         @if (tipo === 'plan') {
-          <div class="segmentado">
+          <div class="segmentos">
             <button type="button" [class.activo]="referencia() === hoy" (click)="referencia.set(hoy)">Esta semana</button>
             <button type="button" [class.activo]="referencia() === enSieteDias" (click)="referencia.set(enSieteDias)">La próxima</button>
           </div>
         }
-        <label class="campo"><span>¿Cuándo vas a comprar?</span><input type="date" [value]="fechaCompra()" (change)="fechaCompra.set($any($event.target).value)" /></label>
+        <label class="campo"><span>¿Cuándo vas a comprar?</span><input class="caja" type="date" [value]="fechaCompra()" (change)="fechaCompra.set($any($event.target).value)" /></label>
         @if (tipo !== 'manual') {
-          <p class="aviso"><span class="icono">info</span> Se agregan los ingredientes que faltan según tu despensa. Después puedes editarla.</p>
+          <app-aviso icono="info">Se agregan los ingredientes que faltan según tu despensa. Después puedes editarla.</app-aviso>
         }
-        <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="crear(tipo)">
+        <button type="button" class="btn btn-primario btn-ancho" [disabled]="guardando()" (click)="crear(tipo)">
           {{ guardando() ? 'Creando…' : 'Crear lista' }}
         </button>
       </app-hoja>
     }
   `,
   styles: `
-    .nuevas { display: flex; gap: 8px; }
-    .nueva { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 0; border-radius: 14px;
-      border: 1px solid #e4e4e7; background: #fff; cursor: pointer; }
-    .nueva .icono { color: var(--guindo-700); font-size: 22px; }
-    .nueva small { font-size: 11px; font-weight: 500; color: var(--plomo-700); }
-    .nueva.principal { background: var(--guindo-700); border-color: var(--guindo-700); }
-    .nueva.principal .icono, .nueva.principal small { color: #fff; }
-    .lista { display: flex; flex-direction: column; gap: 10px; text-decoration: none; }
-    .lista-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .lista-tit { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-    .lista-tit strong { font-family: 'Quicksand', sans-serif; font-size: 15px; color: var(--plomo-900); }
-    .lista-tit small { display: flex; align-items: center; gap: 4px; color: var(--plomo-500); font-size: 11px; }
-    .lista-tit small .icono { font-size: 13px; }
-    .origen { padding: 3px 8px; font-size: 10px; cursor: default; }
-    .origen .icono { font-size: 12px; }
-    .progreso { display: flex; align-items: center; gap: 8px; }
-    .progreso small { color: var(--plomo-500); font-size: 11px; }
-    .barra { flex: 1; height: 6px; border-radius: 999px; background: var(--plomo-100); overflow: hidden; }
-    .barra span { display: block; height: 100%; background: var(--ok); }
-    .comprada { display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 16px; background: var(--plomo-100); text-decoration: none; }
-    .comprada > .icono { color: var(--ok); }
-    .datos { display: flex; flex-direction: column; }
-    .datos strong { font-size: 13px; font-weight: 500; color: var(--plomo-500); }
-    .datos small { font-size: 11px; color: var(--plomo-500); }
+    .nuevas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .nueva {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      padding: 22px 6px; border: none; border-radius: var(--radio-tarjeta);
+      background: var(--color-superficie); color: var(--color-texto);
+      font-family: var(--fuente-texto); font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .nueva .icono { color: var(--color-primario); }
+    .nueva.principal { background: var(--color-primario); color: var(--color-texto-invertido); }
+    .nueva.principal .icono { color: var(--color-texto-invertido); }
+    .tarjeta-lista { display: flex; padding: 20px; }
+    .lista-cab { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .lista-cab strong { font-size: 17px; font-weight: 600; }
+    .cuando { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .cuando .icono { font-size: 16px; }
+    .avance { display: flex; align-items: center; gap: var(--esp-grupo); }
+    .avance .progreso { flex: 1; }
+    .avance strong { font-size: 13px; color: var(--color-texto-suave); }
+    .comprada {
+      display: flex; flex-direction: row; align-items: center; gap: 14px; padding: 18px 20px;
+      background: color-mix(in srgb, var(--color-superficie) 55%, transparent);
+    }
+    .comprada > .icono { color: var(--color-ok); }
+    .datos { display: flex; flex-direction: column; gap: 1px; }
+    .datos strong { font-size: 15px; font-weight: 500; color: var(--color-texto-suave); }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

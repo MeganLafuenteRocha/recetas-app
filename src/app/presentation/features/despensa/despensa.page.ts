@@ -7,15 +7,18 @@ import { RecetasStore } from '../../../application/stores/recetas.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
 import { UiStore } from '../../../application/stores/ui.store';
 import { ListasComprasUseCase } from '../../../application/use-cases/listas-compras.usecase';
-import { coincideIngrediente } from '../../../domain/ingredientes/ingrediente.model';
 import { evaluarReceta, mejorCompra, sePuedeCocinar } from '../../../domain/planificacion/afinidad.service';
 import { fechaISO } from '../../../domain/planificacion/plan.model';
-import { iconoCategoria } from '../../ui/iconos';
+import { coincideIngrediente, Ingrediente } from '../../../domain/ingredientes/ingrediente.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { emojiCategoria, emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 
 /** Pantallas 10A (lista por categorías) y 10B (chips). Cada toque se guarda solo (debounce). */
 @Component({
   selector: 'app-despensa',
-  imports: [RouterLink],
+  imports: [RouterLink, EncabezadoComponent, FilaIngredienteComponent, AvisoComponent],
   templateUrl: './despensa.page.html',
   styleUrl: './despensa.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +36,8 @@ export class DespensaPage {
   protected readonly categoria = signal<string | null>(null);
   protected readonly plegadas = signal<ReadonlySet<string>>(new Set());
   protected readonly mensaje = signal<string | null>(null);
+  /** El buscador se muestra al tocar la lupa (o mientras haya una consulta escrita). */
+  protected readonly buscando = signal(false);
 
   protected readonly inicial = computed(() => this.sesion.usuario()?.nombre.charAt(0).toUpperCase() ?? '?');
   protected readonly total = this.ingredientes.total;
@@ -75,7 +80,7 @@ export class DespensaPage {
         return {
           codigo: c.codigo,
           nombre: c.nombre,
-          icono: iconoCategoria(c.codigo),
+          emoji: emojiCategoria(c.codigo),
           items,
           enCasa: items.filter((i) => ids.has(i.id)).length,
         };
@@ -88,6 +93,20 @@ export class DespensaPage {
     const usadas = new Set(this.ingredientes.todos().map((i) => i.categoria));
     return this.catalogos.categorias().filter((c) => usadas.has(c.codigo));
   });
+
+  protected emojiDe(ingrediente: Ingrediente): string {
+    return emojiIngrediente(ingrediente);
+  }
+
+  protected emojiDeCategoria(codigo: string): string {
+    return emojiCategoria(codigo);
+  }
+
+  protected alternarBuscador(): void {
+    const abrir = !this.buscando();
+    this.buscando.set(abrir);
+    if (!abrir) this.consulta.set('');
+  }
 
   protected buscar(evento: Event): void {
     this.consulta.set((evento.target as HTMLInputElement).value);

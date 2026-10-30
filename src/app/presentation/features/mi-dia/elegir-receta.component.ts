@@ -6,33 +6,51 @@ import { PlanStore } from '../../../application/stores/plan.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { evaluarReceta } from '../../../domain/planificacion/afinidad.service';
 import { cambiarEleccion, desdeISO } from '../../../domain/planificacion/plan.model';
-import { AfinidadComponent } from '../../ui/afinidad.component';
 import { HojaComponent } from '../../ui/hoja.component';
 import { duracion, fechaCorta } from '../../ui/iconos';
+import { TarjetaRecetaComponent } from '../../ui/tarjeta-receta.component';
 
-/** Hoja: elegir (o cambiar, o quitar) la receta de una franja de un día. Una escritura. */
+/**
+ * Hoja: elegir (o cambiar, o quitar) la receta de una franja de un día. Una escritura.
+ * Las opciones siguen ordenadas por afinidad; la afinidad se ve con el estado de cada tarjeta.
+ */
 @Component({
   selector: 'app-elegir-receta',
-  imports: [HojaComponent, AfinidadComponent],
+  imports: [HojaComponent, TarjetaRecetaComponent],
   template: `
     <app-hoja [titulo]="titulo()" (cerrar)="cerrar.emit()">
-      <p class="texto-suave">{{ subtitulo() }} · ordenadas por lo que tienes en casa</p>
-      <div class="lista-filas">
+      <p class="t-detalle">{{ subtitulo() }} · ordenadas por lo que tienes en casa</p>
+      <div class="pila">
         @for (o of opciones(); track o.receta.id) {
-          <button type="button" class="fila-btn" [disabled]="guardando()" (click)="elegir(o.receta.id)">
-            <span class="principal">
-              <strong>{{ o.receta.nombre }}</strong>
-              <small>{{ duracion(o.receta.tiempo.totalMin) }}{{ o.receta.nutricionPorcion ? ' · ' + o.receta.nutricionPorcion.kcal + ' kcal' : '' }}</small>
-            </span>
-            <app-afinidad [puntaje]="o.puntaje" />
-            <span class="icono" [class.marca]="o.receta.id === actual()">{{ o.receta.id === actual() ? 'radio_button_checked' : 'radio_button_unchecked' }}</span>
+          @let elegida = o.receta.id === actual();
+          <button
+            type="button"
+            class="toque"
+            [attr.aria-pressed]="elegida"
+            [disabled]="guardando()"
+            (click)="elegir(o.receta.id)"
+          >
+            <app-tarjeta-receta [receta]="o.receta" [resultado]="o" [elegida]="elegida">
+              <span class="radio marca" [class.marcada]="elegida" aria-hidden="true"></span>
+            </app-tarjeta-receta>
           </button>
+        } @empty {
+          <div class="vacio-estado">
+            <span class="icono">menu_book</span>
+            <p>Todavía no hay recetas para esta franja.</p>
+          </div>
         }
       </div>
       @if (actual()) {
-        <button type="button" class="btn btn-peligro" [disabled]="guardando()" (click)="elegir(null)"><span class="icono">remove_circle</span> Quitar de este día</button>
+        <button type="button" class="btn btn-peligro btn-ancho" [disabled]="guardando()" (click)="elegir(null)">
+          <span class="icono">remove_circle</span> Quitar de este día
+        </button>
       }
     </app-hoja>
+  `,
+  styles: `
+    .toque:disabled { opacity: 0.6; cursor: default; }
+    .marca { margin-right: 6px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

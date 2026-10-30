@@ -3,7 +3,8 @@ import { ChangeDetectionStrategy, Component, HostListener, input, output } from 
 /**
  * Hoja inferior del sistema de diseño (fondo crema, agarre, esquinas de 32).
  * En el celular sube desde abajo; en pantallas grandes es un diálogo centrado.
- * Escape o tocar el velo la cierra. Lo proyectado con `acciones` va junto al título.
+ * Escape o tocar el velo la cierra. Lo proyectado con `[inicio]` va antes del título
+ * (emoji o ícono) y con `[acciones]` después.
  */
 @Component({
   selector: 'app-hoja',
@@ -13,6 +14,7 @@ import { ChangeDetectionStrategy, Component, HostListener, input, output } from 
       <div class="agarre"></div>
       @if (titulo()) {
         <header>
+          <ng-content select="[inicio]" />
           <h2>{{ titulo() }}</h2>
           <ng-content select="[acciones]" />
           <button type="button" class="boton-icono" (click)="cerrar.emit()" aria-label="Cerrar">

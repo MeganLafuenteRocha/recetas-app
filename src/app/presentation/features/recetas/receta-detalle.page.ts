@@ -11,18 +11,31 @@ import { GuardarRecetaUseCase } from '../../../application/use-cases/guardar-rec
 import { espacioCubierto, evaluarReceta } from '../../../domain/planificacion/afinidad.service';
 import { fechaISO } from '../../../domain/planificacion/plan.model';
 import { ROLES, textoCantidad } from '../../../domain/recetas/receta.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { CabeceraSeccionComponent } from '../../ui/cabecera-seccion.component';
+import { emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
 import { FaltantesComponent } from '../../ui/faltantes.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 import { FotoComponent } from '../../ui/foto.component';
-import { duracion, NOMBRE_ROL_PLURAL } from '../../ui/iconos';
+import { duracion, NOMBRE_ROL_PLURAL, nombreDificultad } from '../../ui/iconos';
 import { AgregarAGrupoComponent } from '../grupos/agregar-a-grupo.component';
 import { AgregarADiaComponent } from './agregar-a-dia.component';
-
-const DIFICULTAD = ['', 'Muy fácil', 'Fácil', 'Media', 'Difícil', 'Muy difícil'];
 
 /** Pantalla 08: detalle de la receta con afinidad, nutrición, ingredientes por rol y preparación. */
 @Component({
   selector: 'app-receta-detalle',
-  imports: [RouterLink, FaltantesComponent, FotoComponent, AgregarADiaComponent, AgregarAGrupoComponent],
+  imports: [
+    RouterLink,
+    AvisoComponent,
+    CabeceraSeccionComponent,
+    EncabezadoComponent,
+    FaltantesComponent,
+    FilaIngredienteComponent,
+    FotoComponent,
+    AgregarADiaComponent,
+    AgregarAGrupoComponent,
+  ],
   templateUrl: './receta-detalle.page.html',
   styleUrl: './receta-detalle.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,10 +65,10 @@ export class RecetaDetallePage {
     return r ? evaluarReceta(r, this.despensa.ids(), this.ingredientes.basicos()) : null;
   });
 
-  /** Arco del aro de afinidad (conic-gradient). */
-  protected readonly colorAfinidad = computed(() => {
-    const p = this.afinidad()?.puntaje ?? 0;
-    return p >= 85 ? 'var(--ok)' : p >= 60 ? 'var(--alerta)' : 'var(--error)';
+  /** Tono del aviso de despensa: verde si tienes todo lo que importa, dorado si falta algo. */
+  protected readonly tieneTodo = computed(() => {
+    const a = this.afinidad();
+    return !!a && a.faltantesEsenciales.length === 0 && a.faltantesCondimentos.length === 0;
   });
 
   protected readonly tituloAfinidad = computed(() => {
@@ -81,6 +94,7 @@ export class RecetaDetallePage {
           return {
             id: principal.ingredienteId,
             nombre: this.ingredientes.nombre(principal.ingredienteId),
+            emoji: emojiIngrediente(this.ingredientes.obtener(principal.ingredienteId)),
             alternativas: e.opciones.slice(1).map((o) => this.ingredientes.nombre(o.ingredienteId).toLowerCase()),
             nota: principal.nota,
             cantidad: textoCantidad(principal),
@@ -94,7 +108,17 @@ export class RecetaDetallePage {
   protected readonly pasos = computed(() => this.receta()?.preparacion.pasos ?? []);
 
   protected dificultad(n: number): string {
-    return DIFICULTAD[n] ?? 'Media';
+    return nombreDificultad(n);
+  }
+
+  /** Detalle bajo el nombre del ingrediente: alternativas, nota y si es básico. */
+  protected detalleFila(f: { alternativas: string[]; nota: string | null; basico: boolean }): string | null {
+    const partes = [
+      f.alternativas.length ? `o ${f.alternativas.join(', o ')}` : '',
+      f.nota ?? '',
+      f.basico ? 'básico' : '',
+    ].filter(Boolean);
+    return partes.length ? partes.join(' · ') : null;
   }
 
   protected duracion = duracion;

@@ -1,45 +1,43 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
 import { AdministrarCatalogosUseCase } from '../../../application/use-cases/administrar-catalogos.usecase';
 import { ElementoCatalogo, TipoCatalogo, UsoCatalogo } from '../../../domain/catalogos/catalogo.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
 import { HojaComponent } from '../../ui/hoja.component';
 
 const PESTANAS: { tipo: TipoCatalogo; nombre: string; singular: string }[] = [
   { tipo: 'tiposCocina', nombre: 'Cocinas', singular: 'cocina' },
   { tipo: 'categorias', nombre: 'Categorías', singular: 'categoría' },
   { tipo: 'tiposComida', nombre: 'Franjas', singular: 'franja' },
-  { tipo: 'unidades', nombre: 'Unid.', singular: 'unidad' },
+  { tipo: 'unidades', nombre: 'Unidades', singular: 'unidad' },
 ];
 
 /** Pantalla 15 (solo admin): CRUD de catálogos con integridad referencial. */
 @Component({
   selector: 'app-catalogos',
-  imports: [RouterLink, HojaComponent],
+  imports: [HojaComponent, EncabezadoComponent, AvisoComponent],
   template: `
-    <main class="vista">
-      <header class="cabecera">
-        <a class="icono-btn" routerLink="/ajustes" aria-label="Volver"><span class="icono">arrow_back</span></a>
-        <h1>Catálogos</h1>
-      </header>
+    <main class="pantalla">
+      <app-encabezado titulo="Catálogos" volver="/ajustes" />
 
-      <div class="segmentado">
+      <div class="segmentos" role="tablist" aria-label="Tipo de catálogo">
         @for (p of pestanas; track p.tipo) {
-          <button type="button" [class.activo]="pestana().tipo === p.tipo" (click)="cambiarPestana(p.tipo)">{{ p.nombre }}</button>
+          <button type="button" role="tab" [attr.aria-selected]="pestana().tipo === p.tipo" [class.activo]="pestana().tipo === p.tipo" (click)="cambiarPestana(p.tipo)">{{ p.nombre }}</button>
         }
       </div>
 
-      <p class="aviso"><span class="icono">lock</span> El código interno no se edita. Solo se elimina lo que nadie usa.</p>
+      <app-aviso icono="lock" titulo="El código interno no se edita">Solo se puede borrar lo que nadie usa.</app-aviso>
 
-      <div class="lista-filas">
+      <div class="tarjeta lista">
         @for (e of elementos(); track e.elemento.codigo) {
           <div class="fila">
             <div class="textos">
               <strong>{{ e.elemento.nombre }}</strong>
-              <small><span class="icono">lock</span> {{ e.elemento.codigo }} · <span [class.libre]="e.uso.total === 0">{{ e.uso.total ? e.uso.total + ' en uso' : 'sin uso' }}</span></small>
+              <span class="t-detalle" [class.libre]="e.uso.total === 0">{{ e.elemento.codigo }} · {{ e.uso.total ? e.uso.total + ' en uso' : 'sin uso' }}</span>
             </div>
-            <button type="button" class="icono-btn" (click)="abrirEdicion(e.elemento)" [attr.aria-label]="'Renombrar ' + e.elemento.nombre"><span class="icono">edit</span></button>
-            <button type="button" class="icono-btn" [class.peligro]="e.uso.total === 0" (click)="eliminar(e.elemento, e.uso)" [attr.aria-label]="'Eliminar ' + e.elemento.nombre">
+            <button type="button" class="boton-icono sin-fondo" (click)="abrirEdicion(e.elemento)" [attr.aria-label]="'Renombrar ' + e.elemento.nombre"><span class="icono">edit</span></button>
+            <button type="button" class="boton-icono sin-fondo borrar" [class.libre]="e.uso.total === 0" (click)="eliminar(e.elemento, e.uso)" [attr.aria-label]="'Eliminar ' + e.elemento.nombre">
               <span class="icono">delete</span>
             </button>
           </div>
@@ -47,45 +45,43 @@ const PESTANAS: { tipo: TipoCatalogo; nombre: string; singular: string }[] = [
       </div>
 
       @if (bloqueo(); as b) {
-        <div class="aviso error bloqueo">
-          <span class="icono">block</span>
-          <div>
-            <strong>No se puede eliminar «{{ b.nombre }}»</strong>
-            <div>{{ b.uso.total }} lo usan: {{ b.uso.nombres.slice(0, 4).join(', ') }}{{ b.uso.total > 4 ? '…' : '' }}.</div>
-          </div>
-        </div>
+        <app-aviso icono="block" tono="error" [titulo]="'No se puede eliminar «' + b.nombre + '»'">
+          {{ b.uso.total }} lo usan: {{ b.uso.nombres.slice(0, 4).join(', ') }}{{ b.uso.total > 4 ? '…' : '' }}.
+        </app-aviso>
       }
 
-      <button type="button" class="btn btn-primario ancho" (click)="abrirNuevo()"><span class="icono">add</span> Nueva {{ pestana().singular }}</button>
+      <div class="pie-fijo">
+        <button type="button" class="btn btn-primario btn-ancho" (click)="abrirNuevo()"><span class="icono">add</span> Nueva {{ pestana().singular }}</button>
+      </div>
     </main>
 
     @if (hoja(); as h) {
       <app-hoja [titulo]="h.codigo ? 'Renombrar' : 'Nueva ' + pestana().singular" (cerrar)="hoja.set(null)">
         <label class="campo">
           <span>Nombre visible</span>
-          <input type="text" [value]="h.nombre" (input)="hoja.set({ codigo: h.codigo, nombre: $any($event.target).value })" />
+          <input class="caja" type="text" [value]="h.nombre" (input)="hoja.set({ codigo: h.codigo, nombre: $any($event.target).value })" />
         </label>
         @if (h.codigo) {
-          <p class="texto-suave">Código interno (bloqueado): {{ h.codigo }}</p>
+          <p class="t-detalle">Código interno (bloqueado): {{ h.codigo }}</p>
         } @else {
-          <p class="texto-suave">El código interno se crea a partir del nombre y no podrá cambiarse.</p>
+          <p class="t-detalle">El código interno se crea a partir del nombre y no podrá cambiarse.</p>
         }
-        @if (error(); as e) { <p class="aviso error"><span class="icono">error</span> {{ e }}</p> }
-        <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="guardar()">Guardar</button>
+        @if (error(); as e) { <app-aviso icono="error" tono="error" [titulo]="e" /> }
+        <button type="button" class="btn btn-primario btn-ancho" [disabled]="guardando()" (click)="guardar()">Guardar</button>
       </app-hoja>
     }
   `,
   styles: `
-    .fila { display: flex; align-items: center; gap: 4px; padding: 8px 0; }
-    .textos { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .textos strong { font-size: 14px; font-weight: 500; color: var(--plomo-900); }
-    .textos small { display: flex; align-items: center; gap: 3px; font-size: 10px; color: var(--plomo-500); }
-    .textos small .icono { font-size: 11px; }
-    .libre { color: var(--ok); }
-    .icono-btn .icono { font-size: 19px; }
-    .icono-btn:not(.peligro) .icono { color: var(--plomo-700); }
-    .icono-btn.peligro .icono { color: var(--error); }
-    .bloqueo strong { display: block; margin-bottom: 2px; }
+    .tarjeta.lista { padding: 6px 12px 6px 20px; }
+    .fila { display: flex; align-items: center; gap: 2px; padding: 10px 0; }
+    .textos { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .textos strong { font-family: var(--fuente-titulo); font-size: 17px; }
+    .t-detalle.libre { color: var(--color-ok); }
+    .boton-icono { width: 36px; height: 36px; color: var(--color-texto-suave); }
+    .boton-icono .icono { font-size: 20px; }
+    .borrar { color: var(--color-texto-tenue); }
+    .borrar.libre { color: var(--color-error); }
+    /* Acción principal pegada sobre la barra de pestañas. */
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -81,3 +81,8 @@ export const DIFICULTADES = [
 export function nombreDificultad(valor: number): string {
   return DIFICULTADES.find((d) => d.valor === valor)?.nombre ?? 'Media';
 }
+
+/** 1590 → "1.590" (separador de miles de Bolivia). */
+export function formatoNumero(n: number): string {
+  return Math.round(n).toLocaleString('es-BO');
+}

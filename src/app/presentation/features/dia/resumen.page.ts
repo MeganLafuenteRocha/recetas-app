@@ -7,16 +7,19 @@ import { PlanStore } from '../../../application/stores/plan.store';
 import { PreferenciasStore } from '../../../application/stores/preferencias.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { ListasComprasUseCase } from '../../../application/use-cases/listas-compras.usecase';
-import { espacioCubierto } from '../../../domain/planificacion/afinidad.service';
+import { espacioCubierto, evaluarReceta } from '../../../domain/planificacion/afinidad.service';
 import { evaluarMeta, fechaISO, totalesDelDia } from '../../../domain/planificacion/plan.model';
-import { FotoComponent } from '../../ui/foto.component';
-import { duracion, fechaLarga } from '../../ui/iconos';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { capitalizar, duracion, fechaLarga } from '../../ui/iconos';
+import { TarjetaRecetaComponent } from '../../ui/tarjeta-receta.component';
 import { ElegirRecetaComponent } from '../mi-dia/elegir-receta.component';
+import { NumeroPipe } from '../../ui/numero.pipe';
 
 /** Pantalla 05C: el menú de hoy armado, con totales vs meta y lo que falta comprar. */
 @Component({
   selector: 'app-resumen-dia',
-  imports: [RouterLink, FotoComponent, ElegirRecetaComponent],
+  imports: [RouterLink, EncabezadoComponent, AvisoComponent, TarjetaRecetaComponent, ElegirRecetaComponent, NumeroPipe],
   templateUrl: './resumen.page.html',
   styleUrl: './resumen.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,13 +44,19 @@ export class ResumenDiaPage {
     const plan = this.plan.hoy();
     if (!plan) return [];
     const orden = new Map(this.catalogos.tiposComida().map((t, i) => [t.codigo, i]));
+    const disponibles = this.despensa.ids();
+    const basicos = this.ingredientes.basicos();
     return [...plan.elecciones]
       .sort((a, b) => (orden.get(a.franja) ?? 9) - (orden.get(b.franja) ?? 9))
-      .map((e) => ({
-        franja: e.franja,
-        nombreFranja: e.franja === 'desayuno' ? 'Desayuno' : `Almuerzo · ${this.catalogos.nombreFranja(e.franja)}`,
-        receta: this.recetas.obtener(e.recetaId),
-      }));
+      .map((e) => {
+        const receta = this.recetas.obtener(e.recetaId);
+        return {
+          franja: e.franja,
+          nombreFranja: e.franja === 'desayuno' ? 'Desayuno' : `Almuerzo · ${this.catalogos.nombreFranja(e.franja)}`,
+          receta,
+          resultado: receta ? evaluarReceta(receta, disponibles, basicos) : null,
+        };
+      });
   });
 
   protected readonly totales = computed(() =>
@@ -71,6 +80,13 @@ export class ResumenDiaPage {
       }
     }
     return [...vistos].map(([id, rol]) => ({ id, rol, nombre: this.ingredientes.nombre(id).toLowerCase() }));
+  });
+
+  /** «Pan molido y locoto» para el aviso de lo que falta. */
+  protected readonly textoFaltantes = computed(() => {
+    const nombres = this.faltantes().map((f) => f.nombre);
+    const texto = nombres.length > 1 ? `${nombres.slice(0, -1).join(', ')} y ${nombres.at(-1)}` : (nombres[0] ?? '');
+    return capitalizar(texto);
   });
 
   protected async llevarALista(): Promise<void> {

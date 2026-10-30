@@ -1,66 +1,71 @@
-<main class="vista">
-  <header class="cabecera">
-    <button type="button" class="avatar-btn" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">{{ inicial() }}</button>
-    <h1>Mi día</h1>
-    <div class="acciones">
-      @if (!semanal()) {
-        <button type="button" class="icono-btn" [class.activo]="vistaCompleta()" (click)="vistaCompleta.set(!vistaCompleta())"
-          [attr.aria-pressed]="vistaCompleta()" title="Vista compacta o completa" aria-label="Vista compacta o completa">
-          <span class="icono">view_agenda</span>
-        </button>
-      }
-      <button type="button" class="icono-btn" [class.activo]="semanal()" (click)="semanal.set(!semanal())"
-        [attr.aria-pressed]="semanal()" title="Diario o semanal" aria-label="Diario o semanal">
-        <span class="icono">calendar_view_week</span>
+<main class="pantalla">
+  <app-encabezado [titulo]="semanal() ? 'Mi semana' : 'Mi día'" [principal]="true">
+    <button type="button" class="avatar suave chico" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">{{ inicial() }}</button>
+    @if (!semanal()) {
+      <button type="button" class="boton-icono" [class.suave]="vistaCompleta()" (click)="vistaCompleta.set(!vistaCompleta())"
+        [attr.aria-pressed]="vistaCompleta()" title="Vista compacta o completa" aria-label="Vista completa">
+        <span class="icono">{{ vistaCompleta() ? 'view_list' : 'view_day' }}</span>
+      </button>
+    }
+    <div class="segmentos vistas" role="group" aria-label="Diario o semanal">
+      <button type="button" [class.activo]="!semanal()" [attr.aria-pressed]="!semanal()" (click)="semanal.set(false)" title="Diario" aria-label="Vista diaria">
+        <span class="icono">view_agenda</span>
+      </button>
+      <button type="button" [class.activo]="semanal()" [attr.aria-pressed]="semanal()" (click)="semanal.set(true)" title="Semanal" aria-label="Vista semanal">
+        <span class="icono">grid_view</span>
       </button>
     </div>
-  </header>
+  </app-encabezado>
 
   @if (!semanal()) {
-    <!-- 03A / 03B -->
-    <div class="tira">
-      <button type="button" class="flecha" (click)="moverSemana(-1)" aria-label="Semana anterior"><span class="icono">chevron_left</span></button>
+    <!-- ADIys (compacta) / CbuFk (completa) -->
+    <nav class="tira" aria-label="Días de la semana">
+      <button type="button" class="boton-icono sin-fondo flecha" (click)="moverSemana(-1)" aria-label="Semana anterior"><span class="icono">chevron_left</span></button>
       @for (d of dias(); track d.iso) {
-        <button type="button" class="dia" [class.elegido]="seleccionada() === d.iso" [class.hoy]="d.iso === hoy" (click)="seleccionada.set(d.iso)">
+        <button type="button" class="dia" [class.elegido]="seleccionada() === d.iso" [class.hoy]="d.iso === hoy"
+          [attr.aria-pressed]="seleccionada() === d.iso" (click)="seleccionada.set(d.iso)">
           <small>{{ d.semana }}</small>
-          <span class="num">{{ d.numero }}</span>
-          <span class="punto" [class.visible]="d.conPlan"></span>
+          <strong>{{ d.numero }}</strong>
+          <span class="marca-plan" [class.visible]="d.conPlan"></span>
         </button>
       }
-      <button type="button" class="flecha" (click)="moverSemana(1)" aria-label="Semana siguiente"><span class="icono">chevron_right</span></button>
-    </div>
+      <button type="button" class="boton-icono sin-fondo flecha" (click)="moverSemana(1)" aria-label="Semana siguiente"><span class="icono">chevron_right</span></button>
+    </nav>
 
-    <p class="subtitulo dia-tit">{{ tituloDia() }}</p>
+    <app-cabecera-seccion [titulo]="vistaCompleta() ? tituloDia() + ' · vista completa' : tituloDia()">
+      @if (seleccionada() === hoy) {
+        <a class="btn btn-texto" routerLink="/dia">Cambiar menú</a>
+      }
+    </app-cabecera-seccion>
 
-    <div class="comidas" [class.completa]="vistaCompleta()">
+    <section class="pila" [class.completa]="vistaCompleta()" aria-label="Comidas del día">
       @for (i of items(); track i.franja) {
         @if (i.receta; as r) {
           @if (vistaCompleta()) {
-            <article class="card-grande" (click)="abrirReceta(r.id)">
-              <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" />
-              <div class="card-cuerpo">
-                <small class="franja"><span class="icono">{{ i.icono }}</span> {{ i.nombreFranja }}</small>
-                <strong>{{ r.nombre }}</strong>
-                @if (r.descripcion) { <p class="desc">{{ r.descripcion }}</p> }
-                <div class="metas">
-                  <small><span class="icono">schedule</span> {{ duracion(r.tiempo.totalMin) }}</small>
-                  @if (r.nutricionPorcion) { <small><span class="icono">local_fire_department</span> {{ r.nutricionPorcion.kcal }} kcal</small> }
-                  @if (i.puntaje !== null) { <small><span class="icono">kitchen</span> {{ i.puntaje }}%</small> }
-                  <button type="button" class="cambiar" (click)="$event.stopPropagation(); elegir.set({ fecha: seleccionada(), franja: i.franja })">
-                    <span class="icono">swap_horiz</span> Cambiar
-                  </button>
-                </div>
-              </div>
+            <article class="tarjeta grande">
+              <a class="toque" [routerLink]="['/recetas', r.id]">
+                <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" [emoji]="emojiFranja(i.franja)" />
+                <span class="cuerpo">
+                  <strong class="t-seccion nombre">{{ r.nombre }}</strong>
+                  <span class="t-detalle">
+                    @if (r.nutricionPorcion) { {{ r.nutricionPorcion.kcal }} kcal · }{{ duracion(r.tiempo.totalMin) }}
+                  </span>
+                  @if (i.resultado; as res) { <app-estado-receta [resultado]="res" /> }
+                </span>
+              </a>
+              <span class="pastilla blanca franja">{{ i.nombreFranja }}</span>
+              <button type="button" class="boton-icono translucido cambiar-foto" (click)="elegir.set({ fecha: seleccionada(), franja: i.franja })"
+                [attr.aria-label]="'Cambiar ' + i.nombreFranja.toLowerCase()">
+                <span class="icono">swap_horiz</span>
+              </button>
             </article>
           } @else {
-            <div class="fila-comida" (click)="abrirReceta(r.id)">
-              <app-foto class="foto-48" [clave]="r.imagen" [radio]="10" />
-              <div class="textos">
-                <small class="franja">{{ i.nombreFranja }}</small>
-                <strong>{{ r.nombre }}</strong>
-                <small>{{ duracion(r.tiempo.totalMin) }}@if (i.puntaje !== null) { · {{ i.puntaje }}% afinidad}</small>
-              </div>
-              <button type="button" class="icono-btn" (click)="$event.stopPropagation(); elegir.set({ fecha: seleccionada(), franja: i.franja })" aria-label="Cambiar receta">
+            <div class="con-accion">
+              <a class="toque" [routerLink]="['/recetas', r.id]">
+                <app-tarjeta-receta [receta]="r" [resultado]="i.resultado" [sobretitulo]="i.nombreFranja" />
+              </a>
+              <button type="button" class="boton-icono suave accion" (click)="elegir.set({ fecha: seleccionada(), franja: i.franja })"
+                [attr.aria-label]="'Cambiar ' + i.nombreFranja.toLowerCase()">
                 <span class="icono">swap_horiz</span>
               </button>
             </div>
@@ -71,35 +76,31 @@
           </button>
         }
       }
-    </div>
+    </section>
 
     @if (totales().elegidas > 0) {
-      <div class="tarjeta-dorada totales">
-        @if (totales().conDato > 0) {
-          <strong>{{ totales().kcal }} kcal · {{ totales().proteinaG }} g proteína</strong>
+      @if (totales().conDato > 0) {
+        <app-aviso icono="local_fire_department" [titulo]="(totales().kcal | numero) + ' kcal · ' + totales().proteinaG + ' g de proteína'"
+          [tono]="estadoMeta() === 'dentro' ? 'ok' : 'acento'">
           @switch (estadoMeta()) {
-            @case ('dentro') { <small class="ok"><span class="icono">check_circle</span> Dentro de tu meta ({{ preferencias.metas().kcalMin }}–{{ preferencias.metas().kcalMax }} kcal)</small> }
-            @case ('encima') { <small class="alerta"><span class="icono">info</span> {{ totales().kcal - preferencias.metas().kcalMax }} kcal sobre tu meta</small> }
-            @case ('debajo') { <small class="alerta"><span class="icono">info</span> {{ preferencias.metas().kcalMin - totales().kcal }} kcal por debajo de tu meta</small> }
+            @case ('dentro') { Dentro de tu meta ({{ preferencias.metas().kcalMin }}–{{ preferencias.metas().kcalMax }}) }
+            @case ('encima') { {{ totales().kcal - preferencias.metas().kcalMax }} kcal sobre tu meta ({{ preferencias.metas().kcalMin }}–{{ preferencias.metas().kcalMax }}) }
+            @case ('debajo') { {{ preferencias.metas().kcalMin - totales().kcal }} kcal por debajo de tu meta ({{ preferencias.metas().kcalMin }}–{{ preferencias.metas().kcalMax }}) }
           }
           @if (totales().conDato < totales().elegidas) {
-            <small class="suave">Faltan datos de {{ totales().elegidas - totales().conDato }} receta(s): calcúlalos desde su detalle.</small>
+            · Faltan datos de {{ totales().elegidas - totales().conDato }} receta(s): calcúlalos desde su detalle.
           }
-        } @else {
-          <small class="suave"><span class="icono">auto_awesome</span> Aún no hay nutrición calculada para estas recetas.</small>
-        }
-      </div>
-    }
-
-    @if (seleccionada() === hoy) {
-      <a class="btn btn-borde ancho" routerLink="/dia"><span class="icono">tune</span> Cambiar mi menú de hoy</a>
+        </app-aviso>
+      } @else {
+        <app-aviso icono="auto_awesome">Aún no hay nutrición calculada para estas recetas.</app-aviso>
+      }
     }
   } @else {
-    <!-- 03C: semanal -->
+    <!-- KU4vf: semanal -->
     <div class="semana-nav">
-      <button type="button" class="icono-btn" (click)="moverSemana(-1)" aria-label="Semana anterior"><span class="icono">chevron_left</span></button>
-      <p class="subtitulo">{{ rangoSemana() }}</p>
-      <button type="button" class="icono-btn" (click)="moverSemana(1)" aria-label="Semana siguiente"><span class="icono">chevron_right</span></button>
+      <button type="button" class="boton-icono sin-fondo" (click)="moverSemana(-1)" aria-label="Semana anterior"><span class="icono">chevron_left</span></button>
+      <p class="t-tarjeta">{{ rangoSemana() }}</p>
+      <button type="button" class="boton-icono sin-fondo" (click)="moverSemana(1)" aria-label="Semana siguiente"><span class="icono">chevron_right</span></button>
     </div>
 
     <div class="grilla" [style.--columnas]="franjas().length">
@@ -117,17 +118,17 @@
       }
     </div>
 
-    <div class="tarjeta-dorada resumen-semana">
+    <section class="tarjeta oscura" aria-label="Resumen de la semana">
       <div class="resumen-fila">
-        <div><strong>{{ resumenSemana().planificados }} de 7 días</strong><small>planificados</small></div>
+        <strong>{{ resumenSemana().planificados }} de 7 días planificados</strong>
         @if (resumenSemana().promedio !== null) {
-          <div class="der"><strong>{{ resumenSemana().promedio }} kcal</strong><small>promedio diario</small></div>
+          <span class="promedio">≈ {{ resumenSemana().promedio | numero }} kcal/día</span>
         }
       </div>
-      <button type="button" class="btn btn-primario ancho" [disabled]="resumenSemana().planificados === 0 || creandoLista()" (click)="listaSemanal()">
+      <button type="button" class="btn btn-primario btn-ancho" [disabled]="resumenSemana().planificados === 0 || creandoLista()" (click)="listaSemanal()">
         <span class="icono">shopping_cart</span> {{ creandoLista() ? 'Armando…' : 'Lista de compras de la semana' }}
       </button>
-    </div>
+    </section>
   }
 </main>
 

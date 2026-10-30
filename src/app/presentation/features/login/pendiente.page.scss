@@ -1,72 +1,59 @@
-.pantalla {
+/* x9oDN5 · Cuenta en espera: todo centrado en la columna. */
+.espera {
   min-height: 100dvh;
-  display: grid;
-  place-items: center;
-  background: var(--plomo-100);
-  padding: 24px;
-}
-
-.tarjeta {
-  background: #fff;
-  border-radius: var(--radio-l);
-  box-shadow: var(--sombra-2);
-  padding: 32px 24px;
-  max-width: 340px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-
-  h2 {
-    margin: 0;
-    font-size: 20px;
-  }
-
-  p {
-    margin: 0;
-    font-size: 13px;
-    color: var(--plomo-500);
-  }
+  justify-content: center;
+  align-items: stretch;
 }
 
 .reloj {
-  font-size: 44px;
-  color: var(--dorado-500);
-  background: var(--dorado-100);
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  padding: 14px;
+  background: var(--color-acento-suave);
+  color: var(--color-acento);
+
+  .icono { font-size: 48px; }
 }
 
-.boton-principal {
-  margin-top: 8px;
-  width: 100%;
-  padding: 12px 20px;
-  border: none;
-  border-radius: var(--radio-pill);
-  background: var(--guindo-700);
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
+.textos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-grupo);
+  text-align: center;
 
-  &:disabled {
-    opacity: 0.6;
+  p {
+    max-width: 32ch;
+    color: var(--color-texto-suave);
   }
+
+  strong { color: var(--color-texto); font-weight: 600; }
 }
 
-.aviso {
-  color: var(--alerta);
+/* Dato fijo (no tocable) con el aspecto de un chip blanco. */
+.correo {
+  padding: 9px 18px;
   font-size: 12px;
+
+  .icono { font-size: 17px; color: var(--color-texto-suave); }
 }
 
-.boton-texto {
-  border: none;
-  background: none;
-  color: var(--guindo-700);
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
+.pasos {
+  margin: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-grupo);
+    color: var(--color-texto-suave);
+  }
+
+  .icono { font-size: 20px; color: var(--color-texto-tenue); }
+
+  .hecho { color: var(--color-texto); }
+  .hecho .icono { color: var(--color-ok); }
 }

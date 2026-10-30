@@ -1,153 +1,97 @@
+/* P7pd4u · Menú lateral: hoja crema que entra por la izquierda sobre un velo. */
 .velo {
   position: fixed;
   inset: 0;
-  background: rgba(31, 31, 35, 0.4);
   z-index: 20;
+  background: var(--color-velo);
 }
 
 .panel {
   position: fixed;
   top: 0;
-  left: 0;
   bottom: 0;
-  width: 290px;
-  background: #fff;
+  left: 0;
   z-index: 21;
-  border-radius: 0 var(--radio-l) var(--radio-l) 0;
-  box-shadow: var(--sombra-2);
   display: flex;
   flex-direction: column;
+  gap: var(--esp-seccion);
+  width: min(310px, 84vw);
+  padding: calc(48px + env(safe-area-inset-top)) var(--esp-pantalla) calc(24px + env(safe-area-inset-bottom));
   overflow-y: auto;
+  border-radius: 0 var(--radio-hoja) var(--radio-hoja) 0;
+  background: var(--color-fondo);
+  box-shadow: var(--sombra-flotante);
 }
 
 .perfil {
-  display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 12px;
-  padding: 24px 20px 18px;
-  border-bottom: 1px solid var(--plomo-100);
+  flex-shrink: 0;
+}
 
-  .avatar {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--guindo-700);
-    color: #fff;
-    font-family: 'Quicksand', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    display: grid;
-    place-items: center;
-  }
 
-  div {
-    display: flex;
-    flex-direction: column;
+.quien {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 
-    strong {
-      font-size: 14px;
-      color: var(--plomo-900);
-    }
-
-    small {
-      color: var(--dorado-700);
-      font-size: 12px;
-    }
-  }
+  small { font-size: 11px; color: var(--color-acento); }
 }
 
 nav {
-  padding: 10px 12px 24px;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
 
-  button {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: none;
-    background: none;
-    padding: 12px 10px;
-    border-radius: var(--radio-m);
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: var(--plomo-900);
-    cursor: pointer;
-    text-align: left;
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: var(--radio-control);
+  background: none;
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
 
-    .icono {
-      color: var(--plomo-700);
-      font-size: 21px;
-    }
+  .icono { font-size: 21px; color: var(--color-texto-suave); }
+  .nombre { flex: 1; min-width: 0; }
+  &:hover { background: var(--color-linea); }
 
-    &:hover {
-      background: var(--plomo-100);
-    }
+  &.activo {
+    background: var(--color-primario-suave);
+    color: var(--color-primario);
+    font-weight: 600;
 
-    &:disabled {
-      color: var(--plomo-400);
-      cursor: default;
-
-      .icono {
-        color: var(--plomo-300);
-      }
-    }
+    .icono { color: var(--color-primario); }
   }
-}
 
-.seccion {
-  color: var(--plomo-400);
-  font-size: 11px;
-  letter-spacing: 0.8px;
-  margin: 14px 10px 2px;
-}
-
-.grupos-vacios {
-  color: var(--plomo-400);
-  font-size: 12px;
-  margin: 4px 10px;
-}
-
-.pendientes {
-  color: var(--guindo-700);
-  font-size: 12px;
-  font-weight: 600;
+  &.salir,
+  &.salir .icono { color: var(--color-primario); }
 }
 
 .contador {
-  margin-left: auto;
-  color: var(--plomo-500);
   font-size: 12px;
+  font-weight: 400;
+  color: var(--color-texto-suave);
 }
 
-nav button.activo {
-  background: var(--guindo-100);
-  color: var(--guindo-900);
-
-  .icono { color: var(--guindo-700); }
-}
-
-.seccion-grupos {
+.seccion {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-right: 4px;
+  margin-top: var(--esp-grupo);
+  padding-left: 14px;
 
-  .seccion { margin-right: 0; }
-
-  .nuevo-grupo {
-    padding: 6px;
-    margin-top: 10px;
-
-    .icono { color: var(--guindo-700); font-size: 20px; }
-  }
+  .nuevo-grupo { color: var(--color-primario); }
 }
 
-.salir {
-  margin-top: 8px;
-  color: var(--guindo-700) !important;
+.grupos-vacios { padding: 4px 14px; }
 
-  .icono {
-    color: var(--guindo-700) !important;
-  }
-}
+.separador { height: var(--esp-seccion); }

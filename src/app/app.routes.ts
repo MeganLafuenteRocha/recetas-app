@@ -27,7 +27,8 @@ export const routes: Routes = [
       import('./presentation/features/login/bienvenida.page').then((m) => m.BienvenidaPage),
   },
   {
-    // Marco con barra de navegación inferior (4 destinos). Todo exige cuenta activa.
+    // Marco de la app. Todo exige cuenta activa. La barra de pestañas se ve solo en los 4 destinos
+    // principales (data.pestanas); el resto de pantallas tiene su propia acción fija abajo.
     path: '',
     canActivate: [soloActivosGuard],
     loadComponent: () =>
@@ -35,11 +36,13 @@ export const routes: Routes = [
     children: [
       {
         path: 'inicio',
+        data: { pestanas: true },
         loadComponent: () =>
           import('./presentation/features/inicio/inicio.page').then((m) => m.InicioPage),
       },
       {
         path: 'mi-dia',
+        data: { pestanas: true },
         loadComponent: () =>
           import('./presentation/features/mi-dia/mi-dia.page').then((m) => m.MiDiaPage),
       },
@@ -52,6 +55,7 @@ export const routes: Routes = [
       // Recetas (07A/07B, 08, 11, modo cocina)
       {
         path: 'recetas',
+        data: { pestanas: true },
         loadComponent: () =>
           import('./presentation/features/recetas/recetas.page').then((m) => m.RecetasPage),
       },
@@ -79,6 +83,7 @@ export const routes: Routes = [
       // Despensa (10A/10B) e ingredientes (16): los básicos los define cada hogar.
       {
         path: 'despensa',
+        data: { pestanas: true },
         loadComponent: () =>
           import('./presentation/features/despensa/despensa.page').then((m) => m.DespensaPage),
       },

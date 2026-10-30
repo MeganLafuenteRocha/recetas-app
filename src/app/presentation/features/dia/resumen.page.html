@@ -1,67 +1,62 @@
-<main class="vista">
-  <header class="cabecera">
-    <a class="icono-btn" routerLink="/dia/opciones" aria-label="Volver"><span class="icono">arrow_back</span></a>
-    <h1>Tu menú de hoy</h1>
-  </header>
+<main class="pantalla">
+  <app-encabezado titulo="Tu menú de hoy" volver="/dia/opciones" />
 
   @if (elecciones().length > 0) {
-    <div class="aviso ok listo" data-testid="dia-armado">
-      <span class="icono">celebration</span>
-      <div><strong>¡Tu día está armado!</strong><small>{{ fecha }}</small></div>
-    </div>
+    <app-aviso tono="ok" icono="celebration" titulo="¡Tu día está armado!" data-testid="dia-armado">{{ fecha }}</app-aviso>
 
-    <div class="lista-filas">
+    <section class="pila" aria-label="Comidas de hoy">
       @for (e of elecciones(); track e.franja) {
-        <div class="comida" [attr.data-testid]="'comida-' + e.franja">
-          <app-foto class="foto-52" [clave]="e.receta?.imagen ?? null" [radio]="10" />
-          <a class="textos" [routerLink]="['/recetas', e.receta?.id]">
-            <small class="franja">{{ e.nombreFranja }}</small>
-            <strong>{{ e.receta?.nombre ?? '—' }}</strong>
-            @if (e.receta; as r) {
-              <small>{{ r.nutricionPorcion ? r.nutricionPorcion.kcal + ' kcal · ' : '' }}{{ duracion(r.tiempo.totalMin) }}</small>
-            }
-          </a>
-          <button type="button" class="icono-btn" (click)="cambiando.set(e.franja)" aria-label="Cambiar receta"><span class="icono">swap_horiz</span></button>
+        <div class="con-accion" [attr.data-testid]="'comida-' + e.franja">
+          @if (e.receta; as r) {
+            <a class="toque" [routerLink]="['/recetas', r.id]">
+              <app-tarjeta-receta [receta]="r" [resultado]="e.resultado" [sobretitulo]="e.nombreFranja" />
+            </a>
+          } @else {
+            <div class="tarjeta sin-receta">
+              <span class="t-sobretitulo">{{ e.nombreFranja }}</span>
+              <span class="t-detalle">Esta receta ya no está disponible.</span>
+            </div>
+          }
+          <button type="button" class="boton-icono suave accion" (click)="cambiando.set(e.franja)" [attr.aria-label]="'Cambiar ' + e.nombreFranja.toLowerCase()">
+            <span class="icono">swap_horiz</span>
+          </button>
         </div>
       }
-    </div>
+    </section>
 
-    <div class="tarjeta-dorada totales">
+    <section class="tarjeta totales" aria-label="Totales del día">
       @if (totales().conDato > 0) {
-        <strong>{{ totales().kcal }} kcal · {{ totales().proteinaG }} g proteína</strong>
-        <div class="meta">
-          <div class="meta-tit"><span>Calorías</span><small>{{ totales().kcal }} / {{ preferencias.metas().kcalMax }}</small></div>
-          <div class="pista"><span [class]="estado() === 'encima' ? 'alerta' : 'normal'" [style.width.%]="barraKcal()"></span></div>
+        <strong class="t-seccion">{{ totales().kcal | numero }} kcal · {{ totales().proteinaG }} g proteína</strong>
+        <div class="medida">
+          <div class="medida-tit"><span class="t-detalle">Calorías</span><strong>{{ totales().kcal | numero }} / {{ preferencias.metas().kcalMax | numero }}</strong></div>
+          <div class="progreso" [class.acento]="estado() !== 'dentro'"><span [style.width.%]="barraKcal()"></span></div>
         </div>
-        <div class="meta">
-          <div class="meta-tit"><span>Proteína</span><small>{{ totales().proteinaG }} g / {{ preferencias.metas().proteinaG }} g</small></div>
-          <div class="pista"><span class="verde" [style.width.%]="barraProteina()"></span></div>
+        <div class="medida">
+          <div class="medida-tit"><span class="t-detalle">Proteína</span><strong>{{ totales().proteinaG }} / {{ preferencias.metas().proteinaG }} g</strong></div>
+          <div class="progreso"><span [style.width.%]="barraProteina()"></span></div>
         </div>
         @switch (estado()) {
-          @case ('dentro') { <small class="estado ok"><span class="icono">check_circle</span> Dentro de tu meta</small> }
-          @case ('encima') { <small class="estado alerta"><span class="icono">info</span> {{ totales().kcal - preferencias.metas().kcalMax }} kcal sobre tu meta — nada grave</small> }
-          @case ('debajo') { <small class="estado alerta"><span class="icono">info</span> {{ preferencias.metas().kcalMin - totales().kcal }} kcal por debajo de tu meta</small> }
+          @case ('dentro') { <span class="estado ok"><span class="punto"></span> Dentro de tu meta</span> }
+          @case ('encima') { <span class="estado"><span class="punto"></span> {{ totales().kcal - preferencias.metas().kcalMax }} kcal sobre tu meta</span> }
+          @case ('debajo') { <span class="estado"><span class="punto"></span> {{ preferencias.metas().kcalMin - totales().kcal }} kcal por debajo de tu meta</span> }
         }
       } @else {
-        <small class="estado"><span class="icono">auto_awesome</span> Estas recetas aún no tienen nutrición calculada.</small>
+        <span class="estado"><span class="icono">auto_awesome</span> Estas recetas aún no tienen nutrición calculada.</span>
       }
-    </div>
+    </section>
 
     @if (faltantes().length > 0) {
-      <div class="tarjeta faltan">
-        <p class="subtitulo"><span class="icono">shopping_cart</span> Para cocinar hoy te falta</p>
-        <div class="chips envolver">
-          @for (f of faltantes(); track f.id) {
-            <span [class]="'pastilla-rol rol-' + f.rol">{{ f.nombre }}</span>
-          }
-        </div>
-        <button type="button" class="btn btn-texto" [disabled]="creandoLista()" (click)="llevarALista()">
-          <span class="icono">playlist_add</span> {{ creandoLista() ? 'Creando…' : 'Llevar a mi lista de compras' }}
+      <app-aviso icono="shopping_cart" titulo="Para cocinar hoy te falta">
+        {{ textoFaltantes() }} ·
+        <button type="button" class="enlace" [disabled]="creandoLista()" (click)="llevarALista()">
+          {{ creandoLista() ? 'Creando…' : 'Llevar a mi lista de compras →' }}
         </button>
-      </div>
+      </app-aviso>
     }
 
-    <a class="btn btn-primario ancho" routerLink="/mi-dia"><span class="icono">event_available</span> Ver en Mi día</a>
+    <footer class="pie-fijo">
+      <a class="btn btn-primario btn-ancho" routerLink="/mi-dia"><span class="icono">event_available</span> Ver en Mi día</a>
+    </footer>
   } @else {
     <div class="vacio-estado">
       <span class="icono">calendar_add_on</span>

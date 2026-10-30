@@ -1,72 +1,73 @@
-<main class="vista">
-  <header class="cabecera">
-    <button type="button" class="avatar-btn" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">{{ inicial() }}</button>
-    <h1>Recetas</h1>
-    <div class="acciones">
-      <button
-        type="button"
-        class="icono-btn"
-        (click)="ui.cambiarVistaRecetas(ui.vistaRecetas() === 'lista' ? 'franjas' : 'lista')"
-        [attr.aria-label]="ui.vistaRecetas() === 'lista' ? 'Ver por franjas' : 'Ver como lista'"
-        [title]="ui.vistaRecetas() === 'lista' ? 'Ver por franjas' : 'Ver como lista'"
-      >
-        <span class="icono">{{ ui.vistaRecetas() === 'lista' ? 'view_carousel' : 'view_list' }}</span>
+<main class="pantalla">
+  <app-encabezado titulo="Recetas" [principal]="true">
+    @if (vista() === 'franjas') {
+      <button type="button" class="boton-icono" (click)="ui.cambiarVistaRecetas('lista')" aria-label="Buscar recetas" title="Buscar recetas">
+        <span class="icono">search</span>
       </button>
-      <a class="icono-btn" routerLink="/recetas/nueva" aria-label="Nueva receta" title="Nueva receta">
-        <span class="icono">add_circle</span>
-      </a>
-    </div>
-  </header>
+    }
+    <button
+      type="button"
+      class="boton-icono"
+      (click)="cambiarVista()"
+      [attr.aria-label]="vista() === 'lista' ? 'Ver por franjas' : 'Ver como lista'"
+      [title]="vista() === 'lista' ? 'Ver por franjas' : 'Ver como lista'"
+    >
+      <span class="icono">{{ vista() === 'lista' ? 'view_carousel' : 'view_list' }}</span>
+    </button>
+    <a class="boton-icono primario" routerLink="/recetas/nueva" aria-label="Nueva receta" title="Nueva receta">
+      <span class="icono">add</span>
+    </a>
+    <button type="button" class="boton-icono suave inicial" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">{{ inicial() }}</button>
+  </app-encabezado>
 
-  <label class="buscador">
-    <span class="icono">search</span>
-    <input type="search" data-testid="buscar-receta" placeholder="Buscar por receta o ingrediente…" [value]="consulta()" (input)="buscar($event)" />
-  </label>
-
-  @if (ui.vistaRecetas() === 'lista') {
-    <!-- 07A: lista con filtros -->
-    <div class="chips">
-      <button type="button" class="chip" [class.activo]="franja() === null" (click)="franja.set(null)">Todas</button>
-      @for (t of catalogos.tiposComida(); track t.codigo) {
-        <button type="button" class="chip" [class.activo]="franja() === t.codigo" (click)="franja.set(t.codigo)">
-          {{ t.nombre }}
-        </button>
-      }
-    </div>
-
-    <div class="filtros">
-      <div class="izq">
-        <label class="selector">
-          <select (change)="elegirCocina($event)" aria-label="Tipo de cocina">
-            <option value="">Toda cocina</option>
-            @for (c of catalogos.tiposCocina(); track c.codigo) {
-              <option [value]="c.codigo" [selected]="cocina() === c.codigo">{{ c.nombre }}</option>
-            }
-          </select>
-          <span class="icono">expand_more</span>
+  @if (vista() === 'lista') {
+    <!-- 07A: lista con buscador, filtros y chips de franja -->
+    <div class="pila">
+      <div class="busqueda">
+        <label class="buscador">
+          <span class="icono">search</span>
+          <input
+            type="search"
+            data-testid="buscar-receta"
+            placeholder="Receta o ingrediente…"
+            aria-label="Buscar por receta o ingrediente"
+            [value]="consulta()"
+            (input)="buscar($event)"
+          />
         </label>
-        <button type="button" class="filtro-despensa" [class.activo]="soloConDespensa()" (click)="soloConDespensa.set(!soloConDespensa())">
-          <span class="icono">kitchen</span> Con mi despensa
+        <button
+          type="button"
+          class="boton-icono suave filtros"
+          (click)="filtrosAbiertos.set(true)"
+          aria-label="Filtros y orden"
+          title="Filtros y orden"
+        >
+          <span class="icono">tune</span>
+          @if (filtrosActivos() > 0) {
+            <span class="marca-filtros" aria-hidden="true">{{ filtrosActivos() }}</span>
+          }
         </button>
       </div>
-      <button type="button" class="orden" (click)="siguienteOrden()" title="Cambiar orden">
-        <span class="icono">swap_vert</span> {{ nombreOrden() }}
-      </button>
+
+      <div class="chips" role="group" aria-label="Franja">
+        <button type="button" class="chip" [class.activo]="franja() === null" (click)="franja.set(null)">Todas</button>
+        @for (t of catalogos.tiposComida(); track t.codigo) {
+          <button type="button" class="chip" [class.activo]="franja() === t.codigo" (click)="franja.set(t.codigo)">
+            {{ t.nombre }}
+          </button>
+        }
+      </div>
+
+      <p class="t-detalle">
+        {{ filtradas().length }} receta{{ filtradas().length === 1 ? '' : 's' }} · {{ textoOrden() }}
+      </p>
     </div>
 
-    <p class="texto-suave">{{ filtradas().length }} receta{{ filtradas().length === 1 ? '' : 's' }}</p>
-
     @if (filtradas().length > 0) {
-      <div class="lista-filas">
+      <div class="pila">
         @for (e of filtradas(); track e.receta.id) {
-          <a class="fila-btn" [routerLink]="['/recetas', e.receta.id]" [attr.data-testid]="'receta-' + e.receta.id">
-            <app-foto class="foto-52" [clave]="e.receta.imagen" [radio]="10" />
-            <span class="principal">
-              <strong class="nombre">{{ e.receta.nombre }}</strong>
-              <small>{{ meta(e) }}</small>
-            </span>
-            <app-afinidad [puntaje]="e.puntaje" />
-            <span class="icono">chevron_right</span>
+          <a class="toque" [routerLink]="['/recetas', e.receta.id]" [attr.data-testid]="'receta-' + e.receta.id">
+            <app-tarjeta-receta [receta]="e.receta" [resultado]="e" />
           </a>
         }
       </div>
@@ -74,30 +75,28 @@
       <div class="vacio-estado">
         <span class="icono">search_off</span>
         <p>No hay recetas con esos filtros.</p>
+        @if (filtrosActivos() > 0) {
+          <button type="button" class="btn btn-suave btn-chico" (click)="limpiarFiltros()">Quitar filtros</button>
+        }
       </div>
     }
   } @else {
     <!-- 07B: por franjas -->
-    <button type="button" class="hero" (click)="verLista(null, true)">
-      <span class="hero-texto">
-        <small>Puedes cocinar ya</small>
-        <strong>{{ listasYa() }} receta{{ listasYa() === 1 ? '' : 's' }} con tu despensa</strong>
-      </span>
-      <span class="hero-btn">Ver <span class="icono">arrow_forward</span></span>
+    <button type="button" class="tarjeta primaria banner" (click)="verLista(null, true)">
+      <span class="t-sobretitulo">Con tu despensa</span>
+      <strong class="t-pantalla">Puedes cocinar {{ listasYa() }} receta{{ listasYa() === 1 ? '' : 's' }} ya</strong>
+      <span class="btn btn-acento btn-chico ver">Ver <span class="icono">arrow_forward</span></span>
     </button>
 
     @for (f of porFranja(); track f.codigo) {
-      <section class="franja">
-        <div class="franja-tit">
-          <p class="subtitulo"><span class="icono">{{ f.icono }}</span> {{ f.nombre }}</p>
-          <button type="button" class="btn-texto btn" (click)="verLista(f.codigo)">Ver todas</button>
-        </div>
+      <section class="pila">
+        <app-cabecera-seccion [titulo]="f.nombre">
+          <button type="button" class="btn btn-texto" (click)="verLista(f.codigo)">Ver todas</button>
+        </app-cabecera-seccion>
         <div class="carrusel">
           @for (e of f.items; track e.receta.id) {
-            <a class="card" [routerLink]="['/recetas', e.receta.id]">
-              <app-foto class="foto-card" [clave]="e.receta.imagen" />
-              <strong>{{ e.receta.nombre }}</strong>
-              <span class="pie"><app-afinidad [puntaje]="e.puntaje" /> <small>{{ duracion(e.receta.tiempo.totalMin) }}</small></span>
+            <a class="toque plato" [routerLink]="['/recetas', e.receta.id]">
+              <app-tarjeta-plato [receta]="e.receta" [resultado]="e" />
             </a>
           }
         </div>
@@ -110,3 +109,42 @@
     }
   }
 </main>
+
+@if (filtrosAbiertos()) {
+  <app-hoja titulo="Filtros" (cerrar)="filtrosAbiertos.set(false)">
+    <label class="campo">
+      <span>Tipo de cocina</span>
+      <select class="caja" (change)="elegirCocina($event)">
+        <option value="">Toda cocina</option>
+        @for (c of catalogos.tiposCocina(); track c.codigo) {
+          <option [value]="c.codigo" [selected]="cocina() === c.codigo">{{ c.nombre }}</option>
+        }
+      </select>
+    </label>
+
+    <div class="tarjeta fila-filtro">
+      <span class="icono">kitchen</span>
+      <span class="fila-filtro-texto">
+        <strong>Con mi despensa</strong>
+        <span class="t-detalle">Solo las que ya puedes cocinar</span>
+      </span>
+      <app-interruptor [(valor)]="soloConDespensa" etiqueta="Solo recetas con mi despensa" />
+    </div>
+
+    <div class="pila">
+      <span class="t-sobretitulo">Ordenar por</span>
+      <div class="segmentos" role="group" aria-label="Orden">
+        @for (o of ordenes; track o) {
+          <button type="button" [class.activo]="orden() === o" (click)="orden.set(o)">{{ nombresOrden[o] }}</button>
+        }
+      </div>
+    </div>
+
+    <div class="pie-hoja">
+      <button type="button" class="btn btn-texto" [disabled]="filtrosActivos() === 0" (click)="limpiarFiltros()">Limpiar</button>
+      <button type="button" class="btn btn-primario crecer" (click)="filtrosAbiertos.set(false)">
+        Ver {{ filtradas().length }} receta{{ filtradas().length === 1 ? '' : 's' }}
+      </button>
+    </div>
+  </app-hoja>
+}

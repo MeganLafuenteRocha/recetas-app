@@ -1,46 +1,39 @@
-<main class="vista">
-  <header class="cabecera">
-    <a class="icono-btn" routerLink="/dia" aria-label="Volver"><span class="icono">arrow_back</span></a>
-    <h1>Opciones para tu día</h1>
-  </header>
+<main class="pantalla">
+  <div class="pila">
+    <app-encabezado titulo="Opciones para tu día" volver="/dia" />
 
-  <a class="resumen-ingredientes" routerLink="/dia">
-    <span>{{ seleccion.totalSeleccionados() }} ingrediente{{ seleccion.totalSeleccionados() === 1 ? '' : 's' }} marcados</span>
-    <span class="icono">edit</span>
-  </a>
-
-  @if (seleccion.grupo(); as g) {
     <div class="chips envolver">
-      <span class="chip marcado">
-        <span class="icono">bookmark</span> Solo: {{ g.nombre }}
-        <button type="button" class="quitar" (click)="seleccion.quitarGrupo()" aria-label="Quitar filtro de grupo"><span class="icono">close</span></button>
-      </span>
+      <a class="chip ingredientes" routerLink="/dia" aria-label="Cambiar ingredientes marcados">
+        <span class="icono acento" aria-hidden="true">grocery</span>
+        <span class="nombres">{{ resumenIngredientes() }}</span>
+        <span class="icono" aria-hidden="true">edit</span>
+      </a>
+
+      @if (seleccion.grupo(); as g) {
+        <span class="chip suave">
+          <span class="icono" aria-hidden="true">bookmark</span> Solo: {{ g.nombre }}
+          <button type="button" class="quitar" (click)="seleccion.quitarGrupo()" aria-label="Quitar filtro de grupo">
+            <span class="icono">close</span>
+          </button>
+        </span>
+      }
     </div>
-  }
+  </div>
 
   @for (franja of franjas(); track franja.codigo) {
-    <section class="franja" [attr.data-testid]="'franja-' + franja.codigo">
-      <p class="subtitulo"><span class="icono">{{ franja.icono }}</span> {{ franja.nombre }}</p>
-      <div class="cards">
+    <section class="pila" [attr.data-testid]="'franja-' + franja.codigo">
+      <app-cabecera-seccion [titulo]="franja.nombre" [icono]="franja.icono" />
+      <div class="grilla">
         @for (opcion of franja.opciones; track opcion.receta.id) {
+          @let elegida = seleccion.eleccionDe(franja.codigo) === opcion.receta.id;
           <button
             type="button"
-            class="card"
+            class="toque"
             [attr.data-testid]="'opcion-' + opcion.receta.id"
-            [class.elegida]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
-            [attr.aria-pressed]="seleccion.eleccionDe(franja.codigo) === opcion.receta.id"
+            [attr.aria-pressed]="elegida"
             (click)="seleccion.elegir(franja.codigo, opcion.receta.id)"
           >
-            <app-foto class="foto-card" [clave]="opcion.receta.imagen" />
-            @if (seleccion.eleccionDe(franja.codigo) === opcion.receta.id) {
-              <span class="marca"><span class="icono">check</span></span>
-            }
-            <strong>{{ opcion.receta.nombre }}</strong>
-            <span class="detalles">
-              <app-afinidad [puntaje]="opcion.puntaje" />
-              <small>{{ duracion(opcion.receta.tiempo.totalMin) }}@if (opcion.kcal !== null) { · {{ opcion.kcal }} kcal}</small>
-            </span>
-            <app-faltantes [resultado]="opcion.resultado" [incluirOpcionales]="false" [interactivo]="false" />
+            <app-tarjeta-plato class="plato" [receta]="opcion.receta" [resultado]="opcion.resultado" [elegida]="elegida" />
           </button>
         }
       </div>
@@ -52,20 +45,33 @@
       <a class="btn btn-suave" routerLink="/dia">Elegir ingredientes</a>
     </div>
   }
-</main>
 
-<footer class="barra-armar">
-  <div class="resumen">
-    <strong>{{ nombresElegidos() || 'Elige una receta por franja' }}</strong>
-    @if (kcalElegidas() !== null) {
-      <small [class.ok]="kcalElegidas()! <= preferencias.metas().kcalMax">
-        {{ kcalElegidas() }} kcal
-        @if (kcalElegidas()! <= preferencias.metas().kcalMax) { · dentro de tu meta ✓ } @else { · sobre tu meta }
-      </small>
-    }
-  </div>
-  <button type="button" class="btn btn-primario ancho" data-testid="btn-armar-dia" [disabled]="seleccion.totalElegidas() === 0 || guardando()" (click)="armar()">
-    @if (guardando()) { Guardando… } @else { Armar mi día }
-  </button>
-  <a class="btn volver" routerLink="/dia">Volver a elegir</a>
-</footer>
+  <footer class="pie-fijo">
+    <div class="tarjeta oscura resumen">
+      <div class="resumen-fila">
+        <strong class="nombres">{{ nombresElegidos() || 'Elige una receta por franja' }}</strong>
+        @let kcal = kcalElegidas();
+        @if (kcal !== null) {
+          <span class="kcal">
+            {{ kcal | numero }} kcal
+            @if (kcal <= preferencias.metas().kcalMax) {
+              <span class="icono" aria-label="dentro de tu meta">check</span>
+            } @else {
+              <span class="solo-lector">sobre tu meta</span>
+            }
+          </span>
+        }
+      </div>
+      <button
+        type="button"
+        class="btn btn-primario btn-ancho"
+        data-testid="btn-armar-dia"
+        [disabled]="seleccion.totalElegidas() === 0 || guardando()"
+        (click)="armar()"
+      >
+        <span class="icono">skillet</span>
+        @if (guardando()) { Guardando… } @else { Armar mi día }
+      </button>
+    </div>
+  </footer>
+</main>

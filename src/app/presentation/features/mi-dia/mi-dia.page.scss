@@ -1,156 +1,122 @@
 :host { display: block; }
 
-/* ---- Tira semanal (estilo TickTick) ---- */
-.tira { display: flex; align-items: center; justify-content: space-between; gap: 2px; }
+/* Conmutador día / semana del encabezado. */
+.vistas {
+  width: 104px;
+
+  button { padding: 7px 4px; }
+  .icono { font-size: 20px; }
+}
+
+/* ---- Tira de la semana (ADIys) ---- */
+.tira {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 -8px;
+}
 
 .flecha {
-  border: none;
-  background: none;
-  color: var(--plomo-500);
-  padding: 0;
-  cursor: pointer;
-  display: grid;
+  width: 28px;
+  color: var(--color-texto-tenue);
 
   .icono { font-size: 20px; }
 }
 
 .dia {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
+  padding: 10px 0 8px;
   border: none;
-  background: none;
+  border-radius: var(--radio-pill);
+  background: transparent;
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
   cursor: pointer;
-  padding: 0;
 
-  small { font-size: 11px; color: var(--plomo-500); }
-  .num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: 14px; color: var(--plomo-900); }
-  .punto { width: 4px; height: 4px; border-radius: 50%; background: transparent; }
-  .punto.visible { background: var(--dorado-500); }
+  small { font-size: 11px; color: var(--color-texto-suave); }
+  strong { font-family: var(--fuente-titulo); font-size: 17px; }
 
-  &.hoy .num { color: var(--guindo-700); }
-  &.elegido .num { background: var(--guindo-700); color: #fff; }
+  &.hoy strong { color: var(--color-primario); }
+  &.elegido { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.elegido small, &.elegido strong { color: var(--color-texto-invertido); }
 }
 
-.dia-tit { font-size: 16px; color: var(--plomo-700); }
+.marca-plan {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: transparent;
 
-/* ---- Comidas ---- */
-.comidas { display: flex; flex-direction: column; gap: 10px; }
+  &.visible { background: var(--color-acento); }
+}
 
-.fila-comida {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #fff;
-  border: 1px solid #e4e4e7;
-  border-radius: 16px;
-  padding: 12px 6px 12px 12px;
-  cursor: pointer;
+/* ---- Vista completa (CbuFk): foto grande ---- */
+.grande {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
 
-  .foto-48 { width: 48px; height: 48px; }
-  .textos { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-  strong { font-family: 'Quicksand', sans-serif; font-size: 15px; color: var(--plomo-900); }
-  small { font-size: 11px; color: var(--plomo-500); }
+  .foto-grande { width: 100%; height: 190px; }
+  .cuerpo { display: flex; flex-direction: column; gap: 4px; padding: 16px 20px 18px; }
+  .nombre { font-size: 20px; }
 }
 
 .franja {
-  font-size: 10px !important;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  color: var(--dorado-500) !important;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
-  .icono { font-size: 14px; }
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: var(--color-primario);
 }
 
-.card-grande {
-  background: #fff;
-  border: 1px solid #e4e4e7;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-
-  .foto-grande { width: 100%; height: 140px; }
-  .card-cuerpo { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; }
-  strong { font-family: 'Quicksand', sans-serif; font-size: 17px; color: var(--plomo-900); }
-  .desc { margin: 0; font-size: 12px; color: var(--plomo-500); line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cambiar-foto {
+  position: absolute;
+  top: 14px;
+  right: 14px;
 }
 
-.metas {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-
-  small { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: var(--plomo-700); }
-  small .icono { font-size: 15px; color: var(--guindo-700); }
-}
-
-.cambiar {
-  margin-left: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  border: none;
-  background: var(--guindo-100);
-  color: var(--guindo-900);
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-
-  .icono { font-size: 15px; }
-}
-
+/* Franja sin receta. */
 .vacia {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px dashed var(--plomo-400);
+  padding: 18px;
+  border: 1.5px dashed var(--color-borde);
+  border-radius: var(--radio-tarjeta);
   background: transparent;
-  color: var(--plomo-500);
+  color: var(--color-texto-suave);
+  font-family: var(--fuente-texto);
   font-size: 13px;
   cursor: pointer;
 
-  .icono { font-size: 18px; color: var(--guindo-700); }
+  .icono { font-size: 18px; color: var(--color-primario); }
 }
 
-.totales {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  strong { font-size: 14px; color: var(--plomo-900); }
-  small { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; }
-  small .icono { font-size: 15px; }
-  .ok { color: var(--ok); }
-  .alerta { color: var(--alerta); }
-  .suave { color: var(--dorado-700); }
-}
-
-/* ---- 03C semanal ---- */
+/* ---- Semana (KU4vf) ---- */
 .semana-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin: 0 -8px;
 }
 
 .grilla {
   display: grid;
-  grid-template-columns: 40px repeat(var(--columnas), 1fr);
-  gap: 6px;
+  grid-template-columns: 44px repeat(var(--columnas), minmax(0, 1fr));
+  gap: 10px 8px;
   align-items: stretch;
 
-  .col { text-align: center; font-size: 10px; font-weight: 600; color: var(--plomo-500); }
+  .col {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-acento);
+  }
 }
 
 .fecha {
@@ -158,53 +124,54 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 46px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid #e4e4e7;
+  min-height: 56px;
+  border-radius: var(--radio-control);
 
-  small { font-size: 9px; color: var(--plomo-500); }
-  strong { font-size: 13px; color: var(--plomo-900); }
+  small { font-size: 10px; color: var(--color-texto-suave); }
+  strong { font-family: var(--fuente-titulo); font-size: 16px; }
 
-  &.hoy { background: var(--guindo-700); border-color: var(--guindo-700); small { color: #f6e9ebcc; } strong { color: #fff; } }
+  &.hoy { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.hoy small, &.hoy strong { color: var(--color-texto-invertido); }
 }
 
 .celda {
-  min-height: 46px;
-  border-radius: 10px;
-  border: 1px solid #e4e4e7;
-  background: #fff;
-  padding: 4px;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 1.15;
-  color: var(--plomo-700);
-  cursor: pointer;
+  min-height: 56px;
+  min-width: 0;
+  padding: 6px;
   overflow: hidden;
+  overflow-wrap: anywhere;
+  border: 1.5px solid transparent;
+  border-radius: var(--radio-control);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
 }
 
 .vacia-celda {
-  background: transparent;
-  border-style: dashed;
-  border-color: #d4d4d8;
   display: grid;
   place-items: center;
+  border-color: var(--color-borde);
+  background: transparent;
 
-  .icono { font-size: 16px; color: var(--plomo-400); }
-}
-
-.resumen-semana {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  .icono { font-size: 18px; color: var(--color-texto-tenue); }
 }
 
 .resumen-fila {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: var(--esp-grupo);
 
-  div { display: flex; flex-direction: column; }
-  .der { align-items: flex-end; }
-  strong { font-size: 14px; color: var(--plomo-900); }
-  small { font-size: 11px; color: var(--dorado-700); }
+  strong { font-size: 14px; font-weight: 600; }
+}
+
+.promedio {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-acento-claro);
 }

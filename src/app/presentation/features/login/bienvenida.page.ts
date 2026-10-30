@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
+import { HogarActualStore } from '../../../application/stores/hogar-actual.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
 import { CargarDatosInicialesUseCase } from '../../../application/use-cases/cargar-datos-iniciales.usecase';
 
@@ -14,6 +15,7 @@ import { CargarDatosInicialesUseCase } from '../../../application/use-cases/carg
 })
 export class BienvenidaPage {
   protected readonly sesion = inject(SesionStore);
+  protected readonly hogar = inject(HogarActualStore);
   protected readonly datos = inject(CargarDatosInicialesUseCase);
   protected readonly recetas = inject(RecetasStore);
   protected readonly ingredientes = inject(IngredientesStore);

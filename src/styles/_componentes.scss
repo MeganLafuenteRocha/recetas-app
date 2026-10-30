@@ -59,6 +59,24 @@
 .btn-secundario { background: var(--color-superficie); color: var(--color-primario); }
 .btn-suave { background: var(--color-primario-suave); color: var(--color-primario); }
 .btn-acento { background: var(--color-acento); color: var(--color-texto-invertido); }
+.btn-acento-suave { background: var(--color-acento-suave); color: var(--color-acento); }
+.btn-neutro { background: var(--color-fondo); color: var(--color-texto-suave); }
+/* Botón con un círculo blanco al final (Empezar a cocinar, Continuar con Google):
+   <a class="btn btn-primario con-circulo">Texto <span class="btn-circulo">…</span></a> */
+.btn.con-circulo { justify-content: space-between; padding: 0 6px 0 24px; }
+.btn-circulo {
+  display: grid;
+  place-items: center;
+  width: calc(var(--alto-boton) - 12px);
+  height: calc(var(--alto-boton) - 12px);
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-superficie);
+  color: var(--color-primario);
+}
+
+/* Un enlace con aspecto de botón no tiene :disabled: se marca con aria-disabled. */
+a.btn[aria-disabled='true'] { opacity: 0.45; pointer-events: none; box-shadow: none; }
 .btn-texto { background: transparent; color: var(--color-primario); height: auto; padding: 8px 4px; font-size: 12px; }
 .btn-peligro { background: transparent; color: var(--color-error); }
 .btn-chico { height: 44px; padding: 0 16px; font-size: 12px; .icono { font-size: 17px; } }
@@ -137,6 +155,89 @@
   &.ok { background: var(--color-ok-suave); color: var(--color-ok); }
   &.primario { background: var(--color-primario-suave); color: var(--color-primario); }
   &.solida { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.blanca { background: var(--color-superficie); color: var(--color-texto); font-weight: 500; }
+  /* Sobre fotos o sobre la tarjeta guindo. */
+  &.translucida {
+    background: color-mix(in srgb, var(--color-texto-invertido) 22%, transparent);
+    color: var(--color-texto-invertido);
+    backdrop-filter: blur(10px);
+  }
+}
+
+/* Avatar con la inicial de la cuenta. */
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-primario);
+  color: var(--color-texto-invertido);
+  font-family: var(--fuente-titulo);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+
+  &.suave { background: var(--color-primario-suave); color: var(--color-primario); }
+  &.chico { width: 42px; height: 42px; font-size: 16px; }
+  &.grande { width: 56px; height: 56px; font-size: 22px; }
+}
+
+img.avatar { object-fit: cover; }
+
+/* Ícono dentro de un círculo guindo suave (filas de ajuste, datos de receta, opciones). */
+.circulo-icono {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primario-suave);
+  color: var(--color-primario);
+
+  .icono { font-size: 18px; }
+}
+
+/* Marcas visuales de selección (el control real es el botón o la fila que las contiene). */
+.casilla, .radio {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 2px solid var(--color-control-apagado);
+  border-radius: var(--radio-chico);
+  color: var(--color-texto-invertido);
+
+  .icono { font-size: 16px; visibility: hidden; }
+  &.marcada { border-color: var(--color-primario); background: var(--color-primario); .icono { visibility: visible; } }
+  &.redonda { border-radius: 50%; }
+  /* Verde para «ya está» (comprado); guindo para «elegido». */
+  &.ok.marcada { border-color: var(--color-ok); background: var(--color-ok); }
+}
+
+/* Cuando la casilla es el propio control. */
+button.casilla, button.radio { padding: 0; background: var(--color-superficie); cursor: pointer; }
+
+.radio {
+  border-radius: 50%;
+
+  &.marcada { background: transparent; box-shadow: inset 0 0 0 4px var(--color-superficie), inset 0 0 0 12px var(--color-primario); }
+}
+
+.enlace {
+  color: var(--color-primario);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
 }
 
 .segmentos {
@@ -216,7 +317,8 @@
 }
 
 textarea.caja { resize: vertical; min-height: 76px; line-height: 1.45; }
-.tarjeta .caja { background: var(--color-fondo); }
+/* Dentro de una tarjeta blanca, los campos toman el fondo crema para verse. */
+.tarjeta .caja, .tarjeta .buscador { background: var(--color-fondo); }
 
 .buscador {
   display: flex;
@@ -257,6 +359,18 @@ textarea.caja { resize: vertical; min-height: 76px; line-height: 1.45; }
   > span { display: block; height: 100%; border-radius: inherit; background: var(--color-ok); transition: width 0.3s; }
   &.primario > span { background: var(--color-primario); }
   &.acento > span { background: var(--color-acento); }
+  /* Sobre la tarjeta guindo u oscura. */
+  &.invertido { background: color-mix(in srgb, var(--color-texto-invertido) 20%, transparent); }
+  &.invertido > span { background: var(--color-acento-claro); }
+}
+
+/* Tarjeta tocable con una acción secundaria encima (p. ej. «cambiar receta»):
+   <div class="con-accion"><a class="toque">…</a><button class="boton-icono accion">…</button></div> */
+.con-accion {
+  position: relative;
+
+  > .toque > *, > .tarjeta { padding-right: 60px; }
+  > .accion { position: absolute; top: 50%; right: 12px; transform: translateY(-50%); }
 }
 
 .punto {

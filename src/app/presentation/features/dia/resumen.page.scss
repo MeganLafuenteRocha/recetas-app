@@ -1,75 +1,30 @@
 :host { display: block; }
 
-.listo {
-  align-items: center;
+.sin-receta { gap: 4px; }
 
-  .icono { font-size: 22px; }
-  div { display: flex; flex-direction: column; }
-  strong { font-size: 13px; }
-  small { font-size: 11px; color: var(--plomo-500); }
-}
+/* Totales del día contra la meta. */
+.totales { gap: 10px; }
 
-.comida {
+.medida { display: flex; flex-direction: column; gap: 6px; }
+
+.medida-tit {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-
-  .foto-52 { width: 52px; height: 52px; }
-  .textos { flex: 1; display: flex; flex-direction: column; gap: 1px; text-decoration: none; min-width: 0; }
-  strong { font-family: 'Quicksand', sans-serif; font-size: 14px; color: var(--plomo-900); }
-  small { font-size: 11px; color: var(--plomo-500); }
-  .franja { font-size: 10px; font-weight: 600; color: var(--dorado-500); text-transform: uppercase; letter-spacing: 0.3px; }
-}
-
-.totales {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  > strong { font-size: 14px; color: var(--plomo-900); }
-}
-
-.meta { display: flex; flex-direction: column; gap: 5px; }
-
-.meta-tit {
-  display: flex;
+  align-items: baseline;
   justify-content: space-between;
+  gap: var(--esp-grupo);
 
-  span { font-size: 12px; font-weight: 500; color: var(--plomo-700); }
-  small { font-size: 12px; color: var(--plomo-500); }
-}
-
-.pista {
-  height: 8px;
-  border-radius: 999px;
-  background: #fff;
-  overflow: hidden;
-
-  span { display: block; height: 100%; border-radius: 999px; }
-  .normal { background: var(--dorado-500); }
-  .alerta { background: var(--alerta); }
-  .verde { background: var(--ok); }
+  strong { font-size: 12px; font-weight: 600; }
 }
 
 .estado {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   font-size: 12px;
-  color: var(--dorado-700);
+  color: var(--color-acento);
 
+  &.ok { color: var(--color-ok); }
   .icono { font-size: 15px; }
-  &.ok { color: var(--ok); }
-  &.alerta { color: var(--alerta); }
 }
 
-.faltan {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 
-  .subtitulo { font-family: 'Poppins', sans-serif; font-size: 13px; }
-  .subtitulo .icono { color: var(--guindo-700); font-size: 18px; }
-  .btn-texto { align-self: flex-start; padding: 0; font-size: 12px; }
-}

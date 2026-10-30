@@ -4,25 +4,17 @@ import { CatalogoStore } from '../../../application/stores/catalogo.store';
 import { DespensaStore } from '../../../application/stores/despensa.store';
 import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { SeleccionDiaStore } from '../../../application/stores/seleccion-dia.store';
-import { coincideIngrediente } from '../../../domain/ingredientes/ingrediente.model';
-
-const ICONO_CATEGORIA: Record<string, string> = {
-  verduras: 'eco',
-  frutas: 'nutrition',
-  legumbres: 'grain',
-  carnes: 'kebab_dining',
-  lacteos: 'egg',
-  cereales: 'bakery_dining',
-  condimentos: 'restaurant',
-  abarrotes: 'shopping_bag',
-};
+import { coincideIngrediente, Ingrediente } from '../../../domain/ingredientes/ingrediente.model';
+import { emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 
 const VISIBLES_POR_CATEGORIA = 4;
 
-/** Pantalla 05A: selección de ingredientes disponibles hoy (lista estilo Airbnb). */
+/** Pantalla 05A: «¿Qué tienes hoy?», selección de ingredientes disponibles por categoría. */
 @Component({
   selector: 'app-seleccionar-dia',
-  imports: [RouterLink],
+  imports: [RouterLink, EncabezadoComponent, FilaIngredienteComponent],
   templateUrl: './seleccionar.page.html',
   styleUrl: './seleccionar.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +29,12 @@ export class SeleccionarDiaPage {
   protected readonly mostrarTodos = signal(false);
 
   protected readonly totalIngredientes = this.ingredientes.total;
+  protected readonly emoji = emojiIngrediente;
+
+  /** Chips de lo elegido (se quitan con ×). */
+  protected readonly elegidos = computed(() =>
+    [...this.seleccion.seleccionados()].map((id) => ({ id, nombre: this.ingredientes.nombre(id) })),
+  );
 
   protected readonly grupos = computed(() => {
     const q = this.consulta().trim();
@@ -44,15 +42,17 @@ export class SeleccionarDiaPage {
     const lista = buscando
       ? this.ingredientes.todos().filter((i) => coincideIngrediente(i, q))
       : this.ingredientes.todos();
+    const seleccionados = this.seleccion.seleccionados();
 
     return this.catalogos
       .categorias()
       .map((categoria) => {
-        const deLaCategoria = lista.filter((i) => i.categoria === categoria.codigo);
+        const deLaCategoria: Ingrediente[] = lista.filter((i) => i.categoria === categoria.codigo);
         const expandido = this.mostrarTodos() || buscando;
         return {
           nombre: categoria.nombre,
-          icono: ICONO_CATEGORIA[categoria.codigo] ?? 'restaurant',
+          total: deLaCategoria.length,
+          marcados: deLaCategoria.filter((i) => seleccionados.has(i.id)).length,
           visibles: expandido
             ? deLaCategoria
             : deLaCategoria.slice(0, VISIBLES_POR_CATEGORIA),

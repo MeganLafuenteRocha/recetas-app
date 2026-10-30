@@ -7,8 +7,12 @@ import { RecetasStore } from '../../application/stores/recetas.store';
 import { UiStore } from '../../application/stores/ui.store';
 import { AdministrarIngredientesUseCase } from '../../application/use-cases/administrar-ingredientes.usecase';
 import { idsDeIngredientes } from '../../domain/recetas/receta.model';
+import { AvisoComponent } from './aviso.component';
+import { CabeceraSeccionComponent } from './cabecera-seccion.component';
+import { emojiIngrediente } from './emojis';
 import { HojaComponent } from './hoja.component';
-import { iconoCategoria, NOMBRE_ROL } from './iconos';
+import { NOMBRE_ROL } from './iconos';
+import { FilaAjusteComponent } from './fila-ajuste.component';
 import { InterruptorComponent } from './interruptor.component';
 
 const RECETAS_VISIBLES = 3;
@@ -19,65 +23,70 @@ const RECETAS_VISIBLES = 3;
  */
 @Component({
   selector: 'app-ficha-ingrediente',
-  imports: [HojaComponent, InterruptorComponent],
+  imports: [HojaComponent, InterruptorComponent, AvisoComponent, CabeceraSeccionComponent, FilaAjusteComponent],
   template: `
     @if (ingrediente(); as ing) {
       <app-hoja (cerrar)="ui.cerrarFicha()">
         <div class="cabecera-ficha">
-          <span class="icono-cat"><span class="icono">{{ icono() }}</span></span>
+          <span class="emoji" aria-hidden="true">{{ emoji() }}</span>
           <div class="titulos">
             <h2>{{ ing.nombre }}</h2>
-            <small>
+            <span class="t-detalle">
               {{ catalogos.nombreCategoria(ing.categoria) }}
               @if (ing.sinonimos.length) { · también: {{ ing.sinonimos.join(', ') }} }
-            </small>
+            </span>
           </div>
         </div>
 
         <div class="chips envolver">
           @if (enDespensa()) {
-            <span class="chip estado-ok"><span class="icono">check_circle</span> En tu despensa</span>
+            <span class="pastilla ok"><span class="icono">check_circle</span> En tu despensa</span>
           } @else {
-            <span class="chip suave">No está en tu despensa</span>
+            <span class="pastilla">No está en tu despensa</span>
           }
           @if (rolEnReceta(); as r) {
-            <span class="chip marcado">{{ r }}</span>
+            <span class="pastilla primario">{{ r }}</span>
           }
           @if (!ing.activo) {
-            <span class="chip dorado">Archivado</span>
+            <span class="pastilla">Archivado</span>
           }
         </div>
 
-        <div class="lista-filas">
-          <div class="fila-ajuste">
-            <span class="icono">shopping_basket</span>
-            <div class="principal"><strong>Tengo en casa</strong><small>Se usa para la afinidad</small></div>
+        <div class="tarjeta lista">
+          <app-fila-ajuste icono="kitchen" etiqueta="Tengo en casa" detalle="Se usa para la afinidad" [flecha]="false">
             <app-interruptor etiqueta="Tengo en casa" [valor]="enDespensa()" (valorChange)="despensa.marcar(ing.id, $event)" />
-          </div>
-          <div class="fila-ajuste">
-            <span class="icono">inventory_2</span>
-            <div class="principal"><strong>Es básico en mi hogar</strong><small>Nunca se contará como faltante</small></div>
+          </app-fila-ajuste>
+          <app-fila-ajuste icono="star" etiqueta="Es básico en mi hogar" detalle="Nunca cuenta como faltante" [flecha]="false">
             <app-interruptor
               etiqueta="Es básico en mi hogar"
               [valor]="ing.esBasico"
               [deshabilitado]="guardando()"
               (valorChange)="cambiarBasico($event)"
             />
-          </div>
+          </app-fila-ajuste>
         </div>
         @if (ing.esBasico) {
-          <p class="aviso"><span class="icono">info</span> Al ser básico, todas las recetas lo darán por disponible.</p>
+          <app-aviso icono="info">Al ser básico, todas las recetas lo darán por disponible.</app-aviso>
         }
 
         @if (recetas().length > 0) {
-          <div class="recetas">
-            <p class="subtitulo">Aparece en {{ recetas().length }} receta{{ recetas().length === 1 ? '' : 's' }}</p>
-            <div class="chips envolver">
+          <div class="pila">
+            <app-cabecera-seccion [titulo]="'Aparece en ' + recetas().length + ' receta' + (recetas().length === 1 ? '' : 's')">
+              @if (recetas().length > visibles()) {
+                <button type="button" class="btn btn-texto" (click)="visibles.set(recetas().length)">Ver todas</button>
+              }
+            </app-cabecera-seccion>
+            <div class="chips">
               @for (r of recetas().slice(0, visibles()); track r.id) {
-                <button type="button" class="chip suave" (click)="irAReceta(r.id)">{{ r.nombre }}</button>
+                <button type="button" class="chip" (click)="irAReceta(r.id)">{{ r.nombre }}</button>
               }
               @if (recetas().length > visibles()) {
-                <button type="button" class="chip marcado" (click)="visibles.set(recetas().length)">
+                <button
+                  type="button"
+                  class="chip suave"
+                  (click)="visibles.set(recetas().length)"
+                  [attr.aria-label]="'Ver ' + (recetas().length - visibles()) + ' recetas más'"
+                >
                   +{{ recetas().length - visibles() }}
                 </button>
               }
@@ -85,24 +94,26 @@ const RECETAS_VISIBLES = 3;
           </div>
         }
 
-        <button type="button" class="btn btn-primario ancho" (click)="ui.cerrarFicha()">Listo</button>
+        <button type="button" class="btn btn-primario btn-ancho" (click)="ui.cerrarFicha()">
+          <span class="icono">check</span> Listo
+        </button>
       </app-hoja>
     }
   `,
   styles: `
-    .cabecera-ficha { display: flex; align-items: center; gap: 12px; }
-    .icono-cat { width: 48px; height: 48px; border-radius: 14px; background: var(--dorado-100); display: grid; place-items: center; flex-shrink: 0; }
-    .icono-cat .icono { color: var(--dorado-700); font-size: 26px; }
-    .titulos { display: flex; flex-direction: column; min-width: 0; }
-    h2 { margin: 0; font-size: 22px; }
-    small { color: var(--plomo-500); font-size: 11px; }
-    .estado-ok { color: var(--ok); background: #2e7d5b1a; border-color: transparent; }
-    .fila-ajuste { display: flex; align-items: center; gap: 12px; padding: 13px 0; }
-    .fila-ajuste > .icono { color: var(--plomo-700); font-size: 20px; }
-    .principal { flex: 1; display: flex; flex-direction: column; }
-    .principal strong { font-size: 13px; font-weight: 500; color: var(--plomo-900); }
-    .aviso { margin: -6px 0 0; }
-    .recetas { display: flex; flex-direction: column; gap: 8px; }
+    .cabecera-ficha { display: flex; align-items: center; gap: 16px; }
+    .emoji {
+      display: grid;
+      place-items: center;
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      border-radius: var(--radio-tarjeta);
+      background: var(--color-superficie);
+      font-size: 38px;
+    }
+    .titulos { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    h2 { font-size: 26px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -124,7 +135,7 @@ export class FichaIngredienteComponent {
     return ficha ? (this.ingredientes.obtener(ficha.id) ?? null) : null;
   });
 
-  protected readonly icono = computed(() => iconoCategoria(this.ingrediente()?.categoria ?? ''));
+  protected readonly emoji = computed(() => emojiIngrediente(this.ingrediente() ?? undefined));
   protected readonly enDespensa = computed(() => {
     const ing = this.ingrediente();
     return !!ing && this.despensa.ids().has(ing.id);

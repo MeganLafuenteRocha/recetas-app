@@ -97,6 +97,9 @@ export class UsuariosMemoria extends UsuarioRepository {
 @Injectable({ providedIn: 'root' })
 export class HogaresMemoria extends HogarRepository {
   private hogares: Hogar[] = [{ id: 'hog_demo', nombre: 'Hogar de demostración', creadoEn: new Date() }];
+  async obtener(id: string) {
+    return this.hogares.find((h) => h.id === id) ?? null;
+  }
   async obtenerTodos() {
     return copia(this.hogares);
   }

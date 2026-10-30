@@ -39,9 +39,11 @@ import { duracion, nombreDificultad } from './iconos';
       align-items: center;
       gap: 14px;
       padding: 10px;
+      border: 2px solid transparent;
       border-radius: var(--radio-tarjeta);
       background: var(--color-superficie);
     }
+    :host(.elegida) { border-color: var(--color-primario); }
     .foto { width: 92px; height: 92px; }
     .textos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
     .nombre { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -49,6 +51,7 @@ import { duracion, nombreDificultad } from './iconos';
     .meta > span { display: inline-flex; align-items: center; gap: 3px; }
     .meta .icono { font-size: 14px; }
   `,
+  host: { '[class.elegida]': 'elegida()' },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TarjetaRecetaComponent {
@@ -58,6 +61,8 @@ export class TarjetaRecetaComponent {
   readonly resultado = input<ResultadoAfinidad | null>(null);
   /** Por defecto «Franja · Cocina». */
   readonly sobretitulo = input<string | null>(null);
+  /** Opción seleccionada en una lista para elegir (borde guindo). */
+  readonly elegida = input(false);
 
   protected readonly sobretituloPorDefecto = computed(() => {
     const r = this.receta();

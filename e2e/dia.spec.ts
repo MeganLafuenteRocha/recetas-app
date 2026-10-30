@@ -33,13 +33,13 @@ test.describe('Armar mi día (flujo crítico)', () => {
     await page.goto('/dia');
     await seleccionar.usarDespensa.click();
     await expect(seleccionar.buscarRecetas).not.toContainText('(0)');
-    await expect(seleccionar.buscarRecetas).not.toHaveClass(/deshabilitado/);
+    await expect(seleccionar.buscarRecetas).not.toHaveAttribute('aria-disabled', 'true');
   });
 
   test('DIA-003 · sin ingredientes no se puede buscar', async ({ page }) => {
     const seleccionar = new SeleccionarPage(page);
     await page.goto('/dia');
     await expect(seleccionar.buscarRecetas).toContainText('(0)');
-    await expect(seleccionar.buscarRecetas).toHaveClass(/deshabilitado/);
+    await expect(seleccionar.buscarRecetas).toHaveAttribute('aria-disabled', 'true');
   });
 });

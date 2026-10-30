@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { GruposStore } from '../../application/stores/grupos.store';
 import { PlanStore } from '../../application/stores/plan.store';
 import { RecetasStore } from '../../application/stores/recetas.store';
+import { HogarActualStore } from '../../application/stores/hogar-actual.store';
 import { SesionStore } from '../../application/stores/sesion.store';
 import { UiStore } from '../../application/stores/ui.store';
 import { AdministrarCuentasUseCase } from '../../application/use-cases/administrar-cuentas.usecase';
@@ -17,6 +18,7 @@ import { AdministrarCuentasUseCase } from '../../application/use-cases/administr
 export class MenuLateralComponent {
   protected readonly ui = inject(UiStore);
   protected readonly sesion = inject(SesionStore);
+  protected readonly hogar = inject(HogarActualStore);
   protected readonly cuentas = inject(AdministrarCuentasUseCase);
   protected readonly recetas = inject(RecetasStore);
   protected readonly grupos = inject(GruposStore);

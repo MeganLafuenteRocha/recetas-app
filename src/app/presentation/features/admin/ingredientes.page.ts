@@ -1,9 +1,12 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
 import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { AdministrarIngredientesUseCase, CambioLote } from '../../../application/use-cases/administrar-ingredientes.usecase';
 import { coincideIngrediente, Ingrediente } from '../../../domain/ingredientes/ingrediente.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 import { HojaComponent } from '../../ui/hoja.component';
 import { InterruptorComponent } from '../../ui/interruptor.component';
 
@@ -12,7 +15,7 @@ type Hoja = { tipo: 'alta' } | { tipo: 'editar'; ingrediente: Ingrediente } | { 
 /** Pantalla 16: ingredientes con alta rápida, edición, cambios en lote y archivo (nunca se eliminan). */
 @Component({
   selector: 'app-ingredientes',
-  imports: [HojaComponent, InterruptorComponent],
+  imports: [HojaComponent, InterruptorComponent, EncabezadoComponent, FilaIngredienteComponent, AvisoComponent],
   templateUrl: './ingredientes.page.html',
   styleUrl: './ingredientes.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,7 +24,6 @@ export class IngredientesPage {
   protected readonly catalogos = inject(CatalogoStore);
   private readonly store = inject(IngredientesStore);
   private readonly admin = inject(AdministrarIngredientesUseCase);
-  private readonly location = inject(Location);
 
   /** ?basicos=1 desde Ajustes: abre filtrado por los básicos del hogar. */
   readonly basicos = input<string>();
@@ -53,9 +55,10 @@ export class IngredientesPage {
     [...this.seleccion()].every((id) => this.store.obtener(id)?.esBasico),
   );
 
-  protected volver(): void {
-    this.location.back();
+  protected emojiDe(i: Ingrediente): string {
+    return emojiIngrediente(i);
   }
+
 
   protected alternarSeleccion(id: string): void {
     const nueva = new Set(this.seleccion());

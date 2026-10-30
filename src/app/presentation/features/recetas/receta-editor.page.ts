@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, linkedSignal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CatalogoStore } from '../../../application/stores/catalogo.store';
@@ -17,9 +16,15 @@ import {
   ROLES,
   textoCantidad,
 } from '../../../domain/recetas/receta.model';
+import { AvisoComponent } from '../../ui/aviso.component';
 import { BuscadorIngredienteComponent } from '../../ui/buscador-ingrediente.component';
+import { CabeceraSeccionComponent } from '../../ui/cabecera-seccion.component';
+import { emojiIngrediente } from '../../ui/emojis';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
 import { FotoComponent } from '../../ui/foto.component';
-import { NOMBRE_ROL_PLURAL } from '../../ui/iconos';
+import { DIFICULTADES, NOMBRE_ROL_PLURAL } from '../../ui/iconos';
+import { InterruptorComponent } from '../../ui/interruptor.component';
 import { EditarIngredienteComponent } from './editar-ingrediente.component';
 
 /** Lo que, si cambia, obliga a recalcular la nutrición. */
@@ -27,18 +32,19 @@ function huellaNutricional(r: Receta): string {
   return JSON.stringify([r.porciones, r.ingredientes, r.preparacion]);
 }
 
-const DIFICULTADES = [
-  { valor: 1, nombre: 'Muy fácil' },
-  { valor: 2, nombre: 'Fácil' },
-  { valor: 3, nombre: 'Media' },
-  { valor: 4, nombre: 'Difícil' },
-  { valor: 5, nombre: 'Muy difícil' },
-];
-
 /** Pantalla 11 (simplificada): alta y edición de recetas. */
 @Component({
   selector: 'app-receta-editor',
-  imports: [BuscadorIngredienteComponent, EditarIngredienteComponent, FotoComponent],
+  imports: [
+    AvisoComponent,
+    BuscadorIngredienteComponent,
+    CabeceraSeccionComponent,
+    EditarIngredienteComponent,
+    EncabezadoComponent,
+    FilaIngredienteComponent,
+    FotoComponent,
+    InterruptorComponent,
+  ],
   templateUrl: './receta-editor.page.html',
   styleUrl: './receta-editor.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,7 +56,6 @@ export class RecetaEditorPage {
   private readonly imagenes = inject(ImagenesStore);
   private readonly guardarReceta = inject(GuardarRecetaUseCase);
   private readonly router = inject(Router);
-  private readonly location = inject(Location);
 
   /** Vacío en /recetas/nueva; con valor en /recetas/:id/editar. */
   readonly id = input<string>();
@@ -68,6 +73,11 @@ export class RecetaEditorPage {
   });
 
   protected readonly esNueva = computed(() => !this.original());
+  /** La «X» vuelve a donde se entró: la ficha al editar, la lista al crear. */
+  protected readonly rutaCancelar = computed(() => {
+    const o = this.original();
+    return o ? ['/recetas', o.id] : ['/recetas'];
+  });
   protected readonly dificultades = DIFICULTADES;
 
   /** Índice del espacio abierto en la hoja 11B. */
@@ -164,6 +174,10 @@ export class RecetaEditorPage {
     this.borrador.update((r) => ({ ...r, ingredientes: r.ingredientes.filter((_, i) => i !== indice) }));
   }
 
+  protected emoji(ingredienteId: string): string {
+    return emojiIngrediente(this.ingredientes.obtener(ingredienteId));
+  }
+
   protected alternativas(espacio: EspacioIngrediente): string {
     return espacio.opciones
       .slice(1)
@@ -238,9 +252,5 @@ export class RecetaEditorPage {
     } finally {
       this.guardando.set(false);
     }
-  }
-
-  protected cancelar(): void {
-    this.location.back();
   }
 }

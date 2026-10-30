@@ -2,145 +2,121 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } 
 import { Router, RouterLink } from '@angular/router';
 import { IngredientesStore } from '../../../application/stores/ingredientes.store';
 import { PreferenciasStore } from '../../../application/stores/preferencias.store';
+import { HogarActualStore } from '../../../application/stores/hogar-actual.store';
 import { SesionStore } from '../../../application/stores/sesion.store';
 import { AdministrarCuentasUseCase } from '../../../application/use-cases/administrar-cuentas.usecase';
 import { CalcularNutricionFaltanteUseCase } from '../../../application/use-cases/calcular-nutricion-faltante.usecase';
 import { ExportarRespaldoUseCase } from '../../../application/use-cases/exportar-respaldo.usecase';
 import { fechaISO } from '../../../domain/planificacion/plan.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { FilaAjusteComponent } from '../../ui/fila-ajuste.component';
 import { HojaComponent } from '../../ui/hoja.component';
 import { descargarArchivo } from '../../ui/iconos';
 
 /** Pantalla 14: perfil, metas del hogar, administración y respaldo. */
 @Component({
   selector: 'app-ajustes',
-  imports: [RouterLink, HojaComponent],
+  imports: [RouterLink, HojaComponent, EncabezadoComponent, FilaAjusteComponent, AvisoComponent],
   template: `
-    <main class="vista">
-      <header class="cabecera">
-        <a class="icono-btn" routerLink="/inicio" aria-label="Volver"><span class="icono">arrow_back</span></a>
-        <h1>Ajustes</h1>
-      </header>
+    <main class="pantalla">
+      <app-encabezado titulo="Ajustes" volver="/inicio" />
 
       @if (sesion.usuario(); as u) {
-        <div class="tarjeta perfil">
+        <section class="tarjeta perfil">
           @if (u.foto) {
-            <img class="avatar" [src]="u.foto" alt="" referrerpolicy="no-referrer" />
+            <img class="avatar grande" [src]="u.foto" alt="" referrerpolicy="no-referrer" />
           } @else {
-            <span class="avatar">{{ u.nombre.charAt(0).toUpperCase() }}</span>
+            <span class="avatar grande" aria-hidden="true">{{ u.nombre.charAt(0).toUpperCase() }}</span>
           }
-          <div class="datos"><strong>{{ u.nombre }}</strong><small>{{ u.email }}</small></div>
-          <span class="chip dorado rol">{{ sesion.esAdmin() ? 'Admin' : 'Usuaria' }}</span>
-        </div>
+          <div class="datos"><strong>{{ u.nombre }}</strong><span class="t-detalle">{{ hogar.nombre() ?? u.email }}</span></div>
+          <span class="pastilla">{{ sesion.esAdmin() ? 'Admin' : 'Usuaria' }}</span>
+        </section>
       }
 
-      <p class="etiqueta-seccion">Mi hogar</p>
-      <div class="lista-filas">
-        <button type="button" class="fila-btn" (click)="abrirMetas()">
-          <span class="icono marca">local_fire_department</span>
-          <span class="principal"><strong>Meta diaria de calorías</strong></span>
-          <small class="valor">{{ preferencias.metas().kcalMin }}–{{ preferencias.metas().kcalMax }}</small>
-          <span class="icono">chevron_right</span>
-        </button>
-        <button type="button" class="fila-btn" (click)="abrirMetas()">
-          <span class="icono marca">fitness_center</span>
-          <span class="principal"><strong>Meta de proteína</strong></span>
-          <small class="valor">{{ preferencias.metas().proteinaG }} g</small>
-          <span class="icono">chevron_right</span>
-        </button>
-        <a class="fila-btn" routerLink="/ingredientes" [queryParams]="{ basicos: 1 }">
-          <span class="icono marca">inventory_2</span>
-          <span class="principal"><strong>Ingredientes básicos</strong><small>Los que siempre hay en casa</small></span>
-          <small class="valor">{{ basicos() }}</small>
-          <span class="icono">chevron_right</span>
-        </a>
-        <a class="fila-btn" routerLink="/listas">
-          <span class="icono marca">shopping_cart</span>
-          <span class="principal"><strong>Listas de compras</strong></span>
-          <span class="icono">chevron_right</span>
-        </a>
-      </div>
+      <section class="pila">
+        <h2 class="t-sobretitulo">Mi hogar</h2>
+        <div class="tarjeta lista">
+          <button type="button" class="toque" (click)="abrirMetas()">
+            <app-fila-ajuste icono="local_fire_department" etiqueta="Meta diaria de calorías" [valor]="preferencias.metas().kcalMin + '–' + preferencias.metas().kcalMax" />
+          </button>
+          <button type="button" class="toque" (click)="abrirMetas()">
+            <app-fila-ajuste icono="fitness_center" etiqueta="Meta de proteína" [valor]="preferencias.metas().proteinaG + ' g'" />
+          </button>
+          <a class="toque" routerLink="/ingredientes" [queryParams]="{ basicos: 1 }">
+            <app-fila-ajuste icono="star" etiqueta="Ingredientes básicos" [valor]="basicos()" />
+          </a>
+          <a class="toque" routerLink="/listas">
+            <app-fila-ajuste icono="shopping_cart" etiqueta="Listas de compras" />
+          </a>
+        </div>
+      </section>
 
       @if (sesion.esAdmin()) {
-        <p class="etiqueta-seccion">Administración</p>
-        <div class="lista-filas">
-          <a class="fila-btn" routerLink="/admin/catalogos">
-            <span class="icono marca">category</span>
-            <span class="principal"><strong>Catálogos</strong><small>Cocinas, categorías, franjas, unidades</small></span>
-            <span class="icono">chevron_right</span>
-          </a>
-          <a class="fila-btn" routerLink="/ingredientes">
-            <span class="icono marca">grocery</span>
-            <span class="principal"><strong>Ingredientes</strong></span>
-            <small class="valor">{{ ingredientes.total() }}</small>
-            <span class="icono">chevron_right</span>
-          </a>
-          <a class="fila-btn" routerLink="/admin/cuentas">
-            <span class="icono marca">group_add</span>
-            <span class="principal"><strong>Cuentas</strong></span>
-            @if (pendientes() > 0) { <span class="badge">{{ pendientes() }}</span> }
-            <span class="icono">chevron_right</span>
-          </a>
-          <button type="button" class="fila-btn" [disabled]="nutricion.faltantes().length === 0 || calculando()" (click)="calcularNutricion()">
-            <span class="icono marca">auto_awesome</span>
-            <span class="principal">
-              <strong>Calcular nutrición faltante</strong>
-              <small>
-                @if (nutricion.progreso(); as p) {
-                  {{ p.hechas }}/{{ p.total }} listas{{ p.fallidas ? ' · ' + p.fallidas + ' sin respuesta' : '' }}
-                } @else {
-                  {{ nutricion.faltantes().length }} recetas sin nutrición
-                }
-              </small>
-            </span>
-            <span class="icono">{{ calculando() ? 'hourglass_top' : 'chevron_right' }}</span>
-          </button>
-        </div>
+        <section class="pila">
+          <h2 class="t-sobretitulo">Administración</h2>
+          <div class="tarjeta lista">
+            <a class="toque" routerLink="/admin/catalogos">
+              <app-fila-ajuste icono="category" etiqueta="Catálogos" />
+            </a>
+            <a class="toque" routerLink="/ingredientes">
+              <app-fila-ajuste icono="nutrition" etiqueta="Ingredientes" [valor]="ingredientes.total()" />
+            </a>
+            <a class="toque" routerLink="/admin/cuentas">
+              <app-fila-ajuste
+                icono="manage_accounts"
+                etiqueta="Cuentas y hogares"
+                [valor]="pendientes() > 0 ? pendientes() + (pendientes() === 1 ? ' pendiente' : ' pendientes') : null"
+              />
+            </a>
+            <button type="button" class="toque" [disabled]="nutricion.faltantes().length === 0 || calculando()" (click)="calcularNutricion()">
+              <app-fila-ajuste icono="auto_awesome" etiqueta="Calcular nutrición faltante" [valor]="estadoNutricion()" />
+            </button>
+          </div>
+        </section>
       }
 
-      <p class="etiqueta-seccion">Datos</p>
-      <div class="lista-filas">
-        <button type="button" class="fila-btn" (click)="exportar()">
-          <span class="icono marca">download</span>
-          <span class="principal"><strong>Exportar respaldo (JSON)</strong></span>
-          <span class="icono">chevron_right</span>
-        </button>
-      </div>
+      <section class="pila">
+        <h2 class="t-sobretitulo">Datos</h2>
+        <div class="tarjeta lista">
+          <button type="button" class="toque" (click)="exportar()">
+            <app-fila-ajuste icono="download" etiqueta="Exportar respaldo (JSON)" />
+          </button>
+        </div>
+      </section>
 
-      <button type="button" class="btn btn-peligro" (click)="salir()"><span class="icono">logout</span> Cerrar sesión</button>
+      <button type="button" class="btn btn-peligro salir" (click)="salir()"><span class="icono">logout</span> Cerrar sesión</button>
     </main>
 
     @if (editandoMetas()) {
       <app-hoja titulo="Metas del día" (cerrar)="editandoMetas.set(false)">
-        <p class="texto-suave">Desayuno + almuerzo (la app no planifica la cena).</p>
+        <p class="t-detalle">Desayuno + almuerzo (la app no planifica la cena).</p>
         <div class="fila">
-          <label class="campo"><span>Calorías mínimas</span><input type="number" min="0" [value]="kcalMin()" (input)="kcalMin.set(+$any($event.target).value)" /></label>
-          <label class="campo"><span>Calorías máximas</span><input type="number" min="0" [value]="kcalMax()" (input)="kcalMax.set(+$any($event.target).value)" /></label>
+          <label class="campo"><span>Calorías mínimas</span><input class="caja" type="number" min="0" [value]="kcalMin()" (input)="kcalMin.set(+$any($event.target).value)" /></label>
+          <label class="campo"><span>Calorías máximas</span><input class="caja" type="number" min="0" [value]="kcalMax()" (input)="kcalMax.set(+$any($event.target).value)" /></label>
         </div>
-        <label class="campo"><span>Proteína (g)</span><input type="number" min="0" [value]="proteina()" (input)="proteina.set(+$any($event.target).value)" /></label>
-        @if (errorMetas(); as e) { <p class="aviso error"><span class="icono">error</span> {{ e }}</p> }
-        <button type="button" class="btn btn-primario ancho" (click)="guardarMetas()">Guardar</button>
+        <label class="campo"><span>Proteína (g)</span><input class="caja" type="number" min="0" [value]="proteina()" (input)="proteina.set(+$any($event.target).value)" /></label>
+        @if (errorMetas(); as e) { <app-aviso icono="error" tono="error" [titulo]="e" /> }
+        <button type="button" class="btn btn-primario btn-ancho" (click)="guardarMetas()">Guardar</button>
       </app-hoja>
     }
   `,
   styles: `
-    .perfil { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--guindo-700); color: #fff; display: grid; place-items: center;
-      font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 20px; object-fit: cover; flex-shrink: 0; }
-    .datos { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .datos strong { font-size: 14px; color: var(--plomo-900); }
-    .datos small { font-size: 10px; color: var(--plomo-500); overflow: hidden; text-overflow: ellipsis; }
-    .rol { padding: 3px 9px; font-size: 10px; font-weight: 600; cursor: default; }
-    .valor { color: var(--plomo-500); font-size: 12px; }
-    .badge { background: var(--guindo-700); color: #fff; font-size: 10px; font-weight: 700; border-radius: 999px; padding: 2px 8px; }
-    .fila-btn:disabled { opacity: 0.6; cursor: default; }
+    .perfil { flex-direction: row; align-items: center; gap: 14px; padding: 18px 20px; }
+    .datos { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .datos strong { font-family: var(--fuente-titulo); font-size: 17px; }
+    .datos .t-detalle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tarjeta.lista { padding: 6px 20px; }
+    .toque:disabled { opacity: 0.6; cursor: default; }
     .fila { display: flex; gap: 10px; }
     .fila > * { flex: 1; }
-    .btn-peligro { align-self: center; }
+    .salir { align-self: center; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AjustesPage {
   protected readonly sesion = inject(SesionStore);
+  protected readonly hogar = inject(HogarActualStore);
   protected readonly preferencias = inject(PreferenciasStore);
   protected readonly ingredientes = inject(IngredientesStore);
   protected readonly nutricion = inject(CalcularNutricionFaltanteUseCase);
@@ -151,6 +127,11 @@ export class AjustesPage {
   protected readonly basicos = computed(() => this.ingredientes.basicos().size);
   protected readonly pendientes = computed(() => this.cuentas.pendientes()?.length ?? 0);
   protected readonly calculando = signal(false);
+  protected readonly estadoNutricion = computed(() => {
+    const p = this.nutricion.progreso();
+    if (p) return `${p.hechas}/${p.total} listas${p.fallidas ? ` · ${p.fallidas} sin respuesta` : ''}`;
+    return this.calculando() ? 'Calculando…' : `${this.nutricion.faltantes().length} sin nutrición`;
+  });
 
   protected readonly editandoMetas = signal(false);
   protected readonly kcalMin = signal(0);

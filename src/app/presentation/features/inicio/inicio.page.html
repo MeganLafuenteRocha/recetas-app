@@ -1,62 +1,104 @@
-<header class="hero">
-  <div class="hero-fila">
-    <div class="hero-texto">
-      <h1>Hola, {{ primerNombre() }}</h1>
-      <p>¿Qué cocinamos hoy?</p>
+<main class="pantalla">
+  <header class="pila">
+    <div class="saludo">
+      <button type="button" class="avatar" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">
+        {{ inicial() }}
+      </button>
+      <div class="quien">
+        <span class="t-detalle">{{ saludo }},</span>
+        <strong class="t-seccion">{{ primerNombre() }}</strong>
+      </div>
     </div>
-    <button type="button" class="avatar" (click)="ui.abrirMenuLateral()">
-      {{ primerNombre().charAt(0) }}
-    </button>
+    <h1 class="t-titular">¿Qué cocinamos hoy?</h1>
+  </header>
+
+  <!-- Buscador: el campo lleva a la búsqueda; el botón guindo, a elegir con lo que hay en casa. -->
+  <div class="buscador entrada">
+    <a class="ir-buscar" routerLink="/buscar">
+      <span class="icono">search</span>
+      <span class="placeholder">Receta o ingrediente…</span>
+    </a>
+    <a class="boton-icono primario" routerLink="/dia" aria-label="Elegir mis ingredientes" data-testid="btn-elegir-ingredientes">
+      <span class="icono">grocery</span>
+    </a>
   </div>
-  <a class="boton-dorado" routerLink="/dia" data-testid="btn-elegir-ingredientes">
-    <span class="icono">grocery</span>
-    Elegir mis ingredientes
-  </a>
-</header>
 
-<section class="cuerpo">
-  <a class="buscador" routerLink="/buscar">
-    <span class="icono">search</span>
-    <span class="placeholder">Busca recetas o ingredientes</span>
-  </a>
+  @if (cocinas().length > 0) {
+    <section class="pila">
+      <app-cabecera-seccion titulo="Cocinas">
+        <a class="btn btn-texto" routerLink="/recetas">Ver todas</a>
+      </app-cabecera-seccion>
+      <div class="chips cocinas">
+        @for (c of cocinas(); track c.codigo) {
+          <a class="cocina" [routerLink]="['/recetas']" [queryParams]="{ cocina: c.codigo }">
+            <app-foto class="circulo" [clave]="c.imagen" [alt]="''" [radio]="999" [emoji]="c.emoji" />
+            <span>{{ c.nombre }}</span>
+          </a>
+        }
+      </div>
+    </section>
+  }
 
-  <h2>Tu semana</h2>
+  @if (sugerencias().length > 0) {
+    <section class="pila">
+      <app-cabecera-seccion [titulo]="tituloSugerencias">
+        <a class="btn btn-texto con-despensa" routerLink="/recetas" [queryParams]="{ listas: 1 }">Con tu despensa</a>
+      </app-cabecera-seccion>
+      <div class="chips carrusel">
+        @for (s of sugerencias(); track s.receta.id) {
+          <article class="destacada">
+            <a class="toque cuerpo" [routerLink]="['/recetas', s.receta.id]">
+              <app-foto class="plato" [clave]="s.receta.imagen" [alt]="s.receta.nombre" [radio]="999" [emoji]="emoji(s.receta)" />
+              <strong class="t-seccion nombre">{{ s.receta.nombre }}</strong>
+              <app-estado-receta [resultado]="s" />
+            </a>
+            <a class="btn btn-primario btn-chico" [routerLink]="['/recetas', s.receta.id, 'cocinar']">Cocinar</a>
+          </article>
+        }
+      </div>
+    </section>
+  }
 
-  <div class="card-hoy" data-testid="card-hoy">
-    <div class="card-hoy-encabezado">
-      <span class="etiqueta">HOY</span>
-      <span class="fecha">{{ fechaDeHoy() }}</span>
-    </div>
+  <section class="pila" data-testid="card-hoy">
+    <app-cabecera-seccion [titulo]="'Tu día · ' + fechaDeHoy">
+      @if (kcalHoy(); as kcal) {
+        <span class="kcal">{{ kcal | numero }} kcal</span>
+      }
+    </app-cabecera-seccion>
 
     @if (hoyArmado().length > 0) {
-      <div class="franjas">
-        @for (item of hoyArmado(); track item.franja) {
-          <div class="franja">
-            <span class="icono">{{ item.icono }}</span>
-            <small class="nombre-franja">{{ item.franja }}</small>
-            <small class="nombre-receta">{{ item.receta }}</small>
-          </div>
+      <div class="dia">
+        @for (d of hoyArmado(); track d.receta.id + d.franja) {
+          <a class="toque" [routerLink]="['/recetas', d.receta.id]">
+            <div class="tarjeta mini">
+              <app-foto class="foto" [clave]="d.receta.imagen" [alt]="d.receta.nombre" [emoji]="emoji(d.receta)" />
+              <span class="t-sobretitulo">{{ d.franja }}</span>
+              <strong class="t-tarjeta nombre">{{ d.receta.nombre }}</strong>
+            </div>
+          </a>
         }
       </div>
     } @else {
-      <p class="vacio">Aún no armaste tu día.</p>
-      <a class="boton-armar" routerLink="/dia">Armar mi día</a>
+      <div class="tarjeta vacio">
+        <p class="t-detalle">Aún no armaste tu día.</p>
+        <a class="btn btn-suave btn-chico" routerLink="/dia">Armar mi día</a>
+      </div>
     }
-  </div>
+  </section>
 
   @if (proximosDias().length > 0) {
-    <div class="otros-dias">
-      @for (d of proximosDias(); track d.iso) {
-        <a class="mini-dia" routerLink="/mi-dia">
-          <span class="etiqueta-dia">{{ d.etiqueta }}</span>
-          @for (r of d.recetas; track $index) { <span class="receta">{{ r }}</span> }
-        </a>
-      }
-    </div>
-  } @else {
-    <a class="planear" routerLink="/mi-dia">
-      <span class="icono">calendar_view_week</span>
-      Planifica los próximos días desde Mi día
-    </a>
+    <section class="pila">
+      <app-cabecera-seccion titulo="Próximos días">
+        <a class="btn btn-texto" routerLink="/mi-dia">Ver semana</a>
+      </app-cabecera-seccion>
+      <div class="chips">
+        @for (d of proximosDias(); track d.iso) {
+          <a class="chip" routerLink="/mi-dia" [title]="d.recetas.join(', ')">
+            <strong>{{ d.etiqueta }}</strong>
+            {{ d.recetas.length }} {{ d.recetas.length === 1 ? 'plato' : 'platos' }}
+          </a>
+        }
+      </div>
+    </section>
   }
-</section>
+</main>

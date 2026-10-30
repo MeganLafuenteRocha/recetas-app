@@ -1,113 +1,82 @@
 :host { display: block; }
 
-.resumen { display: flex; flex-direction: column; gap: 10px; }
+/* Tarjeta guindo «Tienes en casa» */
+.resumen { gap: 10px; padding: 20px 22px; }
+.etiqueta { font-size: 12px; opacity: 0.85; }
 
 .resumen-fila {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 8px;
-
-  small { color: var(--plomo-500); font-size: 12px; }
-  .chip { text-decoration: none; padding: 6px 10px; font-size: 11px; }
+  gap: var(--esp-grupo);
 }
 
 .numero {
-  margin: 0;
   display: flex;
   align-items: baseline;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 6px;
 
-  strong { font-family: 'Quicksand', sans-serif; font-size: 28px; color: var(--guindo-700); }
-  span { font-size: 12px; color: var(--plomo-500); }
+  strong { font-family: var(--fuente-titulo); font-size: 40px; line-height: 1; }
+  span { font-size: 12px; }
 }
 
-.barra {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--plomo-100);
-  overflow: hidden;
+/* Pastilla translúcida sobre guindo (no existe en el sistema: se arma con tokens). */
+.listas {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: var(--radio-pill);
+  background: color-mix(in srgb, var(--color-texto-invertido) 15%, transparent);
+  color: var(--color-texto-invertido);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
 
-  span { display: block; height: 100%; background: var(--guindo-700); border-radius: 999px; transition: width 0.2s; }
+  .icono { font-size: 17px; color: var(--color-acento-claro); }
 }
 
-.categoria { padding-bottom: 2px; }
+.resumen .progreso { height: 6px; background: color-mix(in srgb, var(--color-texto-invertido) 25%, transparent); }
+.resumen .progreso > span { background: var(--color-acento-claro); }
+
+/* Tarjetas por categoría */
+.categoria { gap: 4px; padding: 16px 20px 8px; }
 
 .cat-tit {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
+  padding: 0 0 4px;
   border: none;
   background: none;
-  padding: 12px 0 8px;
+  color: var(--color-texto);
+  font: inherit;
   cursor: pointer;
 
-  .cat { color: var(--guindo-700); font-size: 18px; }
-  strong { flex: 1; text-align: left; font-family: 'Quicksand', sans-serif; font-size: 14px; color: var(--plomo-900); }
-  small { color: var(--plomo-500); font-size: 12px; }
-  .icono:last-child { color: var(--plomo-500); font-size: 18px; }
+  strong { flex: 1; text-align: left; }
+  .icono { font-size: 18px; color: var(--color-texto-suave); }
 }
 
 .item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 4px 0;
+  gap: var(--esp-grupo);
 
-  .info {
-    flex: 1;
-    border: none;
-    background: none;
-    text-align: left;
-    padding: 6px 0;
-    font-size: 13px;
-    color: var(--plomo-500);
-    cursor: pointer;
-
-    small { color: var(--dorado-700); }
-  }
-
-  &.tiene .info { color: var(--plomo-900); }
+  .toque { flex: 1; min-width: 0; }
 }
 
-.check {
-  width: 26px;
-  height: 26px;
-  border-radius: 7px;
-  border: 1.5px solid var(--plomo-400);
-  background: #fff;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  flex-shrink: 0;
+/* Vista chips */
+.ayuda { color: var(--color-texto-suave); }
 
-  .icono { font-size: 18px; color: #fff; }
-}
-
-.item.tiene .check { background: var(--guindo-700); border-color: var(--guindo-700); }
-
-.compra {
+.subtitulo {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: baseline;
+  gap: 6px;
 
-  .bombilla { width: 38px; height: 38px; border-radius: 50%; background: var(--dorado-500); display: grid; place-items: center; flex-shrink: 0; }
-  .bombilla .icono { color: #fff; font-size: 20px; }
-  .compra-texto { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-  strong { font-size: 13px; color: #5e4718; }
-  small { font-size: 11px; color: var(--dorado-700); line-height: 1.35; }
-  .icono-btn { color: var(--dorado-700); }
+  .t-detalle { font-family: var(--fuente-texto); font-weight: 400; }
 }
 
-.grupo-chips {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  .subtitulo { font-size: 14px; }
-  .subtitulo .icono { color: var(--guindo-700); font-size: 17px; }
-  .subtitulo small { font-family: 'Poppins', sans-serif; font-weight: 400; color: var(--plomo-500); font-size: 12px; }
-  .chip { color: var(--plomo-500); }
-  .chip.marcado { color: var(--guindo-900); }
-}
+.administrar { align-self: center; }

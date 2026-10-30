@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AdministrarCuentasUseCase } from '../../../application/use-cases/administrar-cuentas.usecase';
 import { EstadoUsuario, Usuario } from '../../../domain/usuarios/usuario.model';
+import { AvisoComponent } from '../../ui/aviso.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
 import { HojaComponent } from '../../ui/hoja.component';
 
 const PESTANAS: { estado: EstadoUsuario; nombre: string }[] = [
@@ -16,65 +17,63 @@ const NUEVO = '__nuevo__';
 /** Pantalla 17 (solo admin): activar en un hogar, rechazar o reactivar cuentas. */
 @Component({
   selector: 'app-cuentas',
-  imports: [RouterLink, HojaComponent],
+  imports: [HojaComponent, EncabezadoComponent, AvisoComponent],
   template: `
-    <main class="vista">
-      <header class="cabecera">
-        <a class="icono-btn" routerLink="/ajustes" aria-label="Volver"><span class="icono">arrow_back</span></a>
-        <h1>Cuentas</h1>
-        <button type="button" class="icono-btn" (click)="refrescar()" [disabled]="cargando()" aria-label="Actualizar">
+    <main class="pantalla">
+      <app-encabezado titulo="Cuentas" volver="/ajustes">
+        <button type="button" class="boton-icono" (click)="refrescar()" [disabled]="cargando()" aria-label="Actualizar">
           <span class="icono">refresh</span>
         </button>
-      </header>
+      </app-encabezado>
 
-      <div class="segmentado">
+      <div class="segmentos" role="tablist" aria-label="Estado de las cuentas">
         @for (p of pestanas; track p.estado) {
-          <button type="button" [class.activo]="pestana() === p.estado" (click)="pestana.set(p.estado)">
+          <button type="button" role="tab" [attr.aria-selected]="pestana() === p.estado" [class.activo]="pestana() === p.estado" (click)="pestana.set(p.estado)">
             {{ p.nombre }}
-            @if (cuentas.cuentas(p.estado); as lista) { <small>{{ lista.length }}</small> }
+            @if (cuentas.cuentas(p.estado); as lista) { <span>{{ lista.length }}</span> }
           </button>
         }
       </div>
 
       @if (lista() === null) {
-        <p class="texto-suave">Cargando…</p>
+        <p class="t-detalle">Cargando…</p>
       } @else {
         @for (u of lista(); track u.uid) {
           <article class="tarjeta cuenta">
             <div class="fila">
               @if (u.foto) {
-                <img class="avatar" [src]="u.foto" alt="" referrerpolicy="no-referrer" />
+                <img class="avatar suave" [src]="u.foto" alt="" referrerpolicy="no-referrer" />
               } @else {
-                <span class="avatar">{{ u.nombre.charAt(0).toUpperCase() }}</span>
+                <span class="avatar suave" aria-hidden="true">{{ u.nombre.charAt(0).toUpperCase() }}</span>
               }
               <div class="datos">
                 <strong>{{ u.nombre }}</strong>
-                <small>{{ u.email }}</small>
-                @if (u.hogarId) { <small class="hogar"><span class="icono">home</span> {{ cuentas.nombreHogar(u.hogarId) }}</small> }
+                <span class="t-detalle">{{ u.email }}</span>
+                @if (u.hogarId) { <span class="t-detalle hogar"><span class="icono">home</span> {{ cuentas.nombreHogar(u.hogarId) }}</span> }
               </div>
               <span class="cuando">{{ hace(u) }}</span>
             </div>
             <div class="acciones">
               @switch (pestana()) {
                 @case ('pendiente') {
-                  <button type="button" class="btn btn-borde-plomo" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'bloqueado')">
+                  <button type="button" class="btn btn-chico btn-neutro" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'bloqueado')">
                     <span class="icono">block</span> Rechazar
                   </button>
-                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="abrirActivar(u)">
-                    <span class="icono">check</span> Activar
+                  <button type="button" class="btn btn-chico btn-primario" [disabled]="ocupado() === u.uid" (click)="abrirActivar(u)">
+                    <span class="icono">home</span> Activar en hogar
                   </button>
                 }
                 @case ('activo') {
                   @if (u.rol !== 'admin') {
-                    <button type="button" class="btn btn-borde-plomo" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'bloqueado')">
+                    <button type="button" class="btn btn-chico btn-neutro" [disabled]="ocupado() === u.uid" (click)="cambiar(u, 'bloqueado')">
                       <span class="icono">block</span> Bloquear
                     </button>
                   } @else {
-                    <span class="chip dorado">Administradora</span>
+                    <span class="pastilla">Administradora</span>
                   }
                 }
                 @case ('bloqueado') {
-                  <button type="button" class="btn btn-primario" [disabled]="ocupado() === u.uid" (click)="reactivar(u)">
+                  <button type="button" class="btn btn-chico btn-primario" [disabled]="ocupado() === u.uid" (click)="reactivar(u)">
                     <span class="icono">lock_open</span> Reactivar
                   </button>
                 }
@@ -89,46 +88,74 @@ const NUEVO = '__nuevo__';
         }
       }
 
-      <p class="aviso"><span class="icono">info</span> Las cuentas nuevas entran como pendientes. Al activarlas eliges su hogar: cada hogar ve solo su despensa, planes, listas y recetas propias.</p>
+      <app-aviso icono="info" titulo="Cada hogar ve solo lo suyo">
+        Las cuentas nuevas entran como pendientes. Al activarlas eliges su hogar: despensa, planes, listas y recetas propias quedan separados.
+      </app-aviso>
     </main>
 
     @if (activando(); as u) {
       <app-hoja [titulo]="'Activar a ' + u.nombre" (cerrar)="activando.set(null)">
-        <label class="campo">
-          <span>Hogar</span>
-          <select [value]="hogarElegido()" (change)="hogarElegido.set($any($event.target).value)">
+        <p class="t-texto ayuda">Elige el hogar al que va a pertenecer.</p>
+
+        @if (cuentas.hogares().length > 0) {
+          <div class="tarjeta lista" role="radiogroup" aria-label="Hogar">
             @for (h of cuentas.hogares(); track h.id) {
-              <option [value]="h.id">{{ h.nombre }}</option>
+              <button type="button" class="opcion-hogar" role="radio" [attr.aria-checked]="hogarElegido() === h.id" (click)="hogarElegido.set(h.id)">
+                <span class="circulo-icono"><span class="icono">home</span></span>
+                <span class="textos">
+                  <strong>{{ h.nombre }}</strong>
+                  @if (miembros(h.id); as m) { <span class="t-detalle">{{ m }}</span> }
+                </span>
+                <span class="radio" [class.marcada]="hogarElegido() === h.id"></span>
+              </button>
             }
-            <option [value]="nuevo">+ Hogar nuevo…</option>
-          </select>
-        </label>
+          </div>
+        }
+
+        <button
+          type="button"
+          class="btn btn-secundario btn-ancho crear"
+          role="radio"
+          [class.elegido]="hogarElegido() === nuevo"
+          [attr.aria-checked]="hogarElegido() === nuevo"
+          (click)="hogarElegido.set(nuevo)"
+        >
+          <span class="icono">add_home</span> Crear un hogar nuevo
+        </button>
         @if (hogarElegido() === nuevo) {
           <label class="campo">
             <span>Nombre del hogar nuevo</span>
-            <input type="text" placeholder="Familia Rocha" [value]="nombreNuevo()" (input)="nombreNuevo.set($any($event.target).value)" />
+            <input class="caja" type="text" placeholder="Familia Rocha" [value]="nombreNuevo()" (input)="nombreNuevo.set($any($event.target).value)" />
           </label>
         }
-        @if (error(); as e) { <p class="aviso error"><span class="icono">error</span> {{ e }}</p> }
-        <button type="button" class="btn btn-primario ancho" [disabled]="ocupado() === u.uid" (click)="confirmarActivar(u)">Activar</button>
+        @if (error(); as e) { <app-aviso icono="error" tono="error" [titulo]="e" /> }
+        <button type="button" class="btn btn-primario btn-ancho" [disabled]="ocupado() === u.uid" (click)="confirmarActivar(u)">
+          <span class="icono">check</span> {{ textoActivar() }}
+        </button>
       </app-hoja>
     }
   `,
   styles: `
-    .segmentado small { font-size: 11px; opacity: 0.8; }
-    .cuenta { display: flex; flex-direction: column; gap: 12px; }
-    .fila { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--plomo-100); color: var(--plomo-700);
-      font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 17px; display: grid; place-items: center; object-fit: cover; flex-shrink: 0; }
-    .datos { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-    .datos strong { font-size: 14px; color: var(--plomo-900); }
-    .datos small { color: var(--plomo-500); font-size: 11px; overflow: hidden; text-overflow: ellipsis; }
-    .datos .hogar { display: flex; align-items: center; gap: 3px; color: var(--plomo-700); }
+    .segmentos span { opacity: 0.85; }
+    .cuenta { padding: 20px; gap: 16px; }
+    .fila { display: flex; align-items: center; gap: 14px; }
+    .datos { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .datos strong { font-family: var(--fuente-titulo); font-size: 17px; }
+    .datos .t-detalle { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .datos .hogar { display: flex; align-items: center; gap: 4px; }
     .datos .hogar .icono { font-size: 13px; }
-    .cuando { font-size: 10px; font-weight: 500; color: var(--alerta); background: #b7791f1a; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
-    .acciones { display: flex; gap: 8px; }
-    .acciones .btn { flex: 1; padding: 9px; }
-    .btn-borde-plomo { background: #fff; border: 1px solid #e4e4e7; color: var(--plomo-700); font-weight: 500; }
+    .cuando { align-self: flex-start; margin-top: 6px; font-size: 11px; font-weight: 500; color: var(--color-acento); white-space: nowrap; }
+    .acciones { display: flex; gap: 10px; }
+    .acciones .btn { flex: 1; min-width: 0; }
+    .ayuda { color: var(--color-texto-suave); margin-top: -8px; }
+    .opcion-hogar {
+      display: flex; align-items: center; gap: var(--esp-grupo); width: 100%; padding: 12px 0;
+      border: none; background: none; color: var(--color-texto); font: inherit; text-align: left; cursor: pointer;
+    }
+    .textos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+    .textos strong { font-size: 14px; font-weight: 600; }
+    .crear { justify-content: flex-start; border: 2px solid var(--color-primario-suave); }
+    .crear.elegido { border-color: var(--color-primario); }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -146,6 +173,13 @@ export class CuentasPage {
   protected readonly hogarElegido = signal<string>(NUEVO);
   protected readonly nombreNuevo = signal('');
   protected readonly error = signal<string | null>(null);
+
+  protected readonly textoActivar = computed(() => {
+    const elegido = this.hogarElegido();
+    const nombre = this.nombreNuevo().trim();
+    if (elegido === NUEVO) return nombre ? `Crear «${nombre}» y activar` : 'Crear hogar y activar';
+    return `Activar en ${this.cuentas.nombreHogar(elegido)}`;
+  });
 
   constructor() {
     void this.cuentas.cargarHogares();
@@ -206,6 +240,14 @@ export class CuentasPage {
     } finally {
       this.ocupado.set(null);
     }
+  }
+
+  /** «3 miembros», contando las cuentas activas ya cargadas (si no se cargaron, no se muestra). */
+  protected miembros(hogarId: string): string | null {
+    const activas = this.cuentas.cuentas('activo');
+    if (!activas) return null;
+    const n = activas.filter((c) => c.hogarId === hogarId).length;
+    return `${n} miembro${n === 1 ? '' : 's'}`;
   }
 
   protected hace(u: Usuario): string {

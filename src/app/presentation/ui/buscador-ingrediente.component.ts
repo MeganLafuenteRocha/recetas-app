@@ -12,9 +12,9 @@ const MAX_SUGERENCIAS = 6;
 @Component({
   selector: 'app-buscador-ingrediente',
   template: `
-    <div class="caja">
+    <div class="contenedor">
       <label class="buscador">
-        <span class="icono">add</span>
+        <span class="icono">search</span>
         <input
           type="text"
           [placeholder]="placeholder()"
@@ -26,7 +26,7 @@ const MAX_SUGERENCIAS = 6;
         />
       </label>
       @if (mostrarLista()) {
-        <ul role="listbox">
+        <ul role="listbox" aria-label="Sugerencias">
           @for (i of sugerencias(); track i.id) {
             <li>
               <button type="button" (click)="elegir(i)">
@@ -47,22 +47,20 @@ const MAX_SUGERENCIAS = 6;
     </div>
   `,
   styles: `
-    .caja { position: relative; }
-    .buscador { border-color: var(--guindo-700); border-width: 1.5px; }
-    .buscador .icono { color: var(--guindo-700); }
+    .contenedor { position: relative; }
     ul {
       position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 6px);
-      list-style: none; margin: 0; padding: 6px; background: #fff; border-radius: 16px;
-      border: 1px solid #e4e4e7; box-shadow: var(--sombra-2); max-height: 280px; overflow-y: auto;
+      list-style: none; margin: 0; padding: 6px; max-height: 280px; overflow-y: auto;
+      border-radius: var(--radio-control); background: var(--color-superficie); box-shadow: var(--sombra-flotante);
     }
     button {
       width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px;
-      border: none; background: none; padding: 10px; border-radius: 10px; cursor: pointer; text-align: left;
-      font-size: 14px; color: var(--plomo-900);
+      padding: 10px 12px; border: none; border-radius: var(--radio-control); background: none;
+      color: var(--color-texto); font-family: var(--fuente-texto); font-size: 13px; text-align: left; cursor: pointer;
     }
-    button:hover { background: var(--plomo-100); }
-    small { color: var(--plomo-500); font-size: 11px; }
-    .libre span { color: var(--guindo-700); font-weight: 500; }
+    button:hover { background: var(--color-fondo); }
+    small { color: var(--color-texto-suave); font-size: 11px; }
+    .libre span { color: var(--color-primario); font-weight: 600; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

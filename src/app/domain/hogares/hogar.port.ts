@@ -1,7 +1,8 @@
 import { Hogar } from './hogar.model';
 
-/** Solo admin (reglas de Firestore): crear hogares y listarlos para asignar cuentas. */
+/** Listar y crear: solo admin (reglas de Firestore). Leer el propio hogar: sus miembros. */
 export abstract class HogarRepository {
+  abstract obtener(id: string): Promise<Hogar | null>;
   abstract obtenerTodos(): Promise<Hogar[]>;
   abstract crear(hogar: Hogar): Promise<void>;
 }

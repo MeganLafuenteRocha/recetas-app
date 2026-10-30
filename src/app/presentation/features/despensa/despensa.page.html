@@ -1,77 +1,99 @@
-<main class="vista">
-  <header class="cabecera">
-    <button type="button" class="avatar-btn" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú">{{ inicial() }}</button>
-    <h1>Despensa</h1>
-    <div class="acciones">
-      <button
-        type="button"
-        class="icono-btn"
-        (click)="ui.cambiarVistaDespensa(ui.vistaDespensa() === 'lista' ? 'chips' : 'lista')"
-        [attr.aria-label]="ui.vistaDespensa() === 'lista' ? 'Ver como chips' : 'Ver como lista'"
-        [title]="ui.vistaDespensa() === 'lista' ? 'Ver como chips' : 'Ver como lista'"
-      >
-        <span class="icono">{{ ui.vistaDespensa() === 'lista' ? 'label' : 'view_list' }}</span>
-      </button>
-      <a class="icono-btn" routerLink="/listas" aria-label="Listas de compras" title="Listas de compras"><span class="icono">shopping_cart</span></a>
-      <a class="icono-btn" routerLink="/ingredientes" aria-label="Administrar ingredientes" title="Administrar ingredientes"><span class="icono">tune</span></a>
-    </div>
-  </header>
+<main class="pantalla">
+  <app-encabezado titulo="Despensa" [principal]="true">
+    <button
+      type="button"
+      class="boton-icono"
+      [class.suave]="buscando() || consulta()"
+      (click)="alternarBuscador()"
+      [attr.aria-pressed]="buscando()"
+      aria-label="Buscar ingrediente"
+    >
+      <span class="icono">search</span>
+    </button>
+    <button
+      type="button"
+      class="boton-icono"
+      (click)="ui.cambiarVistaDespensa(ui.vistaDespensa() === 'lista' ? 'chips' : 'lista')"
+      [attr.aria-label]="ui.vistaDespensa() === 'lista' ? 'Ver como chips' : 'Ver como lista'"
+      [title]="ui.vistaDespensa() === 'lista' ? 'Ver como chips' : 'Ver como lista'"
+    >
+      <span class="icono">{{ ui.vistaDespensa() === 'lista' ? 'label' : 'view_list' }}</span>
+    </button>
+    <a class="boton-icono" routerLink="/listas" aria-label="Listas de compras" title="Listas de compras"><span class="icono">shopping_cart</span></a>
+    <button type="button" class="boton-icono" (click)="ui.abrirMenuLateral()" aria-label="Abrir menú" title="Menú">
+      <span class="icono">more_vert</span>
+    </button>
+  </app-encabezado>
 
-  <label class="buscador">
-    <span class="icono">search</span>
-    <input type="search" placeholder="Buscar ingrediente…" [value]="consulta()" (input)="buscar($event)" />
-  </label>
+  @if (buscando() || consulta()) {
+    <label class="buscador">
+      <span class="icono">search</span>
+      <input type="search" placeholder="Buscar ingrediente…" aria-label="Buscar ingrediente" [value]="consulta()" (input)="buscar($event)" />
+    </label>
+  }
 
   @if (mensaje(); as m) {
-    <p class="aviso ok"><span class="icono">check_circle</span> {{ m }}</p>
+    <app-aviso icono="check_circle" tono="ok" [titulo]="m" />
   }
 
   @if (ui.vistaDespensa() === 'lista') {
     <!-- 10A: lista por categorías -->
-    <div class="tarjeta resumen">
+    <section class="tarjeta primaria resumen">
+      <span class="etiqueta">Tienes en casa</span>
       <div class="resumen-fila">
-        <div>
-          <small>Tienes en casa</small>
-          <p class="numero"><strong>{{ enCasa() }}</strong> <span>de {{ total() }} ingredientes</span></p>
-        </div>
-        <a class="chip dorado" [routerLink]="['/recetas']" [queryParams]="{ listas: 1 }">
-          <span class="icono">restaurant_menu</span> {{ recetasListas() }} recetas listas
+        <p class="numero"><strong>{{ enCasa() }}</strong> <span>de {{ total() }} ingredientes</span></p>
+        <a class="listas" [routerLink]="['/recetas']" [queryParams]="{ listas: 1 }">
+          <span class="icono">soup_kitchen</span> {{ recetasListas() }} recetas listas
         </a>
       </div>
-      <div class="barra"><span [style.width.%]="porcentaje()"></span></div>
-    </div>
+      <div class="progreso acento" role="progressbar" [attr.aria-valuenow]="enCasa()" aria-valuemin="0" [attr.aria-valuemax]="total()">
+        <span [style.width.%]="porcentaje()"></span>
+      </div>
+    </section>
 
     <div class="chips">
       <button type="button" class="chip" [class.activo]="categoria() === null" (click)="categoria.set(null)">Todo</button>
       @for (c of categoriasChips(); track c.codigo) {
-        <button type="button" class="chip" [class.activo]="categoria() === c.codigo" (click)="categoria.set(c.codigo)">{{ c.nombre }}</button>
+        <button type="button" class="chip" [class.activo]="categoria() === c.codigo" (click)="categoria.set(c.codigo)">
+          <span aria-hidden="true">{{ emojiDeCategoria(c.codigo) }}</span> {{ c.nombre }}
+        </button>
       }
     </div>
 
     @for (g of grupos(); track g.codigo) {
-      <section class="lista-filas categoria">
+      <section class="tarjeta categoria">
         <button type="button" class="cat-tit" (click)="plegar(g.codigo)" [attr.aria-expanded]="!plegadas().has(g.codigo)">
-          <span class="icono cat">{{ g.icono }}</span>
-          <strong>{{ g.nombre }}</strong>
-          <small>{{ g.enCasa }}/{{ g.items.length }}</small>
+          <strong class="t-tarjeta">{{ g.nombre }}</strong>
+          <span class="t-detalle">{{ g.enCasa }} de {{ g.items.length }}</span>
           <span class="icono">{{ plegadas().has(g.codigo) ? 'expand_more' : 'expand_less' }}</span>
         </button>
         @if (!plegadas().has(g.codigo)) {
-          @for (i of g.items; track i.id) {
-            <div class="item" [class.tiene]="despensa.ids().has(i.id)">
-              <button type="button" class="info" (click)="abrirFicha($event, i.id)">{{ i.nombre }}@if (i.esBasico) {<small> · básico</small>}</button>
-              <button
-                type="button"
-                class="check"
-                role="checkbox"
-                [attr.aria-checked]="despensa.ids().has(i.id)"
-                [attr.aria-label]="'Tengo ' + i.nombre"
-                (click)="despensa.alternar(i.id)"
-              >
-                @if (despensa.ids().has(i.id)) { <span class="icono">check</span> }
-              </button>
-            </div>
-          }
+          <div class="filas">
+            @for (i of g.items; track i.id) {
+              <div class="item">
+                <button type="button" class="toque" (click)="abrirFicha($event, i.id)" [attr.aria-label]="'Ver ficha de ' + i.nombre">
+                  <app-fila-ingrediente
+                    [emoji]="emojiDe(i)"
+                    [nombre]="i.nombre"
+                    [detalle]="i.esBasico ? 'Básico' : null"
+                    [class.marcado]="despensa.ids().has(i.id)"
+                    [class.apagado]="!despensa.ids().has(i.id)"
+                  />
+                </button>
+                <button
+                  type="button"
+                  class="casilla"
+                  role="checkbox"
+                  [class.marcada]="despensa.ids().has(i.id)"
+                  [attr.aria-checked]="despensa.ids().has(i.id)"
+                  [attr.aria-label]="'Tengo ' + i.nombre"
+                  (click)="despensa.alternar(i.id)"
+                >
+                  <span class="icono">check</span>
+                </button>
+              </div>
+            }
+          </div>
         }
       </section>
     } @empty {
@@ -79,27 +101,39 @@
     }
   } @else {
     <!-- 10B: chips por categoría -->
-    <p class="texto-suave">Toca para marcar lo que tienes. Se guarda solo.</p>
+    <p class="t-texto ayuda">Toca para marcar lo que tienes. Se guarda solo.</p>
 
     @if (sugerencia(); as s) {
-      <div class="tarjeta-dorada compra">
-        <span class="bombilla"><span class="icono">lightbulb</span></span>
-        <div class="compra-texto">
-          <strong>Compra {{ s.nombre.toLowerCase() }} y cocina {{ s.cantidad }} más</strong>
-          <small>Se completan {{ s.detalle }}.</small>
-        </div>
-        <button type="button" class="icono-btn" (click)="comprarSugerido()" aria-label="Agregar a la lista de compras" title="Agregar a la lista de compras">
+      <app-aviso icono="shopping_cart" [titulo]="'Compra 1 y cocina ' + s.cantidad + ' más'">
+        Con {{ s.nombre.toLowerCase() }} se completan {{ s.detalle }}.
+        <button
+          accion
+          type="button"
+          class="boton-icono sin-fondo"
+          (click)="comprarSugerido()"
+          aria-label="Agregar a la lista de compras"
+          title="Agregar a la lista de compras"
+        >
           <span class="icono">add_shopping_cart</span>
         </button>
-      </div>
+      </app-aviso>
     }
 
     @for (g of grupos(); track g.codigo) {
-      <section class="grupo-chips">
-        <p class="subtitulo"><span class="icono">{{ g.icono }}</span> {{ g.nombre }} <small>· {{ g.enCasa }} de {{ g.items.length }}</small></p>
+      <section class="pila">
+        <h2 class="t-seccion subtitulo">
+          <span aria-hidden="true">{{ g.emoji }}</span> {{ g.nombre }}
+          <span class="t-detalle">· {{ g.enCasa }} de {{ g.items.length }}</span>
+        </h2>
         <div class="chips envolver">
           @for (i of g.items; track i.id) {
-            <button type="button" class="chip" [class.marcado]="despensa.ids().has(i.id)" [attr.aria-pressed]="despensa.ids().has(i.id)" (click)="despensa.alternar(i.id)">
+            <button
+              type="button"
+              class="chip"
+              [class.activo]="despensa.ids().has(i.id)"
+              [attr.aria-pressed]="despensa.ids().has(i.id)"
+              (click)="despensa.alternar(i.id)"
+            >
               @if (despensa.ids().has(i.id)) { <span class="icono">check</span> }
               {{ i.nombre }}
             </button>
@@ -110,4 +144,8 @@
       <div class="vacio-estado"><span class="icono">search_off</span><p>No encontramos ese ingrediente.</p></div>
     }
   }
+
+  <a class="btn btn-texto administrar" routerLink="/ingredientes">
+    <span class="icono">tune</span> Administrar ingredientes
+  </a>
 </main>

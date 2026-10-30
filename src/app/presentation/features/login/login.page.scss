@@ -1,86 +1,89 @@
-.pantalla {
+/* MYVP1 · Portada oscura: marca arriba, titular y acción abajo, sobre un fondo de tokens. */
+.portada {
+  position: relative;
+  isolation: isolate;
   min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: var(--guindo-700);
+  justify-content: space-between;
+  padding-top: calc(var(--esp-seccion) + env(safe-area-inset-top));
+  padding-bottom: calc(var(--esp-seccion) + env(safe-area-inset-bottom));
+  background: var(--color-oscuro);
+  color: var(--color-texto-invertido);
 }
 
-.hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+/*
+ * Fondo: degradado guindo → oscuro (sin imagen: el texto pinta sin esperar nada).
+ * Foto opcional: añade la clase «con-foto» y define --foto-portada: url(...) en el elemento;
+ * el velo inferior mantiene legible el titular.
+ */
+.fondo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(120% 70% at 85% 10%, var(--color-primario) 0%, transparent 60%),
+    linear-gradient(to bottom, var(--color-primario-fuerte) 0%, var(--color-oscuro) 72%);
 
-  h1 {
-    color: #fff;
-    font-size: 34px;
-    margin: 0;
+  &.con-foto {
+    background:
+      linear-gradient(to bottom, var(--color-velo) 0%, transparent 35%, var(--color-oscuro) 75%),
+      var(--foto-portada, none) center / cover no-repeat,
+      var(--color-oscuro);
   }
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--esp-grupo);
+  padding-top: var(--esp-grupo);
 }
 
 .logo {
-  width: 84px;
-  height: 84px;
-  border-radius: var(--radio-l);
-  background: var(--guindo-100);
-  color: var(--guindo-700);
-  font-family: 'Quicksand', sans-serif;
-  font-size: 46px;
-  font-weight: 700;
   display: grid;
   place-items: center;
-  margin-bottom: 12px;
-  box-shadow: var(--sombra-2);
+  width: var(--lado-boton-icono);
+  height: var(--lado-boton-icono);
+  border-radius: var(--radio-control);
+  background: var(--color-primario);
+  font-family: var(--fuente-titulo);
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.lema {
-  color: var(--guindo-100);
-  margin: 0;
-}
-
-.acciones {
-  padding: 32px 24px 48px;
+.contenido {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
+  gap: var(--esp-grupo);
 
-.boton-google {
-  width: 100%;
-  max-width: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px 20px;
-  border: none;
-  border-radius: var(--radio-pill);
-  background: #fff;
-  color: var(--plomo-900);
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: var(--sombra-2);
-
-  &:active {
-    transform: scale(0.98);
+  h1 {
+    color: var(--color-texto-invertido);
+    max-width: 14ch;
   }
 }
 
+.lema {
+  font-size: 14px;
+  color: color-mix(in srgb, var(--color-texto-invertido) 82%, transparent);
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--esp-grupo);
+  margin-top: calc(var(--esp-seccion) * 1.5);
+}
+
+/* Texto a la izquierda y el logo de Google en un círculo blanco a la derecha (como el mockup). */
+
 .error {
-  color: var(--dorado-300);
   font-size: 13px;
-  margin: 0;
+  color: var(--color-acento-claro);
+  text-align: center;
 }
 
 .nota {
-  color: var(--guindo-100);
-  opacity: 0.75;
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
-  margin: 0;
+  color: color-mix(in srgb, var(--color-texto-invertido) 60%, transparent);
 }

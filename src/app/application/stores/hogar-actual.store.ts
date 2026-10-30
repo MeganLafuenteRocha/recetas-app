@@ -9,13 +9,21 @@ import { Ambito, ambitoAlGuardar } from '../../domain/hogares/hogar.model';
 @Injectable({ providedIn: 'root' })
 export class HogarActualStore {
   private readonly _id = signal<string | null>(null);
+  private readonly _nombre = signal<string | null>(null);
   private readonly _esAdmin = signal(false);
 
   readonly id = this._id.asReadonly();
+  /** «Hogar de Andrea»: llega un instante después que el id (1 lectura al iniciar sesión). */
+  readonly nombre = this._nombre.asReadonly();
 
   fijar(id: string | null, esAdmin: boolean): void {
+    if (id !== this._id()) this._nombre.set(null);
     this._id.set(id);
     this._esAdmin.set(esAdmin);
+  }
+
+  fijarNombre(nombre: string | null): void {
+    this._nombre.set(nombre);
   }
 
   /** Para los adaptadores: sin hogar no se lee ni se escribe nada del hogar. */

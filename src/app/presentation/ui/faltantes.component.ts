@@ -4,32 +4,50 @@ import { UiStore } from '../../application/stores/ui.store';
 import { ResultadoAfinidad } from '../../domain/planificacion/afinidad.service';
 
 /**
- * "Te falta: papa, cebolla" con el color del rol de cada faltante
- * (esencial rojo, condimento dorado, opcional naranja). Tocar uno abre su ficha.
+ * «Te falta: papa, cebolla» en pastillas blancas con el punto del rol de cada faltante
+ * (esencial guindo, condimento dorado, opcional tenue). Tocar uno abre su ficha.
  */
 @Component({
   selector: 'app-faltantes',
   template: `
     @if (items().length > 0) {
       <div class="faltantes">
-        <small>Te falta:</small>
+        <span class="etiqueta">Te falta:</span>
         @for (item of items(); track item.id) {
           @if (interactivo()) {
-            <button type="button" [class]="'pastilla-rol rol-' + item.rol" (click)="abrir($event, item.id)">{{ item.nombre }}</button>
+            <button type="button" [class]="'faltante rol-' + item.rol" (click)="abrir($event, item.id)" [attr.aria-label]="'Ver ' + item.nombre">
+              <span class="punto"></span>{{ item.nombre }}
+            </button>
           } @else {
-            <span [class]="'pastilla-rol rol-' + item.rol">{{ item.nombre }}</span>
+            <span [class]="'faltante rol-' + item.rol"><span class="punto"></span>{{ item.nombre }}</span>
           }
         }
       </div>
     } @else if (mostrarCompleto()) {
-      <small class="completo"><span class="icono">check_circle</span> Tienes todo</small>
+      <span class="completo"><span class="icono lleno">check_circle</span> Tienes todo</span>
     }
   `,
   styles: `
-    .faltantes { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
-    small { color: var(--plomo-500); font-size: 11px; }
-    button { border: none; cursor: pointer; font-family: inherit; }
-    .completo { color: var(--ok); display: inline-flex; align-items: center; gap: 3px; }
+    :host { display: block; min-width: 0; }
+    .faltantes { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .etiqueta { font-size: 11px; color: var(--color-texto-suave); }
+    .faltante {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border: none;
+      border-radius: var(--radio-pill);
+      background: var(--color-superficie);
+      color: var(--color-texto);
+      font-family: var(--fuente-texto);
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    button.faltante { cursor: pointer; }
+    .faltante .punto { width: 6px; height: 6px; background: var(--rol); }
+    .completo { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--color-ok); }
     .completo .icono { font-size: 14px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

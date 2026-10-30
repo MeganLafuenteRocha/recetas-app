@@ -1,93 +1,63 @@
-.pagina {
+/* nzQLd · Bienvenida: portada, rol, dos cifras y la acción principal abajo. */
+.bienvenida {
   min-height: 100dvh;
+  gap: var(--esp-grupo);
+}
+
+/* En lugar de la foto: degradado guindo → oscuro con el emoji, el saludo abajo a la izquierda. */
+.portada {
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 24px;
-  text-align: center;
-}
+  justify-content: flex-end;
+  min-height: 240px;
+  padding: var(--esp-pantalla) var(--esp-pantalla) var(--esp-seccion);
+  overflow: hidden;
+  border-radius: var(--radio-hoja);
+  background:
+    radial-gradient(90% 80% at 80% 20%, var(--color-primario) 0%, transparent 70%),
+    linear-gradient(160deg, var(--color-primario-fuerte) 0%, var(--color-oscuro) 100%);
+  color: var(--color-texto-invertido);
+  margin-bottom: var(--esp-grupo);
 
-.admin {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--dorado-700);
-  background: var(--dorado-100);
-  padding: 6px 14px;
-  border-radius: var(--radio-pill);
-  font-size: 13px;
-  margin: 0;
+  .emoji {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 84px;
+    line-height: 1;
+  }
 
-  .icono {
-    font-size: 18px;
+  h1 { color: var(--color-texto-invertido); }
+
+  p {
+    margin-top: 4px;
+    color: color-mix(in srgb, var(--color-texto-invertido) 85%, transparent);
   }
 }
 
-.cards {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
+.saludo { position: relative; }
+
+.rol {
+  align-self: flex-start;
+  padding: 8px 14px;
+  font-size: 12px;
+
+  .icono { font-size: 17px; }
 }
 
-.card {
-  background: #fff;
-  border-radius: var(--radio-l);
-  box-shadow: var(--sombra-1);
-  padding: 16px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+.cifras {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--esp-grupo);
 
-  .icono {
-    color: var(--guindo-700);
-  }
-
-  strong {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 22px;
-    color: var(--plomo-900);
-  }
-
-  small {
-    color: var(--plomo-500);
-  }
+  .tarjeta { gap: 6px; }
+  .icono { color: var(--color-primario); }
 }
 
-.nota {
-  color: var(--plomo-500);
-  font-size: 13px;
-  margin: 0;
-  max-width: 300px;
-}
+.nota { color: var(--color-texto-suave); }
 
-.boton-principal {
-  margin-top: 12px;
-  width: 100%;
-  max-width: 280px;
-  padding: 13px 24px;
-  border: none;
-  border-radius: var(--radio-pill);
-  background: var(--guindo-700);
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: var(--sombra-1);
+.salir { align-self: flex-start; color: var(--color-texto-suave); }
 
-  &:active {
-    transform: scale(0.98);
-  }
-}
-
-.boton-texto {
-  border: none;
-  background: none;
-  color: var(--plomo-500);
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  cursor: pointer;
-}
+/* El pie va siempre al fondo de la pantalla, aunque el contenido sea corto. */
+.pie-fijo { margin-top: auto; }

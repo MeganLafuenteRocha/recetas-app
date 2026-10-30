@@ -1,32 +1,42 @@
-<main class="pagina">
-  <h1>Hola, {{ primerNombre() }} 👋</h1>
-  @if (sesion.esAdmin()) {
-    <p class="admin"><span class="icono">shield_person</span> Administradora</p>
-  }
+<main class="pantalla bienvenida">
+  <!-- Portada sin foto real: degradado de tokens y un emoji (el texto pinta al instante). -->
+  <section class="portada">
+    <span class="emoji" aria-hidden="true">👩‍🍳</span>
+    <div class="saludo">
+      <h1 class="t-titular">Hola, {{ primerNombre() }} 👋</h1>
+      <p>Bienvenida a tu cocina</p>
+    </div>
+  </section>
 
-  <!-- Aquí irá la imagen que Andrea va a elegir -->
+  <span class="pastilla rol">
+    <span class="icono">{{ sesion.esAdmin() ? 'shield_person' : 'home' }}</span>
+    {{ sesion.esAdmin() ? 'Administradora' : 'Miembro' }}@if (hogar.nombre(); as h) { · {{ h }} }
+  </span>
 
   @if (datos.listo()) {
-    <div class="cards">
-      <div class="card">
+    <div class="cifras">
+      <div class="tarjeta">
         <span class="icono">menu_book</span>
-        <strong>{{ recetas.total() }}</strong>
-        <small>recetas</small>
+        <strong class="t-pantalla">{{ recetas.total() }}</strong>
+        <span class="t-detalle">recetas para empezar</span>
       </div>
-      <div class="card">
-        <span class="icono">grocery</span>
-        <strong>{{ ingredientes.total() }}</strong>
-        <small>ingredientes</small>
+      <div class="tarjeta">
+        <span class="icono">nutrition</span>
+        <strong class="t-pantalla">{{ ingredientes.total() }}</strong>
+        <span class="t-detalle">ingredientes</span>
       </div>
     </div>
-    <p class="nota">
-      Tienes {{ recetas.total() }} recetas y {{ ingredientes.total() }} ingredientes
-      iniciales para empezar. Podrás ajustarlos a tu gusto o crear nuevos.
-    </p>
-    <button type="button" class="boton-principal" (click)="siguiente()">Siguiente</button>
+    <p class="nota">Puedes ajustarlas a tu gusto o crear nuevas: lo que cambies queda solo en tu hogar.</p>
   } @else {
-    <p class="nota">Preparando tus datos…</p>
+    <p class="nota" role="status">Preparando tus datos…</p>
   }
 
-  <button type="button" class="boton-texto" (click)="salir()">Cerrar sesión</button>
+  <button type="button" class="btn btn-texto salir" (click)="salir()">Cerrar sesión</button>
+
+  <div class="pie-fijo">
+    <button type="button" class="btn btn-primario btn-ancho" (click)="siguiente()" [disabled]="!datos.listo()">
+      <span class="icono">arrow_forward</span>
+      Empezar a cocinar
+    </button>
+  </div>
 </main>

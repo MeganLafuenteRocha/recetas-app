@@ -1,117 +1,73 @@
 :host { display: block; }
 
-.foto-hero { position: relative; }
-.foto-grande { width: 100%; height: 220px; }
+/* ---- Foto héroe a todo el ancho con botones translúcidos ---- */
+.heroe { position: relative; }
+.foto-heroe { width: 100%; height: 300px; }
 
-.circular {
+.botones-heroe {
   position: absolute;
-  top: 14px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background: #ffffffe6;
-  color: var(--plomo-900);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  text-decoration: none;
-  box-shadow: var(--sombra-1);
+  top: 16px;
+  left: var(--esp-pantalla);
+  right: var(--esp-pantalla);
+  display: flex;
+  gap: 10px;
 
-  .icono { font-size: 21px; }
+  .espacio { flex: 1; }
 }
 
-.izquierda { left: 14px; }
-.derecha { position: absolute; top: 0; right: 14px; display: flex; gap: 8px; }
-.derecha .circular { position: static; margin-top: 14px; }
-
-.cuerpo { gap: 16px; }
+/* ---- Hoja crema redondeada que se superpone a la foto ---- */
+.cuerpo {
+  position: relative;
+  margin-top: calc(-1 * var(--radio-hoja));
+  padding-top: 26px;
+  border-radius: var(--radio-hoja) var(--radio-hoja) 0 0;
+  background: var(--color-fondo);
+}
 
 .titulo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-
-  h1 { margin: 0; font-size: 26px; }
+  gap: 8px;
 }
 
-.sobretitulo {
-  color: var(--dorado-500);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-}
+.descripcion { font-size: 13px; line-height: 1.55; color: var(--color-texto-suave); }
 
-.descripcion { margin: 2px 0 0; color: var(--plomo-500); font-size: 13px; line-height: 1.5; }
-
-.meta {
-  display: flex;
-  justify-content: space-between;
-
-  span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: var(--plomo-700); }
-  .icono { color: var(--guindo-700); font-size: 17px; }
-}
-
-.afinidad {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.aro {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
+/* ---- 3 datos en tarjetas ---- */
+.datos {
   display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  position: relative;
-
-  &::before { content: ''; position: absolute; inset: 5px; background: #fff; border-radius: 50%; }
-  span { position: relative; font-weight: 700; font-size: 13px; }
-}
-
-.afinidad-texto {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-
-  strong { font-size: 13px; color: var(--plomo-900); }
-}
-
-.nutricion { display: flex; flex-direction: column; gap: 8px; }
-.nutricion-tit { display: flex; align-items: center; justify-content: space-between; }
-.chip.chico { padding: 3px 9px; font-size: 10px; cursor: default; .icono { font-size: 13px; } }
-
-.tiles { display: flex; gap: 8px; }
-
-.tile {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0;
-  border-radius: var(--radio-m);
-  background: #fff;
-  border: 1px solid #e4e4e7;
-
-  strong { font-size: 15px; color: var(--plomo-900); }
-  small { font-size: 10px; color: var(--plomo-500); }
-
-  &.principal { background: var(--guindo-100); border-color: var(--guindo-100); strong { color: var(--guindo-900); } }
-}
-
-.sin-nutricion {
-  display: flex;
-  align-items: center;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-
-  > .icono { color: var(--dorado-700); }
-  .texto { flex: 1; font-size: 12px; color: #5e4718; line-height: 1.4; }
-  .btn { padding: 8px 14px; font-size: 12px; }
 }
+
+.dato {
+  gap: 4px;
+  padding: 12px;
+
+  strong { font-family: var(--fuente-titulo); font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+}
+
+.circulo-icono { margin-bottom: 6px; }
+
+/* ---- Nutrición: kcal destacada ---- */
+.nutricion {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.valor {
+  align-items: center;
+  gap: 2px;
+  padding: 12px 4px;
+  border-radius: var(--radio-control);
+
+  strong { font-family: var(--fuente-titulo); font-size: 17px; font-weight: 700; }
+  span { font-size: 11px; color: var(--color-texto-suave); }
+  &.primaria span { color: var(--color-texto-invertido); }
+}
+
+/* ---- Ingredientes y preparación ---- */
+.bloque { padding: 18px 16px 10px; }
 
 .grupo { display: flex; flex-direction: column; }
 
@@ -119,90 +75,78 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin: 4px 0 2px;
-  font-size: 11px;
+  margin-top: 6px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--plomo-500);
+  color: var(--color-texto-suave);
+
+  .punto { color: var(--rol); }
 }
 
-.fila-ing {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 9px 0;
-  border: none;
-  border-bottom: 1px solid #e4e4e7;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
+.cantidad { font-size: 12px; color: var(--color-texto-suave); white-space: nowrap; }
 
-  .estado { font-size: 19px; color: var(--ok); }
-  .nombres { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-  .nombre { font-size: 13px; font-weight: 500; color: var(--plomo-900); }
-  small { font-size: 11px; color: var(--plomo-500); }
-  .cantidad { font-size: 12px; color: var(--plomo-500); white-space: nowrap; }
+.estado {
+  font-size: 22px;
+  color: var(--color-control-apagado);
 
-  &.falta {
-    .estado { color: var(--rol); }
-    .nombre { color: var(--rol); }
-  }
+  &.tiene { color: var(--color-ok); }
 }
 
 .pasos {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 
-  li {
-    display: flex;
-    gap: 10px;
-    background: #fff;
-    border: 1px solid #e4e4e7;
-    border-radius: var(--radio-l);
-    padding: 12px;
-
-    p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--plomo-900); }
-  }
-
-  li.importante { background: var(--dorado-100); border-color: var(--dorado-100); }
-
-  .numero {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--guindo-700);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    display: grid;
-    place-items: center;
-  }
-
-  li.importante .numero { background: var(--dorado-500); }
-
-  .nota-importante {
-    margin-top: 6px !important;
-    display: flex;
-    gap: 4px;
-    font-size: 12px !important;
-    color: var(--dorado-700) !important;
-    font-weight: 500;
-
-    .icono { font-size: 15px; }
-  }
+  li { display: flex; gap: var(--esp-grupo); }
 }
 
-.acciones-pie {
+.numero {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-primario);
+  color: var(--color-texto-invertido);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.paso-texto {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  gap: 10px;
-  padding-top: 6px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding-top: 4px;
 
-  .crecer { flex: 1; }
+  p { font-size: 13px; line-height: 1.55; }
 }
+
+.importante {
+  white-space: normal;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-texto);
+
+  .icono { color: var(--color-acento); }
+}
+
+/* ---- Acción principal fija ---- */
+.agregar { width: var(--alto-boton); height: var(--alto-boton); box-shadow: var(--sombra-suave); color: var(--color-primario); }
+
+.empezar {
+  flex: 1;
+  font-family: var(--fuente-titulo);
+  font-size: 17px;
+  font-weight: 700;
+}
+

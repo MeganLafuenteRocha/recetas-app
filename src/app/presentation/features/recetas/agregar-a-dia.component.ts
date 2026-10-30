@@ -4,43 +4,48 @@ import { PlanStore } from '../../../application/stores/plan.store';
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { cambiarEleccion, fechaISO, sumarDias } from '../../../domain/planificacion/plan.model';
 import { Receta } from '../../../domain/recetas/receta.model';
+import { AvisoComponent } from '../../ui/aviso.component';
 import { HojaComponent } from '../../ui/hoja.component';
 
 /** Hoja "Agregar a mi día": elegir día (hoy y 6 más) y franja. Una escritura. */
 @Component({
   selector: 'app-agregar-a-dia',
-  imports: [HojaComponent],
+  imports: [HojaComponent, AvisoComponent],
   template: `
     <app-hoja titulo="Agregar a mi día" (cerrar)="cerrar.emit()">
-      <p class="etiqueta-seccion">Día</p>
-      <div class="chips">
-        @for (d of dias; track d.iso) {
-          <button type="button" class="chip dia" [class.activo]="fecha() === d.iso" (click)="fecha.set(d.iso)">
-            <small>{{ d.semana }}</small><strong>{{ d.numero }}</strong>
-          </button>
-        }
+      <div class="pila">
+        <h3 class="t-tarjeta">Día</h3>
+        <div class="chips">
+          @for (d of dias; track d.iso) {
+            <button type="button" class="chip dia" [class.activo]="fecha() === d.iso" [attr.aria-pressed]="fecha() === d.iso" (click)="fecha.set(d.iso)">
+              <small>{{ d.semana }}</small><strong>{{ d.numero }}</strong>
+            </button>
+          }
+        </div>
       </div>
 
-      <p class="etiqueta-seccion">Franja</p>
-      <div class="segmentado">
-        @for (t of catalogos.tiposComida(); track t.codigo) {
-          <button type="button" [class.activo]="franja() === t.codigo" (click)="franja.set(t.codigo)">{{ t.nombre }}</button>
-        }
+      <div class="pila">
+        <h3 class="t-tarjeta">Franja</h3>
+        <div class="segmentos" role="group" aria-label="Franja">
+          @for (t of catalogos.tiposComida(); track t.codigo) {
+            <button type="button" [class.activo]="franja() === t.codigo" [attr.aria-pressed]="franja() === t.codigo" (click)="franja.set(t.codigo)">{{ t.nombre }}</button>
+          }
+        </div>
       </div>
 
       @if (reemplaza(); as nombre) {
-        <p class="aviso"><span class="icono">swap_horiz</span> Reemplaza a {{ nombre }} en esa franja.</p>
+        <app-aviso icono="swap_horiz">Reemplaza a {{ nombre }} en esa franja.</app-aviso>
       }
 
-      <button type="button" class="btn btn-primario ancho" [disabled]="guardando()" (click)="guardar()">
+      <button type="button" class="btn btn-primario btn-ancho" [disabled]="guardando()" (click)="guardar()">
         <span class="icono">event_available</span> {{ guardando() ? 'Guardando…' : 'Agregar' }}
       </button>
     </app-hoja>
   `,
   styles: `
-    .dia { flex-direction: column; gap: 0; padding: 6px 12px; min-width: 48px; }
+    .dia { flex-direction: column; gap: 0; min-width: 52px; padding: 8px 12px; }
     .dia small { font-size: 10px; text-transform: capitalize; }
-    .dia strong { font-size: 15px; }
+    .dia strong { font-family: var(--fuente-titulo); font-size: 16px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

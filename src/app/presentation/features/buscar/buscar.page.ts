@@ -7,66 +7,75 @@ import { IngredientesStore } from '../../../application/stores/ingredientes.stor
 import { RecetasStore } from '../../../application/stores/recetas.store';
 import { UiStore } from '../../../application/stores/ui.store';
 import { evaluarReceta } from '../../../domain/planificacion/afinidad.service';
-import { AfinidadComponent } from '../../ui/afinidad.component';
-import { duracion } from '../../ui/iconos';
+import { idsDeIngredientes } from '../../../domain/recetas/receta.model';
+import { emojiIngrediente } from '../../ui/emojis';
+import { FilaIngredienteComponent } from '../../ui/fila-ingrediente.component';
+import { TarjetaRecetaComponent } from '../../ui/tarjeta-receta.component';
 
 const MAX_INGREDIENTES = 6;
 
-/** Pantalla 03D: búsqueda activa en memoria por receta, ingrediente o sinónimo. */
+/** Pantalla 03D (wpBeA): búsqueda activa en memoria por receta, ingrediente o sinónimo. */
 @Component({
   selector: 'app-buscar',
-  imports: [RouterLink, AfinidadComponent],
+  imports: [RouterLink, FilaIngredienteComponent, TarjetaRecetaComponent],
   template: `
-    <main class="vista">
+    <main class="pantalla">
       <div class="barra">
-        <button type="button" class="icono-btn" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
-        <label class="buscador activo">
+        <label class="buscador">
           <span class="icono">search</span>
+          <span class="solo-lector">Buscar</span>
           <input #campo type="search" placeholder="Busca recetas o ingredientes" [value]="consulta()" (input)="consulta.set($any($event.target).value)" />
           @if (consulta()) {
-            <button type="button" class="limpiar" (click)="consulta.set('')" aria-label="Limpiar"><span class="icono">close</span></button>
+            <button type="button" class="limpiar" (click)="consulta.set('')" aria-label="Limpiar búsqueda"><span class="icono">close</span></button>
           }
         </label>
+        <button type="button" class="btn btn-texto" (click)="volver()">Cancelar</button>
       </div>
 
-      @if (!consulta().trim()) {
-        <p class="texto-suave">Prueba con "arveja", "pollo" o "sopa".</p>
+      @if (!termino()) {
+        <div class="vacio-estado">
+          <span class="icono">search</span>
+          <p>Prueba con «arveja», «pollo» o «sopa».</p>
+        </div>
       } @else {
         @if (ingredientes().length > 0) {
-          <p class="etiqueta-seccion">Ingredientes</p>
-          <div class="chips envolver">
+          <div class="tarjeta lista">
             @for (i of ingredientes(); track i.id) {
-              <button type="button" class="chip" [class.marcado]="despensa.ids().has(i.id)" (click)="ui.abrirFicha(i.id)">
-                @if (despensa.ids().has(i.id)) { <span class="icono">check</span> }
-                {{ i.nombre }}
+              <button type="button" class="toque fila" (click)="ui.abrirFicha(i.id)">
+                <app-fila-ingrediente [emoji]="i.emoji" [nombre]="i.nombre" [detalle]="i.detalle" [class.marcado]="i.enDespensa">
+                  @if (i.recetas > 0) {
+                    <span class="cuenta">{{ i.recetas }} {{ i.recetas === 1 ? 'receta' : 'recetas' }}</span>
+                  }
+                  <span class="icono flecha">chevron_right</span>
+                </app-fila-ingrediente>
               </button>
             }
           </div>
         }
 
-        <p class="texto-suave">Resultados con "{{ consulta().trim() }}"</p>
-        @for (r of resultados(); track r.receta.id) {
-          <a class="tarjeta resultado" [routerLink]="['/recetas', r.receta.id]">
-            <strong>{{ r.receta.nombre }}</strong>
-            <span class="meta">
-              {{ catalogos.nombreFranja(r.receta.tipoComida) }} · {{ duracion(r.receta.tiempo.totalMin) }}
-              <app-afinidad [puntaje]="r.puntaje" />
-            </span>
-          </a>
-        } @empty {
-          <div class="vacio-estado"><span class="icono">search_off</span><p>Ninguna receta coincide.</p></div>
-        }
+        <section class="pila">
+          <h2 class="t-sobretitulo">Recetas con {{ termino() }}</h2>
+          @for (r of resultados(); track r.receta.id) {
+            <a class="toque" [routerLink]="['/recetas', r.receta.id]">
+              <app-tarjeta-receta [receta]="r.receta" [resultado]="r" />
+            </a>
+          } @empty {
+            <div class="vacio-estado"><span class="icono">search_off</span><p>Ninguna receta coincide.</p></div>
+          }
+        </section>
       }
     </main>
   `,
   styles: `
-    .barra { display: flex; align-items: center; gap: 6px; margin-left: -8px; }
-    .buscador { flex: 1; }
-    .buscador.activo { border: 1.5px solid var(--guindo-700); }
-    .limpiar { border: none; background: none; padding: 0; display: grid; cursor: pointer; }
-    .resultado { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
-    .resultado strong { font-family: 'Quicksand', sans-serif; font-size: 15px; color: var(--plomo-900); }
-    .meta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--plomo-500); }
+    .barra { display: flex; align-items: center; gap: var(--esp-grupo); }
+    .buscador { flex: 1; min-width: 0; }
+    .buscador input::-webkit-search-cancel-button { display: none; }
+    .limpiar { display: grid; padding: 0; border: none; background: none; color: var(--color-texto-suave); cursor: pointer; }
+    .barra .btn-texto { font-size: 13px; }
+    .fila { border-radius: 0; }
+    .fila + .fila { border-top: 1px solid var(--color-linea); }
+    .cuenta { font-size: 13px; color: var(--color-primario); white-space: nowrap; }
+    .flecha { color: var(--color-texto-tenue); font-size: 20px; }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -80,17 +89,35 @@ export class BuscarPage {
   private readonly campo = viewChild.required<ElementRef<HTMLInputElement>>('campo');
 
   protected readonly consulta = signal('');
-  protected readonly duracion = duracion;
+  protected readonly termino = computed(() => this.consulta().trim());
 
   private readonly coincidentes = computed(() => {
-    const q = this.consulta().trim();
+    const q = this.termino();
     return q ? this.ingredientesStore.buscar(q) : [];
   });
 
-  protected readonly ingredientes = computed(() => this.coincidentes().slice(0, MAX_INGREDIENTES));
+  /** Filas de ingrediente: categoría, si está en la despensa y en cuántas recetas aparece. */
+  protected readonly ingredientes = computed(() => {
+    const enDespensa = this.despensa.ids();
+    const usos = this.recetas.todas().map(idsDeIngredientes);
+    return this.coincidentes()
+      .slice(0, MAX_INGREDIENTES)
+      .map((i) => {
+        const tiene = enDespensa.has(i.id);
+        const categoria = this.catalogos.nombreCategoria(i.categoria);
+        return {
+          id: i.id,
+          nombre: i.nombre,
+          emoji: emojiIngrediente(i),
+          enDespensa: tiene,
+          detalle: tiene ? `${categoria} · en tu despensa` : categoria,
+          recetas: usos.filter((ids) => ids.has(i.id)).length,
+        };
+      });
+  });
 
   protected readonly resultados = computed(() => {
-    const q = this.consulta().trim();
+    const q = this.termino();
     if (!q) return [];
     const ids = new Set(this.coincidentes().map((i) => i.id));
     return this.recetas

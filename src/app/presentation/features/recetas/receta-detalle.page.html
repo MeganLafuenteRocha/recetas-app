@@ -1,121 +1,137 @@
 @if (receta(); as r) {
-  <div class="foto-hero">
-    <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" />
-    <button type="button" class="circular izquierda" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
-    <div class="derecha">
-      <a class="circular" [routerLink]="['/recetas', r.id, 'editar']" aria-label="Editar receta"><span class="icono">edit</span></a>
+  <div class="heroe">
+    <app-foto class="foto-heroe" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" />
+    <div class="botones-heroe">
+      <button type="button" class="boton-icono translucido" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
+      <span class="espacio"></span>
+      <a class="boton-icono translucido" [routerLink]="['/recetas', r.id, 'editar']" aria-label="Editar receta"><span class="icono">edit</span></a>
       @if (sesion.esAdmin()) {
-        <button type="button" class="circular" (click)="hoja.set('grupo')" aria-label="Guardar en un grupo"><span class="icono">bookmark</span></button>
+        <button type="button" class="boton-icono translucido" (click)="hoja.set('grupo')" aria-label="Guardar en un grupo"><span class="icono">bookmark</span></button>
       }
     </div>
   </div>
 
-  <main class="vista cuerpo">
+  <main class="pantalla cuerpo">
     <div class="titulo">
-      <small class="sobretitulo">{{ catalogos.nombreFranja(r.tipoComida) }} · {{ catalogos.nombreCocina(r.tipoCocina) }}</small>
-      <h1>{{ r.nombre }}</h1>
+      <span class="t-sobretitulo">{{ catalogos.nombreFranja(r.tipoComida) }} · {{ catalogos.nombreCocina(r.tipoCocina) }}</span>
+      <h1 class="t-receta">{{ r.nombre }}</h1>
       @if (r.descripcion) { <p class="descripcion">{{ r.descripcion }}</p> }
     </div>
 
-    <div class="meta">
-      <span><span class="icono">schedule</span> {{ duracion(r.tiempo.totalMin) }}</span>
-      <span><span class="icono">group</span> {{ r.porciones }} porc.</span>
-      <span><span class="icono">signal_cellular_alt</span> {{ dificultad(r.dificultad) }}</span>
+    <div class="datos">
+      <div class="tarjeta dato">
+        <span class="circulo-icono"><span class="icono">schedule</span></span>
+        <span class="t-detalle">Tiempo</span>
+        <strong>{{ duracion(r.tiempo.totalMin) }}</strong>
+      </div>
+      <div class="tarjeta dato">
+        <span class="circulo-icono"><span class="icono">group</span></span>
+        <span class="t-detalle">Porciones</span>
+        <strong>{{ r.porciones }}</strong>
+      </div>
+      <div class="tarjeta dato">
+        <span class="circulo-icono"><span class="icono">signal_cellular_alt</span></span>
+        <span class="t-detalle">Dificultad</span>
+        <strong>{{ dificultad(r.dificultad) }}</strong>
+      </div>
     </div>
 
     @if (mensaje(); as m) {
-      <p class="aviso ok"><span class="icono">check_circle</span> {{ m }}</p>
+      <app-aviso icono="check_circle" tono="ok" [titulo]="m" />
     }
 
     @if (afinidad(); as a) {
-      <div class="tarjeta afinidad">
-        <div class="aro" [style.background]="'conic-gradient(' + colorAfinidad() + ' ' + a.puntaje * 3.6 + 'deg, #e4e4e7 0)'">
-          <span [style.color]="colorAfinidad()">{{ a.puntaje }}%</span>
-        </div>
-        <div class="afinidad-texto">
-          <strong>{{ tituloAfinidad() }}</strong>
-          <app-faltantes [resultado]="a" [mostrarCompleto]="false" />
-        </div>
-      </div>
+      <app-aviso icono="kitchen" [tono]="tieneTodo() ? 'ok' : 'acento'" [titulo]="tituloAfinidad()">
+        <app-faltantes [resultado]="a" [mostrarCompleto]="false" />
+      </app-aviso>
     }
 
-    <section class="nutricion">
-      <div class="nutricion-tit">
-        <p class="subtitulo">Por porción</p>
+    <section class="pila">
+      <app-cabecera-seccion titulo="Por porción">
         @if (r.nutricionPorcion) {
-          <span class="chip dorado chico"><span class="icono">auto_awesome</span> Estimado por IA</span>
+          <span class="t-detalle">Estimado por IA</span>
         }
-      </div>
+      </app-cabecera-seccion>
       @if (r.nutricionPorcion; as n) {
-        <div class="tiles">
-          <div class="tile principal"><strong>{{ n.kcal }}</strong><small>kcal</small></div>
-          <div class="tile"><strong>{{ n.proteinaG }} g</strong><small>proteína</small></div>
-          <div class="tile"><strong>{{ n.carbohidratosG }} g</strong><small>carbos</small></div>
-          <div class="tile"><strong>{{ n.grasaG }} g</strong><small>grasa</small></div>
+        <div class="nutricion">
+          <div class="tarjeta primaria valor"><strong>{{ n.kcal }}</strong><span>kcal</span></div>
+          <div class="tarjeta valor"><strong>{{ n.proteinaG }} g</strong><span>proteína</span></div>
+          <div class="tarjeta valor"><strong>{{ n.carbohidratosG }} g</strong><span>carbos</span></div>
+          <div class="tarjeta valor"><strong>{{ n.grasaG }} g</strong><span>grasa</span></div>
         </div>
         @if (r.nutricionConOpcionales && r.nutricionConOpcionales.kcal !== n.kcal) {
-          <p class="texto-suave">{{ r.nutricionConOpcionales.kcal }} kcal con los opcionales.</p>
+          <p class="t-detalle">{{ r.nutricionConOpcionales.kcal }} kcal con los opcionales.</p>
         }
       } @else {
-        <div class="tarjeta-dorada sin-nutricion">
-          <span class="icono">auto_awesome</span>
-          <span class="texto">Aún no tiene nutrición. La IA la estima a partir de los ingredientes y la preparación.</span>
-          <button type="button" class="btn btn-dorado" [disabled]="calculando()" (click)="calcularNutricion()">
+        <app-aviso icono="auto_awesome" titulo="Aún no tiene nutrición">
+          La IA la estima a partir de los ingredientes y la preparación.
+          <button accion type="button" class="btn btn-acento btn-chico" [disabled]="calculando()" (click)="calcularNutricion()">
             {{ calculando() ? 'Calculando…' : 'Calcular' }}
           </button>
-        </div>
+        </app-aviso>
       }
     </section>
 
-    <div class="segmentado" role="tablist">
-      <button type="button" role="tab" [class.activo]="pestana() === 'ingredientes'" (click)="pestana.set('ingredientes')">Ingredientes</button>
-      <button type="button" role="tab" [class.activo]="pestana() === 'preparacion'" (click)="pestana.set('preparacion')">Preparación</button>
+    <div class="segmentos" role="tablist" aria-label="Contenido de la receta">
+      <button type="button" role="tab" [attr.aria-selected]="pestana() === 'ingredientes'" [class.activo]="pestana() === 'ingredientes'" (click)="pestana.set('ingredientes')">Ingredientes</button>
+      <button type="button" role="tab" [attr.aria-selected]="pestana() === 'preparacion'" [class.activo]="pestana() === 'preparacion'" (click)="pestana.set('preparacion')">Preparación</button>
     </div>
 
     @if (pestana() === 'ingredientes') {
-      @for (g of grupos(); track g.rol) {
-        <section class="grupo" [class]="'grupo rol-' + g.rol">
-          <p class="grupo-tit"><span class="punto-rol"></span> {{ g.nombre }}</p>
-          @for (f of g.filas; track f.id) {
-            <button type="button" class="fila-ing" [class.falta]="!f.tiene" (click)="ui.abrirFicha(f.id, r.id)">
-              <span class="icono estado">{{ f.tiene ? 'check_circle' : 'radio_button_unchecked' }}</span>
-              <span class="nombres">
-                <span class="nombre">{{ f.nombre }}</span>
-                @if (f.alternativas.length) { <small>o {{ f.alternativas.join(', o ') }}</small> }
-                @if (f.nota) { <small>{{ f.nota }}</small> }
-                @if (f.basico) { <small>básico</small> }
-              </span>
-              <span class="cantidad">{{ f.cantidad }}</span>
-            </button>
-          }
-        </section>
-      }
-    } @else {
-      @if (r.preparacion.descripcion) {
-        <p class="descripcion">{{ r.preparacion.descripcion }}</p>
-      }
-      <ol class="pasos">
-        @for (p of pasos(); track p.numero) {
-          <li [class.importante]="!!p.importante">
-            <span class="numero">{{ p.numero }}</span>
-            <div>
-              <p>{{ p.instruccion }}</p>
-              @if (p.importante) {
-                <p class="nota-importante"><span class="icono">star</span> {{ p.importante }}</p>
-              }
-            </div>
-          </li>
-        } @empty {
-          <p class="texto-suave">Esta receta aún no tiene pasos.</p>
+      <section class="tarjeta bloque">
+        <app-cabecera-seccion titulo="Ingredientes">
+          <span class="pastilla primario">{{ r.porciones }} porci{{ r.porciones === 1 ? 'ón' : 'ones' }}</span>
+        </app-cabecera-seccion>
+        @for (g of grupos(); track g.rol) {
+          <div [class]="'grupo rol-' + g.rol">
+            <span class="grupo-tit"><span class="punto"></span>{{ g.nombre }}</span>
+            @for (f of g.filas; track f.id) {
+              <button type="button" class="toque" (click)="ui.abrirFicha(f.id, r.id)">
+                <app-fila-ingrediente [emoji]="f.emoji" [nombre]="f.nombre" [detalle]="detalleFila(f)" [class.apagado]="!f.tiene">
+                  <span class="cantidad">{{ f.cantidad }}</span>
+                  @if (f.tiene) {
+                    <span class="icono estado tiene" aria-hidden="true">check_circle</span><span class="solo-lector">Lo tienes</span>
+                  } @else {
+                    <span class="icono estado" aria-hidden="true">radio_button_unchecked</span><span class="solo-lector">Te falta</span>
+                  }
+                </app-fila-ingrediente>
+              </button>
+            }
+          </div>
         }
-      </ol>
+      </section>
+    } @else {
+      <section class="tarjeta bloque">
+        <app-cabecera-seccion titulo="Preparación" />
+        @if (r.preparacion.descripcion) {
+          <p class="descripcion">{{ r.preparacion.descripcion }}</p>
+        }
+        <ol class="pasos">
+          @for (p of pasos(); track p.numero) {
+            <li>
+              <span class="numero">{{ p.numero }}</span>
+              <div class="paso-texto">
+                <p>{{ p.instruccion }}</p>
+                @if (p.importante) {
+                  <span class="pastilla importante"><span class="icono">lightbulb</span>{{ p.importante }}</span>
+                }
+              </div>
+            </li>
+          } @empty {
+            <p class="t-detalle">Esta receta aún no tiene pasos.</p>
+          }
+        </ol>
+      </section>
     }
 
-    <div class="acciones-pie">
-      <a class="btn btn-borde" [routerLink]="['/recetas', r.id, 'cocinar']"><span class="icono">skillet</span> Cocinar</a>
-      <button type="button" class="btn btn-primario crecer" (click)="hoja.set('dia')">
-        <span class="icono">calendar_add_on</span> Agregar a mi día
+    <div class="pie-fijo">
+      <button type="button" class="boton-icono agregar" (click)="hoja.set('dia')" aria-label="Agregar a mi día" title="Agregar a mi día">
+        <span class="icono">calendar_add_on</span>
       </button>
+      <a class="btn btn-primario con-circulo empezar" [routerLink]="['/recetas', r.id, 'cocinar']">
+        Empezar a cocinar
+        <span class="btn-circulo"><span class="icono">skillet</span></span>
+      </a>
     </div>
   </main>
 
@@ -126,11 +142,8 @@
     <app-agregar-a-grupo [recetaId]="r.id" (cerrar)="hoja.set(null)" />
   }
 } @else {
-  <main class="vista">
-    <header class="cabecera">
-      <a class="icono-btn" routerLink="/recetas" aria-label="Volver"><span class="icono">arrow_back</span></a>
-      <h1>Receta</h1>
-    </header>
+  <main class="pantalla">
+    <app-encabezado titulo="Receta" volver="/recetas" />
     <div class="vacio-estado">
       <span class="icono">menu_book</span>
       <p>No encontramos esta receta.</p>

@@ -1,20 +1,35 @@
-<main class="pantalla">
-  <div class="tarjeta">
-    <span class="icono reloj">hourglass_top</span>
-    <h2>Tu cuenta está en espera</h2>
+<main class="pantalla espera">
+  <span class="reloj" aria-hidden="true"><span class="icono">hourglass_top</span></span>
+
+  <div class="textos">
+    <h1 class="t-pantalla">Tu cuenta está en camino</h1>
     <p>
-      Hola, <strong>{{ sesion.usuario()?.nombre }}</strong>.
-      La administradora debe activar tu cuenta antes de que puedas entrar.
+      Hola, <strong>{{ primerNombre() }}</strong>. La administradora tiene que activarla y asignarte
+      un hogar. Te avisamos apenas esté lista.
     </p>
-
-    <button type="button" class="boton-principal" (click)="verificar()" [disabled]="verificando()">
-      @if (verificando()) { Verificando… } @else { Volver a verificar }
-    </button>
-
-    @if (sinCambios()) {
-      <p class="aviso">Aún sigue pendiente. Intenta más tarde.</p>
+    @if (sesion.usuario()?.email; as correo) {
+      <span class="pastilla blanca correo"><span class="icono">mail</span>{{ correo }}</span>
     }
+  </div>
 
-    <button type="button" class="boton-texto" (click)="salir()">Cerrar sesión</button>
+  <ol class="tarjeta pasos" aria-label="Pasos para entrar">
+    <li class="hecho"><span class="icono">check_circle</span>Cuenta creada con Google</li>
+    <li><span class="icono">schedule</span>La admin activa tu cuenta</li>
+    <li><span class="icono">home</span>Entras a tu hogar</li>
+  </ol>
+
+  @if (sinCambios()) {
+    <app-aviso icono="info" titulo="Aún sigue pendiente">Intenta de nuevo más tarde.</app-aviso>
+  }
+
+  <div class="pila">
+    <button type="button" class="btn btn-primario btn-ancho" (click)="verificar()" [disabled]="verificando()">
+      <span class="icono">refresh</span>
+      @if (verificando()) { Verificando… } @else { Ya me activaron, reintentar }
+    </button>
+    <button type="button" class="btn btn-secundario btn-ancho" (click)="salir()">
+      <span class="icono">logout</span>
+      Cerrar sesión
+    </button>
   </div>
 </main>

@@ -1,6 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { SesionPort } from '../../domain/usuarios/sesion.port';
 import { esAdmin, puedeUsarLaApp, Usuario } from '../../domain/usuarios/usuario.model';
+import { HogarRepository } from '../../domain/hogares/hogar.port';
 import { UsuarioRepository } from '../../domain/usuarios/usuario.port';
 import { CargarDatosInicialesUseCase } from '../use-cases/cargar-datos-iniciales.usecase';
 import { IniciarSesionUseCase } from '../use-cases/iniciar-sesion.usecase';
@@ -15,6 +16,7 @@ export class SesionStore {
   private readonly iniciarSesion = inject(IniciarSesionUseCase);
   private readonly cargarDatos = inject(CargarDatosInicialesUseCase);
   private readonly hogar = inject(HogarActualStore);
+  private readonly hogares = inject(HogarRepository);
 
   private readonly _fase = signal<FaseSesion>('cargando');
   private readonly _usuario = signal<Usuario | null>(null);
@@ -83,6 +85,17 @@ export class SesionStore {
   private ponerUsuario(usuario: Usuario | null): void {
     this._usuario.set(usuario);
     this.hogar.fijar(usuario?.hogarId ?? null, usuario !== null && esAdmin(usuario));
+    if (usuario?.hogarId && puedeUsarLaApp(usuario)) void this.cargarNombreHogar(usuario.hogarId);
+  }
+
+  /** Solo para mostrar («Hogar de Andrea»): si falla, la app sigue igual. */
+  private async cargarNombreHogar(hogarId: string): Promise<void> {
+    try {
+      const hogar = await this.hogares.obtener(hogarId);
+      if (this.hogar.id() === hogarId) this.hogar.fijarNombre(hogar?.nombre ?? null);
+    } catch {
+      this.hogar.fijarNombre(null);
+    }
   }
 
   /** La única puerta a los datos: se cargan una vez, solo con cuenta activa. */

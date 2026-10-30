@@ -5,24 +5,25 @@ import { PreferenciasStore } from '../../../application/stores/preferencias.stor
 import { SeleccionDiaStore } from '../../../application/stores/seleccion-dia.store';
 import { ArmarMiDiaUseCase } from '../../../application/use-cases/armar-mi-dia.usecase';
 import { ResultadoAfinidad } from '../../../domain/planificacion/afinidad.service';
-import { AfinidadComponent } from '../../ui/afinidad.component';
-import { FaltantesComponent } from '../../ui/faltantes.component';
-import { FotoComponent } from '../../ui/foto.component';
-import { duracion, iconoFranja } from '../../ui/iconos';
+import { IngredientesStore } from '../../../application/stores/ingredientes.store';
+import { CabeceraSeccionComponent } from '../../ui/cabecera-seccion.component';
+import { EncabezadoComponent } from '../../ui/encabezado.component';
+import { iconoFranja } from '../../ui/iconos';
+import { TarjetaPlatoComponent } from '../../ui/tarjeta-plato.component';
+import { NumeroPipe } from '../../ui/numero.pipe';
 
 const MAX_POR_FRANJA = 6;
 
 interface OpcionVista {
   resultado: ResultadoAfinidad;
   receta: ResultadoAfinidad['receta'];
-  puntaje: number;
   kcal: number | null;
 }
 
 /** Pantalla 05B: recetas sugeridas por franja según los ingredientes marcados. */
 @Component({
   selector: 'app-opciones-dia',
-  imports: [RouterLink, AfinidadComponent, FaltantesComponent, FotoComponent],
+  imports: [RouterLink, EncabezadoComponent, CabeceraSeccionComponent, TarjetaPlatoComponent, NumeroPipe],
   templateUrl: './opciones.page.html',
   styleUrl: './opciones.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +34,7 @@ export class OpcionesDiaPage {
   protected readonly preferencias = inject(PreferenciasStore);
   private readonly armarMiDia = inject(ArmarMiDiaUseCase);
   private readonly router = inject(Router);
+  private readonly ingredientes = inject(IngredientesStore);
 
   protected readonly guardando = signal(false);
 
@@ -64,21 +66,26 @@ export class OpcionesDiaPage {
     return conDato ? suma : null;
   });
 
-  /** Nombres de lo elegido, para la barra oscura ("Sopa de fideo + Chorrellana"). */
+  /** «Papa · Cebolla · Tomate» en la pastilla de arriba (o cuántos hay, si son muchos). */
+  protected readonly resumenIngredientes = computed(() => {
+    const ids = [...this.seleccion.seleccionados()];
+    if (ids.length === 0) return 'Sin ingredientes marcados';
+    if (ids.length > 5) return `${ids.length} ingredientes marcados`;
+    return ids.map((id) => this.ingredientes.nombre(id)).join(' · ');
+  });
+
+  /** Nombres de lo elegido, para la tarjeta oscura ("Sopa de fideo · Chorrellana"). */
   protected readonly nombresElegidos = computed(() =>
     [...this.seleccion.elecciones().values()]
       .map((id) => this.franjas().flatMap((f) => f.opciones).find((o) => o.receta.id === id)?.receta.nombre)
       .filter(Boolean)
-      .join(' + '),
+      .join(' · '),
   );
-
-  protected readonly duracion = duracion;
 
   private aVista(resultado: ResultadoAfinidad): OpcionVista {
     return {
       resultado,
       receta: resultado.receta,
-      puntaje: resultado.puntaje,
       kcal: resultado.receta.nutricionPorcion?.kcal ?? null,
     };
   }
