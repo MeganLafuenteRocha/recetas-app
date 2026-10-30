@@ -82,6 +82,9 @@ import { descargarArchivo } from '../../ui/iconos';
           <button type="button" class="toque" (click)="exportar()">
             <app-fila-ajuste icono="download" etiqueta="Exportar respaldo (JSON)" />
           </button>
+          <a class="toque" routerLink="/ajustes/creditos">
+            <app-fila-ajuste icono="photo_library" etiqueta="Créditos de las fotos" />
+          </a>
         </div>
       </section>
 

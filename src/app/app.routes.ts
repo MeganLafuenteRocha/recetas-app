@@ -142,6 +142,11 @@ export const routes: Routes = [
           import('./presentation/features/ajustes/ajustes.page').then((m) => m.AjustesPage),
       },
       {
+        path: 'ajustes/creditos',
+        loadComponent: () =>
+          import('./presentation/features/ajustes/creditos.page').then((m) => m.CreditosPage),
+      },
+      {
         path: 'admin/catalogos',
         canActivate: [soloAdminGuard],
         loadComponent: () =>

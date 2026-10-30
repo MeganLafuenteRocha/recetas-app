@@ -8,7 +8,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_aguadito_de_pollo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 45,
@@ -272,7 +272,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_aji_de_gallina.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 50,
@@ -559,7 +559,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_aji_fideo.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -729,7 +729,7 @@
     "tipoCocina": "espanola",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_albondigas_en_salsa.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 35,
@@ -981,7 +981,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_api_blanco.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 25,
@@ -1120,7 +1120,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_api_con_pastel.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 30,
@@ -1270,7 +1270,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_arroz_chaufa.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 20,
@@ -1474,7 +1474,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_arroz_con_leche.webp",
     "tiempo": {
       "preparacionMin": 5,
       "coccionMin": 40,
@@ -1602,7 +1602,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_arroz_con_mango_y_coco.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 30,
@@ -1758,7 +1758,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_arroz_con_pollo_peruano.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 50,
@@ -2016,7 +2016,7 @@
     "tipoCocina": "internacional",
     "porciones": 2,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_avena_con_frutas.webp",
     "tiempo": {
       "preparacionMin": 5,
       "coccionMin": 10,
@@ -2217,7 +2217,7 @@
     "tipoCocina": "internacional",
     "porciones": 12,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_brownie.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -2421,7 +2421,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_bruschetta_de_tomate.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 5,
@@ -2615,7 +2615,7 @@
     "tipoCocina": "boliviana",
     "porciones": 8,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_budin_pan.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 60,
@@ -2748,7 +2748,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_bunuelos.webp",
     "tiempo": {
       "preparacionMin": 80,
       "coccionMin": 20,
@@ -3116,7 +3116,7 @@
     "tipoCocina": "argentina",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_carbonada.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 75,
@@ -3380,7 +3380,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_cerdo_con_jengibre.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 15,
@@ -3590,7 +3590,7 @@
     "tipoCocina": "peruana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_ceviche.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 20,
@@ -3812,7 +3812,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chairo.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 60,
@@ -4228,7 +4228,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_charquekan.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 60,
@@ -4414,7 +4414,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chilaquiles_rojos.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 20,
@@ -4643,7 +4643,7 @@
     "tipoCocina": "mexicana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chili_con_carne.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 50,
@@ -4901,7 +4901,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chop_suey_de_verduras.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 12,
@@ -5317,7 +5317,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chow_mein.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 15,
@@ -5726,7 +5726,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_chupe_de_camarones.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 40,
@@ -6206,7 +6206,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_churros.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 20,
@@ -6398,7 +6398,7 @@
     "tipoCocina": "boliviana",
     "porciones": 8,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_cocadas.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 25,
@@ -6525,7 +6525,7 @@
     "tipoCocina": "internacional",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_crema_de_zapallo.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -6754,7 +6754,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_cunape.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 20,
@@ -6905,7 +6905,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_curry_de_garbanzos.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -7145,7 +7145,7 @@
     "tipoCocina": "argentina",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_empanadas_de_carne.webp",
     "tiempo": {
       "preparacionMin": 45,
       "coccionMin": 25,
@@ -7361,7 +7361,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_enchiladas_rojas_de_pollo.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 40,
@@ -7589,7 +7589,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_falso_conejo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 40,
@@ -7794,7 +7794,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_fettuccine_alfredo.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 15,
@@ -8004,7 +8004,7 @@
     "tipoCocina": "argentina",
     "porciones": 8,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_flan_con_dulce_de_leche.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 60,
@@ -8142,7 +8142,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_fricase.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 120,
@@ -8364,7 +8364,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_fritanga.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 90,
@@ -8569,7 +8569,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_frittata_de_verduras.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 20,
@@ -8786,7 +8786,7 @@
     "tipoCocina": "internacional",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_hamburguesas_caseras.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 15,
@@ -9050,7 +9050,7 @@
     "tipoCocina": "internacional",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_hot_cakes.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 20,
@@ -9260,7 +9260,7 @@
     "tipoCocina": "mexicana",
     "porciones": 2,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_huevos_a_la_mexicana.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 10,
@@ -9430,7 +9430,7 @@
     "tipoCocina": "mexicana",
     "porciones": 2,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_huevos_rancheros.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 20,
@@ -9635,7 +9635,7 @@
     "tipoCocina": "boliviana",
     "porciones": 8,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_humintas.webp",
     "tiempo": {
       "preparacionMin": 40,
       "coccionMin": 45,
@@ -9810,7 +9810,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_keperi.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 120,
@@ -10002,7 +10002,7 @@
     "tipoCocina": "italiana",
     "porciones": 8,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_lasana_de_carne.webp",
     "tiempo": {
       "preparacionMin": 40,
       "coccionMin": 60,
@@ -10277,7 +10277,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_lawa_choclo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 45,
@@ -10434,7 +10434,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_leche_asada.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 45,
@@ -10572,7 +10572,7 @@
     "tipoCocina": "espanola",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_lentejas_a_la_riojana.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 50,
@@ -10794,7 +10794,7 @@
     "tipoCocina": "boliviana",
     "porciones": 2,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_licuado_platano_avena.webp",
     "tiempo": {
       "preparacionMin": 5,
       "coccionMin": 0,
@@ -10900,7 +10900,7 @@
     "tipoCocina": "argentina",
     "porciones": 8,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_locro_argentino.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 150,
@@ -11152,7 +11152,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_locro_gallina.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 75,
@@ -11369,7 +11369,7 @@
     "tipoCocina": "peruana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_lomo_saltado.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 25,
@@ -11638,7 +11638,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_majadito.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 40,
@@ -11820,7 +11820,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_masaco_platano.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 25,
@@ -11947,7 +11947,7 @@
     "tipoCocina": "argentina",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_matambre_a_la_pizza.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 90,
@@ -12157,7 +12157,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_mazamorra_morada.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 60,
@@ -12511,7 +12511,7 @@
     "tipoCocina": "argentina",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_milanesa_napolitana.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 35,
@@ -12762,7 +12762,7 @@
     "tipoCocina": "italiana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_minestrone.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 40,
@@ -13056,7 +13056,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_noquis_de_papa.webp",
     "tiempo": {
       "preparacionMin": 45,
       "coccionMin": 40,
@@ -13260,7 +13260,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pacumutu.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 30,
@@ -13470,7 +13470,7 @@
     "tipoCocina": "espanola",
     "porciones": 6,
     "dificultad": 4,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_paella_mixta.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 45,
@@ -13733,7 +13733,7 @@
     "tipoCocina": "peruana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pan_con_chicharron.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 90,
@@ -13949,7 +13949,7 @@
     "tipoCocina": "italiana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_panna_cotta.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 10,
@@ -14111,7 +14111,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pasta_al_pesto.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 12,
@@ -14538,7 +14538,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_picante_lengua.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 150,
@@ -14754,7 +14754,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_picante_pollo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 50,
@@ -14947,7 +14947,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 4,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_picarones.webp",
     "tiempo": {
       "preparacionMin": 40,
       "coccionMin": 40,
@@ -15162,7 +15162,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pique_macho.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 30,
@@ -15367,7 +15367,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pizza_casera.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 20,
@@ -15624,7 +15624,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pollo_agridulce.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 25,
@@ -15888,7 +15888,7 @@
     "tipoCocina": "internacional",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pollo_al_horno_con_papas.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 60,
@@ -16105,7 +16105,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pollo_teriyaki.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 20,
@@ -16316,7 +16316,7 @@
     "tipoCocina": "mexicana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_pozole_rojo.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 120,
@@ -16574,7 +16574,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_quesadillas_de_pollo.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 25,
@@ -16803,7 +16803,7 @@
     "tipoCocina": "peruana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_quinua_con_manzana.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 35,
@@ -16960,7 +16960,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_ramen_casero_de_pollo.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 45,
@@ -17200,7 +17200,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_ranga.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 150,
@@ -17627,7 +17627,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_saice.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 50,
@@ -17872,7 +17872,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sajta_pollo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 45,
@@ -18082,7 +18082,7 @@
     "tipoCocina": "boliviana",
     "porciones": 2,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sandwich_huevo.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 5,
@@ -18193,7 +18193,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_seco_de_res.webp",
     "tiempo": {
       "preparacionMin": 25,
       "coccionMin": 90,
@@ -18451,7 +18451,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_silpancho.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 40,
@@ -18660,7 +18660,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_arroz.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 50,
@@ -18842,7 +18842,7 @@
     "tipoCocina": "asiatica",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_china_de_huevo.webp",
     "tiempo": {
       "preparacionMin": 5,
       "coccionMin": 15,
@@ -19030,7 +19030,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_chuno.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 60,
@@ -19229,7 +19229,7 @@
     "tipoCocina": "peruana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_criolla.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -19463,7 +19463,7 @@
     "tipoCocina": "espanola",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_de_ajo.webp",
     "tiempo": {
       "preparacionMin": 10,
       "coccionMin": 25,
@@ -19865,7 +19865,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_de_tortilla.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -20088,7 +20088,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_fideo.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 30,
@@ -20270,7 +20270,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_mani.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 90,
@@ -20493,7 +20493,7 @@
     "tipoCocina": "boliviana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_quinua.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 40,
@@ -20674,7 +20674,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_sopa_trigo.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 90,
@@ -20885,7 +20885,7 @@
     "tipoCocina": "italiana",
     "porciones": 4,
     "dificultad": 2,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_spaghetti_a_la_bolonesa.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 45,
@@ -21137,7 +21137,7 @@
     "tipoCocina": "peruana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_suspiro_a_la_limena.webp",
     "tiempo": {
       "preparacionMin": 20,
       "coccionMin": 40,
@@ -21287,7 +21287,7 @@
     "tipoCocina": "mexicana",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_tacos_al_pastor.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 25,
@@ -21551,7 +21551,7 @@
     "tipoCocina": "boliviana",
     "porciones": 6,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_thimpu_cordero.webp",
     "tiempo": {
       "preparacionMin": 30,
       "coccionMin": 90,
@@ -22023,7 +22023,7 @@
     "tipoCocina": "espanola",
     "porciones": 4,
     "dificultad": 3,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_tortilla_espanola.webp",
     "tiempo": {
       "preparacionMin": 15,
       "coccionMin": 35,
@@ -22172,7 +22172,7 @@
     "tipoCocina": "argentina",
     "porciones": 2,
     "dificultad": 1,
-    "imagen": null,
+    "imagen": "/fotos/recetas/rec_tostado_jamon_queso.webp",
     "tiempo": {
       "preparacionMin": 5,
       "coccionMin": 8,
