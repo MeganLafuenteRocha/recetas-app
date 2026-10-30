@@ -1,19 +1,21 @@
 import { ChangeDetectionStrategy, Component, HostListener, input, output } from '@angular/core';
 
 /**
- * Hoja inferior M3 (bottom sheet). En el celular sube desde abajo;
- * en pantallas grandes se muestra como diálogo centrado. Escape o tocar el velo la cierra.
+ * Hoja inferior del sistema de diseño (fondo crema, agarre, esquinas de 32).
+ * En el celular sube desde abajo; en pantallas grandes es un diálogo centrado.
+ * Escape o tocar el velo la cierra. Lo proyectado con `acciones` va junto al título.
  */
 @Component({
   selector: 'app-hoja',
   template: `
     <div class="velo" (click)="cerrar.emit()"></div>
     <section class="hoja" role="dialog" aria-modal="true" [attr.aria-label]="titulo()">
-      <div class="asa"></div>
+      <div class="agarre"></div>
       @if (titulo()) {
         <header>
           <h2>{{ titulo() }}</h2>
-          <button type="button" class="icono-btn" (click)="cerrar.emit()" aria-label="Cerrar">
+          <ng-content select="[acciones]" />
+          <button type="button" class="boton-icono" (click)="cerrar.emit()" aria-label="Cerrar">
             <span class="icono">close</span>
           </button>
         </header>
@@ -23,26 +25,26 @@ import { ChangeDetectionStrategy, Component, HostListener, input, output } from 
   `,
   styles: `
     :host { position: fixed; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center; }
-    .velo { position: absolute; inset: 0; background: rgba(31, 31, 35, 0.6); animation: aparecer 0.15s ease-out; }
+    .velo { position: absolute; inset: 0; background: var(--color-velo); animation: aparecer 0.15s ease-out; }
     .hoja {
       position: relative;
       width: 100%;
       max-width: 560px;
-      max-height: 88dvh;
+      max-height: 90dvh;
       overflow-y: auto;
-      background: #fff;
-      border-radius: 28px 28px 0 0;
-      padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+      padding: 12px var(--esp-pantalla) calc(26px + env(safe-area-inset-bottom));
+      border-radius: var(--radio-hoja) var(--radio-hoja) 0 0;
+      background: var(--color-fondo);
       animation: subir 0.2s ease-out;
     }
-    .asa { width: 36px; height: 4px; border-radius: 999px; background: #e4e4e7; margin: 0 auto 10px; }
-    header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-    h2 { margin: 0; font-size: 20px; }
-    .contenido { display: flex; flex-direction: column; gap: 14px; }
+    .agarre { width: 44px; height: 5px; margin: 0 auto 14px; border-radius: var(--radio-pill); background: var(--color-control-apagado); }
+    header { display: flex; align-items: center; gap: var(--esp-grupo); margin-bottom: 16px; }
+    h2 { flex: 1; min-width: 0; font-size: 20px; }
+    .contenido { display: flex; flex-direction: column; gap: 16px; }
     @media (min-width: 720px) {
       :host { align-items: center; }
-      .hoja { border-radius: 24px; max-width: 480px; }
-      .asa { display: none; }
+      .hoja { max-width: 480px; border-radius: var(--radio-hoja); }
+      .agarre { display: none; }
     }
     @keyframes subir { from { transform: translateY(40px); opacity: 0.6; } }
     @keyframes aparecer { from { opacity: 0; } }

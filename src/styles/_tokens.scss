@@ -1,38 +1,70 @@
-/* Tokens de diseño — paleta de designMockups/guiaStyle.pen (Material 3) */
+/*
+ * Tokens del sistema de diseño (designMockups/mochup.pen → «00 Sistema de diseño — Recetas»).
+ * Pantallas y componentes usan SOLO estos tokens: ningún color, radio ni sombra suelto.
+ */
 :root {
-  /* Guindo (primario) */
-  --guindo-900: #5c1620;
-  --guindo-700: #7a1f2b; /* principal */
-  --guindo-500: #9c3d49;
-  --guindo-100: #f6e9eb; /* superficie tenue / píldora activa */
+  /* Marca */
+  --color-primario: #7a1f2b;        /* guindo: acción principal, activo */
+  --color-primario-fuerte: #5c1620; /* presionado */
+  --color-primario-suave: #f6e9eb;  /* fondo de activo, círculo de ícono */
+  --color-acento: #b08a3c;          /* dorado: sobretítulos, avisos */
+  --color-acento-claro: #d4b36a;    /* dorado sobre fondos oscuros */
+  --color-acento-suave: #f7efdc;    /* fondo de aviso */
 
-  /* Plomos (neutros) */
-  --plomo-900: #1f1f23; /* texto fuerte */
-  --plomo-700: #3f3f46; /* texto normal */
-  --plomo-500: #71717a; /* texto secundario */
-  --plomo-400: #a1a1aa;
-  --plomo-300: #d4d4d8; /* bordes */
-  --plomo-100: #f4f4f5; /* fondos de sección */
-  --plomo-50: #fafafa;  /* fondo de app */
+  /* Superficies */
+  --color-fondo: #fbf5ee;           /* crema: fondo de la app */
+  --color-superficie: #ffffff;      /* tarjetas */
+  --color-superficie-translucida: rgba(255, 255, 255, 0.92);
+  --color-oscuro: #1f1f23;          /* tarjeta oscura de resumen */
+  --color-velo: rgba(31, 31, 35, 0.4);
+  --color-foto: #ede6dd;            /* fondo de foto mientras carga o si falta */
+  --color-escritorio: #efe7dd;      /* alrededor de la columna en pantallas grandes */
 
-  /* Dorado (secundario, solo detalles) */
-  --dorado-700: #8a6a2b;
-  --dorado-500: #b08a3c; /* principal */
-  --dorado-300: #d4b36a;
-  --dorado-100: #f7efdc;
+  /* Texto */
+  --color-texto: #1f1f23;
+  --color-texto-suave: #71717a;
+  --color-texto-tenue: #a1a1aa;
+  --color-texto-invertido: #ffffff;
 
-  /* Semánticos */
-  --ok: #2e7d5b;
-  --alerta: #b7791f;
-  --error: #b3261e;
+  /* Líneas */
+  --color-linea: #f1ebe3;
+  --color-borde: #e4dcd2;
+  --color-control-apagado: #d4d4d8;
 
-  /* Formas (M3) */
-  --radio-s: 8px;
-  --radio-m: 12px;
-  --radio-l: 16px;
+  /* Estados */
+  --color-ok: #2e7d5b;
+  --color-ok-suave: #e3f1ea;
+  --color-error: #b3261e;
+  --color-error-suave: #fbeceb;
+
+  /* Tipografía */
+  --fuente-titulo: 'Quicksand', system-ui, sans-serif;
+  --fuente-texto: 'Poppins', system-ui, sans-serif;
+  --fuente-iconos: 'Material Symbols Rounded';
+
+  /* Formas */
+  --radio-tarjeta: 22px;
+  --radio-control: 16px;
+  --radio-foto: 16px;
+  --radio-hoja: 32px;
   --radio-pill: 999px;
 
-  /* Sombras suaves */
-  --sombra-1: 0 1px 3px rgba(31, 31, 35, 0.08);
-  --sombra-2: 0 4px 12px rgba(31, 31, 35, 0.1);
+  /* Espaciado */
+  --esp-pantalla: 20px; /* margen lateral */
+  --esp-seccion: 22px;  /* entre secciones */
+  --esp-grupo: 12px;    /* entre elementos relacionados */
+
+  /* Medidas de control */
+  --alto-boton: 56px;
+  --alto-campo: 50px;
+  --lado-boton-icono: 42px;
+  --alto-barra-pestanas: 96px; /* barra + margen inferior: lo que el contenido deja libre */
+
+  /* Sombras: solo para lo que flota */
+  --sombra-flotante: 0 6px 24px rgba(92, 22, 32, 0.12);
+  --sombra-boton: 0 8px 20px rgba(122, 31, 43, 0.25);
+  --sombra-suave: 0 4px 16px rgba(122, 31, 43, 0.08);
+
+  /* Foco accesible */
+  --anillo-foco: 0 0 0 3px var(--color-primario-suave);
 }

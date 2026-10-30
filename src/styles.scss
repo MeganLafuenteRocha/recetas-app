@@ -12,13 +12,13 @@ html, body {
   min-height: 100%;
 }
 
-button {
+button, input, select, textarea {
   font-family: inherit;
 }
 
 /* Pantallas grandes: la app se lee como una columna de celular centrada. */
 @media (min-width: 720px) {
   body {
-    background: var(--plomo-100);
+    background: var(--color-escritorio);
   }
 }

@@ -1,96 +1,34 @@
 /*
- * Piezas visuales compartidas (M3 + paleta guindo/plomo/dorado).
- * Las pantallas nuevas las usan para verse iguales sin repetir CSS.
+ * Primitivos del sistema de diseño: piezas sin lógica que cualquier plantilla usa con una clase.
+ * Las piezas con estructura o comportamiento (tarjeta de receta, aviso, encabezado…) son
+ * componentes Angular en presentation/ui/.
  */
 
-/* ---------- Página ---------- */
-.vista {
+/* ---------- Pantalla ---------- */
+.pantalla {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 20px 16px 28px;
+  gap: var(--esp-seccion);
+  padding: 16px var(--esp-pantalla) 28px;
 }
 
-.cabecera {
+.pila {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--esp-grupo);
+}
+
+/* Acción principal pegada abajo, sobre el contenido (pantallas sin barra de pestañas). */
+.pie-fijo {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
   gap: 10px;
-  min-height: 40px;
-
-  h1 {
-    flex: 1;
-    margin: 0;
-    font-size: 22px;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .acciones {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-}
-
-.avatar-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: var(--guindo-700);
-  color: #fff;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.icono-btn {
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  border: none;
-  background: transparent;
-  border-radius: 50%;
-  color: var(--plomo-700);
-  cursor: pointer;
-  text-decoration: none;
-  flex-shrink: 0;
-
-  .icono { font-size: 22px; }
-  &:hover { background: var(--plomo-100); }
-  &.activo { background: var(--guindo-100); color: var(--guindo-900); }
-  &:disabled { opacity: 0.4; cursor: default; }
-}
-
-.etiqueta-seccion {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  color: var(--plomo-500);
-  text-transform: uppercase;
-  margin: 4px 0 0;
-}
-
-.subtitulo {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--plomo-900);
-  margin: 0;
-  display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.texto-suave {
-  color: var(--plomo-500);
-  font-size: 12px;
-  margin: 0;
+  margin: 0 calc(-1 * var(--esp-pantalla)) -28px;
+  padding: 12px var(--esp-pantalla) calc(18px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--color-fondo) 70%, transparent);
 }
 
 /* ---------- Botones ---------- */
@@ -98,38 +36,63 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  height: var(--alto-boton);
+  padding: 0 24px;
   border: none;
   border-radius: var(--radio-pill);
-  padding: 12px 18px;
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
+  font-family: var(--fuente-texto);
+  font-size: 15px;
   font-weight: 600;
-  cursor: pointer;
   text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
   transition: transform 0.1s, background 0.15s;
 
-  .icono { font-size: 18px; }
+  .icono { font-size: 20px; }
   &:active { transform: scale(0.98); }
-  &:disabled { opacity: 0.5; cursor: default; transform: none; }
-  &.ancho { width: 100%; }
+  &:disabled { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
 }
 
-.btn-primario { background: var(--guindo-700); color: #fff; }
-.btn-dorado { background: var(--dorado-500); color: #fff; }
-.btn-borde { background: #fff; color: var(--guindo-700); border: 1.5px solid var(--guindo-700); }
-.btn-suave { background: var(--guindo-100); color: var(--guindo-900); }
-.btn-texto { background: transparent; color: var(--guindo-700); padding: 8px 4px; }
-.btn-peligro { background: transparent; color: var(--error); }
+.btn-primario { background: var(--color-primario); color: var(--color-texto-invertido); box-shadow: var(--sombra-boton); }
+.btn-primario:active { background: var(--color-primario-fuerte); }
+.btn-secundario { background: var(--color-superficie); color: var(--color-primario); }
+.btn-suave { background: var(--color-primario-suave); color: var(--color-primario); }
+.btn-acento { background: var(--color-acento); color: var(--color-texto-invertido); }
+.btn-texto { background: transparent; color: var(--color-primario); height: auto; padding: 8px 4px; font-size: 12px; }
+.btn-peligro { background: transparent; color: var(--color-error); }
+.btn-chico { height: 44px; padding: 0 16px; font-size: 12px; .icono { font-size: 17px; } }
+.btn-ancho { width: 100%; }
 
-/* ---------- Chips y segmentos ---------- */
+.boton-icono {
+  display: grid;
+  place-items: center;
+  width: var(--lado-boton-icono);
+  height: var(--lado-boton-icono);
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radio-pill);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  text-decoration: none;
+  cursor: pointer;
+
+  .icono { font-size: 20px; }
+  &.primario { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.suave { background: var(--color-primario-suave); color: var(--color-primario); }
+  &.translucido { background: rgba(255, 255, 255, 0.25); color: var(--color-texto-invertido); backdrop-filter: blur(12px); }
+  &.sin-fondo { background: transparent; }
+  &:disabled { opacity: 0.4; cursor: default; }
+}
+
+/* ---------- Chips, pastillas y segmentos ---------- */
 .chips {
   display: flex;
   gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
-  margin: 0 -16px;
-  padding: 0 16px;
+  margin: 0 calc(-1 * var(--esp-pantalla));
+  padding: 0 var(--esp-pantalla);
 
   &::-webkit-scrollbar { display: none; }
   &.envolver { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
@@ -138,161 +101,137 @@
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   flex-shrink: 0;
-  padding: 7px 14px;
+  padding: 9px 16px;
+  border: none;
   border-radius: var(--radio-pill);
-  border: 1px solid var(--plomo-300);
-  background: #fff;
-  color: var(--plomo-700);
-  font-family: 'Poppins', sans-serif;
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
   font-size: 12px;
   font-weight: 500;
-  cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
 
   .icono { font-size: 16px; }
-  &.activo { background: var(--guindo-700); border-color: var(--guindo-700); color: #fff; }
-  &.marcado { background: var(--guindo-100); border-color: var(--guindo-500); color: var(--guindo-900); }
-  &.suave { background: var(--plomo-100); border-color: var(--plomo-100); }
-  &.dorado { background: var(--dorado-100); border-color: var(--dorado-100); color: var(--dorado-700); }
+  &.activo { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.suave { background: var(--color-primario-suave); color: var(--color-primario); }
+  &.acento { background: var(--color-acento-suave); color: var(--color-acento); }
 }
 
-.segmentado {
-  display: flex;
-  background: var(--plomo-100);
+.pastilla {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
   border-radius: var(--radio-pill);
+  background: var(--color-acento-suave);
+  color: var(--color-acento);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  .icono { font-size: 14px; }
+  &.ok { background: var(--color-ok-suave); color: var(--color-ok); }
+  &.primario { background: var(--color-primario-suave); color: var(--color-primario); }
+  &.solida { background: var(--color-primario); color: var(--color-texto-invertido); }
+}
+
+.segmentos {
+  display: flex;
+  gap: 4px;
   padding: 4px;
+  border-radius: var(--radio-pill);
+  background: var(--color-superficie);
 
   button {
     flex: 1;
-    border: none;
-    background: transparent;
-    border-radius: var(--radio-pill);
-    padding: 8px 6px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    color: var(--plomo-500);
-    cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 5px;
-  }
-
-  button.activo {
-    background: #fff;
-    color: var(--guindo-700);
+    padding: 9px 4px;
+    border: none;
+    border-radius: var(--radio-pill);
+    background: transparent;
+    color: var(--color-texto-suave);
+    font-family: var(--fuente-texto);
+    font-size: 12px;
     font-weight: 600;
-    box-shadow: var(--sombra-1);
+    cursor: pointer;
   }
+
+  button.activo { background: var(--color-primario); color: var(--color-texto-invertido); }
 }
 
-/* ---------- Tarjetas y listas ---------- */
+/* ---------- Tarjetas ---------- */
 .tarjeta {
-  background: #fff;
-  border: 1px solid #e4e4e7;
-  border-radius: var(--radio-l);
-  padding: 14px;
-}
-
-.tarjeta-dorada {
-  background: var(--dorado-100);
-  border-radius: var(--radio-l);
-  padding: 14px;
-}
-
-.lista-filas {
-  background: #fff;
-  border: 1px solid #e4e4e7;
-  border-radius: var(--radio-l);
-  padding: 0 14px;
-
-  > * + * { border-top: 1px solid #e4e4e7; }
-}
-
-.fila-btn {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 11px 0;
-  border: none;
-  background: transparent;
-  font-family: 'Poppins', sans-serif;
-  text-align: left;
-  color: var(--plomo-900);
-  cursor: pointer;
-  text-decoration: none;
+  flex-direction: column;
+  gap: var(--esp-grupo);
+  padding: 16px;
+  border-radius: var(--radio-tarjeta);
+  background: var(--color-superficie);
 
-  .principal {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-
-    strong, span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    strong { font-size: 13px; font-weight: 500; }
-    small { color: var(--plomo-500); font-size: 11px; }
-  }
-
-  .icono { color: var(--plomo-500); font-size: 20px; }
-  .icono.marca { color: var(--guindo-700); }
+  &.lista { gap: 0; padding: 4px 16px; }
+  &.oscura { background: var(--color-oscuro); color: var(--color-texto-invertido); }
+  &.primaria { background: var(--color-primario); color: var(--color-texto-invertido); }
+  &.acento { background: var(--color-acento-suave); }
 }
 
-.foto {
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  background: #e4e4e7;
-  border-radius: var(--radio-m);
-  color: var(--plomo-500);
+.foto-marco {
+  position: relative;
   overflow: hidden;
-
-  img { width: 100%; height: 100%; object-fit: cover; }
+  flex-shrink: 0;
+  border-radius: var(--radio-foto);
+  background: var(--color-foto);
 }
 
 /* ---------- Formularios ---------- */
 .campo {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
 
-  > span {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--plomo-500);
-  }
-
-  input, select, textarea {
-    width: 100%;
-    border: 1px solid #e4e4e7;
-    background: #fff;
-    border-radius: var(--radio-m);
-    padding: 11px 12px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: var(--plomo-900);
-    outline: none;
-
-    &:focus { border-color: var(--guindo-500); box-shadow: 0 0 0 3px var(--guindo-100); }
-  }
-
-  textarea { resize: vertical; min-height: 70px; line-height: 1.45; }
+  > span { font-size: 10px; font-weight: 500; color: var(--color-texto-suave); }
 }
+
+.caja {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radio-control);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-size: 13px;
+  outline: none;
+
+  &::placeholder { color: var(--color-texto-tenue); }
+  &:focus { border-color: var(--color-primario); box-shadow: var(--anillo-foco); }
+}
+
+textarea.caja { resize: vertical; min-height: 76px; line-height: 1.45; }
+.tarjeta .caja { background: var(--color-fondo); }
 
 .buscador {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #fff;
-  border: 1px solid #e4e4e7;
+  height: var(--alto-campo);
+  padding: 0 18px;
+  border: 1.5px solid transparent;
   border-radius: var(--radio-pill);
-  padding: 10px 16px;
+  background: var(--color-superficie);
+  color: var(--color-texto-suave);
+  text-decoration: none;
 
-  .icono { color: var(--plomo-500); font-size: 20px; }
+  &:focus-within { border-color: var(--color-primario); }
+  .icono { font-size: 20px; }
 
   input {
     flex: 1;
@@ -300,75 +239,87 @@
     border: none;
     outline: none;
     background: transparent;
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: var(--plomo-900);
+    color: var(--color-texto);
+    font-family: var(--fuente-texto);
+    font-size: 13px;
+
+    &::placeholder { color: var(--color-texto-tenue); }
   }
 }
+
+/* ---------- Progreso y puntos ---------- */
+.progreso {
+  height: 7px;
+  overflow: hidden;
+  border-radius: var(--radio-pill);
+  background: var(--color-linea);
+
+  > span { display: block; height: 100%; border-radius: inherit; background: var(--color-ok); transition: width 0.3s; }
+  &.primario > span { background: var(--color-primario); }
+  &.acento > span { background: var(--color-acento); }
+}
+
+.punto {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Rol del ingrediente: esencial guindo, condimento dorado, opcional tenue. */
+.rol-esencial { --rol: var(--color-primario); }
+.rol-condimento { --rol: var(--color-acento); }
+.rol-opcional { --rol: var(--color-texto-tenue); }
 
 /* ---------- Estados ---------- */
 .vacio-estado {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 8px;
+  gap: 10px;
   padding: 36px 16px;
-  color: var(--plomo-500);
-  font-size: 13px;
+  text-align: center;
+  color: var(--color-texto-suave);
 
   > .icono {
-    font-size: 40px;
-    color: var(--dorado-500);
-    background: var(--dorado-100);
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
-    padding: 12px;
+    background: var(--color-acento-suave);
+    color: var(--color-acento);
+    font-size: 34px;
   }
-
-  p { margin: 0; }
 }
 
-.aviso {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  padding: 12px;
-  border-radius: var(--radio-m);
-  font-size: 12px;
-  line-height: 1.4;
-  background: var(--dorado-100);
-  color: #5e4718;
-
-  .icono { font-size: 17px; color: var(--dorado-700); }
-  &.error { background: #b3261e0f; color: var(--error); border: 1px solid #b3261e33; .icono { color: var(--error); } }
-  &.ok { background: #2e7d5b14; color: var(--ok); .icono { color: var(--ok); } }
-}
-
-/* Colores por rol del ingrediente: esencial rojo, condimento dorado, opcional naranja. */
-.rol-esencial { --rol: var(--error); }
-.rol-condimento { --rol: var(--dorado-500); }
-.rol-opcional { --rol: var(--alerta); }
-
-.punto-rol {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--rol);
-  flex-shrink: 0;
-}
-
-.pastilla-rol {
-  display: inline-flex;
-  padding: 2px 9px;
-  border-radius: var(--radio-pill);
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--rol);
-  background: color-mix(in srgb, var(--rol) 12%, transparent);
-}
-
-/* ---------- Interacción con teclado ---------- */
+/* ---------- Accesibilidad ---------- */
 :focus-visible {
-  outline: 2px solid var(--guindo-500);
+  outline: 2px solid var(--color-primario);
   outline-offset: 2px;
+}
+
+.solo-lector {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Envoltura tocable (a o button) alrededor de un componente que ya tiene su propio aspecto. */
+.toque {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: var(--radio-tarjeta);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
 }

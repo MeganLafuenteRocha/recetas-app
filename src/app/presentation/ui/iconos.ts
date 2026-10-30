@@ -68,3 +68,16 @@ export function duracion(minutos: number): string {
   const m = minutos % 60;
   return m === 0 ? `${h} h` : `${h} h ${m}`;
 }
+
+/** Dificultad 1–5 tal como la ve la persona (editor y tarjetas usan la misma lista). */
+export const DIFICULTADES = [
+  { valor: 1, nombre: 'Muy fácil' },
+  { valor: 2, nombre: 'Fácil' },
+  { valor: 3, nombre: 'Media' },
+  { valor: 4, nombre: 'Difícil' },
+  { valor: 5, nombre: 'Muy difícil' },
+] as const;
+
+export function nombreDificultad(valor: number): string {
+  return DIFICULTADES.find((d) => d.valor === valor)?.nombre ?? 'Media';
+}

@@ -1,24 +1,49 @@
-/* Tipografía — Quicksand (títulos) + Poppins (cuerpo) + Material Symbols (íconos) */
+/* Tipografía del sistema: Quicksand (títulos) + Poppins (texto) + Material Symbols Rounded (íconos). */
 body {
-  font-family: 'Poppins', system-ui, sans-serif;
-  font-size: 14px;
-  color: var(--plomo-700);
-  background: var(--plomo-50);
+  font-family: var(--fuente-texto);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Quicksand', system-ui, sans-serif;
+  font-family: var(--fuente-titulo);
   font-weight: 700;
-  color: var(--plomo-900);
+  color: var(--color-texto);
+  margin: 0;
+  line-height: 1.15;
+}
+
+p { margin: 0; }
+
+/* Escala tipográfica (una clase por rol, igual que en el sistema de diseño) */
+.t-pantalla { font-family: var(--fuente-titulo); font-weight: 700; font-size: 26px; line-height: 1.1; }
+.t-titular { font-family: var(--fuente-titulo); font-weight: 700; font-size: 30px; line-height: 1.1; }
+.t-receta { font-family: var(--fuente-titulo); font-weight: 700; font-size: 28px; line-height: 1.1; }
+.t-seccion { font-family: var(--fuente-titulo); font-weight: 700; font-size: 17px; line-height: 1.2; }
+.t-tarjeta { font-family: var(--fuente-titulo); font-weight: 700; font-size: 15px; line-height: 1.15; }
+.t-texto { font-size: 13px; }
+.t-detalle { font-size: 11px; color: var(--color-texto-suave); }
+.t-sobretitulo {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-acento);
 }
 
 .icono {
-  font-family: 'Material Symbols Outlined';
+  font-family: var(--fuente-iconos);
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
+  font-size: 22px;
   line-height: 1;
   letter-spacing: normal;
   display: inline-block;
   user-select: none;
+  font-variation-settings: 'FILL' 0, 'wght' 400;
+
+  &.lleno { font-variation-settings: 'FILL' 1, 'wght' 400; }
 }

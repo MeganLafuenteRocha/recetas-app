@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
 
-/** Interruptor M3 (switch). Accesible: es un botón con role="switch". */
+/** «C · Interruptor» del sistema de diseño. Accesible: es un botón con role="switch". */
 @Component({
   selector: 'app-interruptor',
   template: `
@@ -18,11 +18,11 @@ import { ChangeDetectionStrategy, Component, input, model } from '@angular/core'
   `,
   styles: `
     button {
-      width: 46px; height: 28px; padding: 3px; border: none; border-radius: 999px;
-      background: #d4d4d8; cursor: pointer; display: flex; transition: background 0.15s; flex-shrink: 0;
+      width: 46px; height: 28px; padding: 3px; border: none; border-radius: var(--radio-pill);
+      background: var(--color-control-apagado); cursor: pointer; display: flex; transition: background 0.15s; flex-shrink: 0;
     }
-    .perilla { width: 22px; height: 22px; border-radius: 50%; background: #fff; transition: transform 0.15s; box-shadow: var(--sombra-1); }
-    .encendido { background: var(--guindo-700); }
+    .perilla { width: 22px; height: 22px; border-radius: 50%; background: var(--color-superficie); transition: transform 0.15s; }
+    .encendido { background: var(--color-primario); }
     .encendido .perilla { transform: translateX(18px); }
     button:disabled { opacity: 0.5; cursor: default; }
   `,

@@ -37,7 +37,7 @@
         @if (i.receta; as r) {
           @if (vistaCompleta()) {
             <article class="card-grande" (click)="abrirReceta(r.id)">
-              <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" [tamanoIcono]="30" />
+              <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" />
               <div class="card-cuerpo">
                 <small class="franja"><span class="icono">{{ i.icono }}</span> {{ i.nombreFranja }}</small>
                 <strong>{{ r.nombre }}</strong>

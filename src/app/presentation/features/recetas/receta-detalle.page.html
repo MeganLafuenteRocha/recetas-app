@@ -1,6 +1,6 @@
 @if (receta(); as r) {
   <div class="foto-hero">
-    <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" [tamanoIcono]="34" />
+    <app-foto class="foto-grande" [clave]="r.imagen" [alt]="r.nombre" [radio]="0" />
     <button type="button" class="circular izquierda" (click)="volver()" aria-label="Volver"><span class="icono">arrow_back</span></button>
     <div class="derecha">
       <a class="circular" [routerLink]="['/recetas', r.id, 'editar']" aria-label="Editar receta"><span class="icono">edit</span></a>
